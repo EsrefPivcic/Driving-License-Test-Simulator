@@ -1,0 +1,23 @@
+version: '3'
+services:
+  postgres:
+    container_name: praksa
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5432:5432"
+    volumes:
+      - my_data:/var/lib/postgresql/data
+
+  webapp:
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: "postgres://postgres:12345@localhost:5432/dlts"
+
+volumes:
+  my_data:
