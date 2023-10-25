@@ -16,31 +16,10 @@ func RetrieveQuestionsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT * FROM Question")
+	questions, err := (&models.Question{}).RetrieveFromDBQuestion(db)
 	if err != nil {
-		log.Fatal(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
-	}
-	defer rows.Close()
-
-	var questions []models.Question
-
-	for rows.Next() {
-		var question models.Question
-		err := rows.Scan(
-			&question.ID,
-			&question.QuestionText,
-			&question.Image,
-			&question.Points,
-			&question.MultipleSelect,
-		)
-		if err != nil {
-			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
-		questions = append(questions, question)
 	}
 
 	response, err := json.Marshal(questions)
@@ -72,10 +51,7 @@ func CreateQuestionHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("INSERT INTO Question (QuestionText, Image, Points, MultipleSelect) VALUES ($1, NULL, $2, $3)",
-		question.QuestionText, question.Points, question.MultipleSelect)
-	if err != nil {
-		log.Fatal(err)
+	if err := question.CreateInDBQuestion(db); err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
