@@ -16,32 +16,10 @@ func RetrieveStudentsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT * FROM Student")
+	students, err := (&models.Student{}).RetrieveFromDBStudent(db)
 	if err != nil {
-		log.Fatal(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
-	}
-	defer rows.Close()
-
-	var students []models.Student
-
-	for rows.Next() {
-		var student models.Student
-		err := rows.Scan(
-			&student.ID,
-			&student.Name,
-			&student.Surname,
-			&student.Username,
-			&student.Email,
-			&student.Password,
-		)
-		if err != nil {
-			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
-		students = append(students, student)
 	}
 
 	response, err := json.Marshal(students)
@@ -73,10 +51,7 @@ func CreateStudentHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("INSERT INTO Student (Name, Surname, Username, Email, Password) VALUES ($1, $2, $3, $4, $5)",
-		student.Name, student.Surname, student.Username, student.Email, student.Password)
-	if err != nil {
-		log.Fatal(err)
+	if err := student.CreateInDBStudent(db); err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}

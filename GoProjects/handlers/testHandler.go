@@ -5,8 +5,6 @@ import (
 	"log"
 	"net/http"
 	"project/models"
-
-	"github.com/lib/pq"
 )
 
 func RetrieveTestsHandler(w http.ResponseWriter, r *http.Request) {
@@ -18,41 +16,10 @@ func RetrieveTestsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT * FROM Test")
+	tests, err := (&models.Test{}).RetrieveFromDBTest(db)
 	if err != nil {
-		log.Fatal(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
-	}
-	defer rows.Close()
-
-	var tests []models.Test
-
-	for rows.Next() {
-		var test models.Test
-		var questionArray pq.Int64Array
-
-		err := rows.Scan(
-			&test.ID,
-			&test.Title,
-			&test.Description,
-			&questionArray,
-			&test.Category,
-			&test.Image,
-			&test.Duration,
-		)
-		if err != nil {
-			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
-
-		test.Questions = make([]int, len(questionArray))
-		for i, val := range questionArray {
-			test.Questions[i] = int(val)
-		}
-
-		tests = append(tests, test)
 	}
 
 	response, err := json.Marshal(tests)
@@ -84,11 +51,7 @@ func CreateTestHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	questionArray := pq.Array(test.Questions)
-	_, err = db.Exec("INSERT INTO Test (Title, Description, Questions, Category, Image, Duration) VALUES ($1, $2, $3, $4, NULL, $5)",
-		test.Title, test.Description, questionArray, test.Category, test.Duration)
-	if err != nil {
-		log.Fatal(err)
+	if err := test.CreateInDBTest(db); err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
