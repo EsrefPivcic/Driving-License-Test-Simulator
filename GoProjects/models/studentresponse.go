@@ -1,6 +1,6 @@
 package models
 
-type UserResponse struct {
+type StudentResponse struct {
 	ID              int
 	AttemptID       int
 	Attempt         Attempt

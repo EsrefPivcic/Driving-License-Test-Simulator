@@ -19,8 +19,8 @@ func SetupRouter() *mux.Router {
 	r.HandleFunc("/student/post", handlers.CreateStudentHandler)
 	r.HandleFunc("/options/get", handlers.RetrieveOptionsHandler)
 	r.HandleFunc("/option/post", handlers.CreateOptionsHandler)
-	r.HandleFunc("/userresponses/get", handlers.RetrieveUserResponsesHandler)
-	r.HandleFunc("/userresponse/post", handlers.CreateUserResponseHandler)
+	r.HandleFunc("/studentresponses/get", handlers.RetrieveStudentResponsesHandler)
+	r.HandleFunc("/studentresponse/post", handlers.CreateStudentResponseHandler)
 	r.HandleFunc("/hello", handlers.HelloHandler)
 	r.HandleFunc("/", handlers.NotFoundHandler)
 

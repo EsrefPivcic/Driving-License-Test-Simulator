@@ -22,7 +22,7 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func connectDB() (*sql.DB, error) {
-	connectionString := "user=postgres password=12345 dbname=dlts host=localhost port=5432 sslmode=disable"
+	connectionString := "user=admin password=12345 dbname=dlts host=localhost port=5432 sslmode=disable"
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		return nil, err

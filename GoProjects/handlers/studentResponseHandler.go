@@ -9,7 +9,7 @@ import (
 	"github.com/lib/pq"
 )
 
-func RetrieveUserResponsesHandler(w http.ResponseWriter, r *http.Request) {
+func RetrieveStudentResponsesHandler(w http.ResponseWriter, r *http.Request) {
 	db, err := connectDB()
 	if err != nil {
 		log.Fatal(err)
@@ -20,11 +20,11 @@ func RetrieveUserResponsesHandler(w http.ResponseWriter, r *http.Request) {
 
 	rows, err := db.Query(`
     SELECT
-        ur.ID AS UserResponseID,
-        ur.AttemptID AS UserResponseAttemptID,
-        ur.QuestionID AS UserResponseQuestionID,
-        ur.SelectedOptions AS SelectedOptions,
-        ur.IsCorrect AS IsCorrect,
+        sr.ID AS StudentResponseID,
+        sr.AttemptID AS StudentResponseAttemptID,
+        sr.QuestionID AS StudentResponseQuestionID,
+        sr.SelectedOptions AS SelectedOptions,
+        sr.IsCorrect AS IsCorrect,
         a.ID AS AttemptID,
 		a.StudentID AS AttemptStudentID,
 		a.TestID AS AttemptTestID,
@@ -35,9 +35,9 @@ func RetrieveUserResponsesHandler(w http.ResponseWriter, r *http.Request) {
         q.Image AS Image,
         q.Points AS Points,
         q.MultipleSelect AS MultipleSelect
-    FROM UserResponse AS ur
-    INNER JOIN Attempt AS a ON ur.AttemptID = a.ID
-	INNER JOIN Question AS q ON ur.QuestionID = q.ID
+    FROM StudentResponse AS sr
+    INNER JOIN Attempt AS a ON sr.AttemptID = a.ID
+	INNER JOIN Question AS q ON sr.QuestionID = q.ID
 `)
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
@@ -46,19 +46,19 @@ func RetrieveUserResponsesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	var userresponses []models.UserResponse
+	var studentresponses []models.StudentResponse
 
 	for rows.Next() {
-		var userresponse models.UserResponse
+		var studentresponse models.StudentResponse
 		var attempt models.Attempt
 		var question models.Question
 		var optionsArray pq.Int64Array
 		err := rows.Scan(
-			&userresponse.ID,
-			&userresponse.AttemptID,
-			&userresponse.QuestionID,
+			&studentresponse.ID,
+			&studentresponse.AttemptID,
+			&studentresponse.QuestionID,
 			&optionsArray,
-			&userresponse.IsCorrect,
+			&studentresponse.IsCorrect,
 			&attempt.ID,
 			&attempt.StudentID,
 			&attempt.TestID,
@@ -76,17 +76,17 @@ func RetrieveUserResponsesHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		userresponse.SelectedOptions = make([]int, len(optionsArray))
+		studentresponse.SelectedOptions = make([]int, len(optionsArray))
 		for i, val := range optionsArray {
-			userresponse.SelectedOptions[i] = int(val)
+			studentresponse.SelectedOptions[i] = int(val)
 		}
 
-		userresponse.Attempt = attempt
-		userresponse.Question = question
-		userresponses = append(userresponses, userresponse)
+		studentresponse.Attempt = attempt
+		studentresponse.Question = question
+		studentresponses = append(studentresponses, studentresponse)
 	}
 
-	response, err := json.Marshal(userresponses)
+	response, err := json.Marshal(studentresponses)
 	if err != nil {
 		log.Fatal(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -98,10 +98,10 @@ func RetrieveUserResponsesHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
-func CreateUserResponseHandler(w http.ResponseWriter, r *http.Request) {
-	var userresponse models.UserResponse
+func CreateStudentResponseHandler(w http.ResponseWriter, r *http.Request) {
+	var studentresponse models.StudentResponse
 	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&userresponse); err != nil {
+	if err := decoder.Decode(&studentresponse); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -115,14 +115,14 @@ func CreateUserResponseHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	optionsArray := pq.Array(userresponse.SelectedOptions)
-	_, err = db.Exec("INSERT INTO UserResponse (AttemptID, QuestionID, SelectedOptions, IsCorrect) VALUES ($1, $2, $3, $4)",
-		userresponse.AttemptID, userresponse.QuestionID, optionsArray, userresponse.IsCorrect)
+	optionsArray := pq.Array(studentresponse.SelectedOptions)
+	_, err = db.Exec("INSERT INTO StudentResponse (AttemptID, QuestionID, SelectedOptions, IsCorrect) VALUES ($1, $2, $3, $4)",
+		studentresponse.AttemptID, studentresponse.QuestionID, optionsArray, studentresponse.IsCorrect)
 	if err != nil {
 		log.Fatal(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	respondJSON(w, userresponse)
+	respondJSON(w, studentresponse)
 }
