@@ -1,7 +1,9 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 	"project/routes"
 
@@ -9,8 +11,23 @@ import (
 	_ "github.com/lib/pq"
 )
 
+func connectDB() (*sql.DB, error) {
+	connectionString := "user=admin password=12345 dbname=dlts host=localhost port=5432 sslmode=disable"
+	db, err := sql.Open("postgres", connectionString)
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
+}
+
 func main() {
-	r := routes.SetupRouter()
+	db, err := connectDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	r := routes.SetupRouter(db)
 
 	allowedOrigins := handlers.AllowedOrigins([]string{"http://localhost:3000"})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
@@ -22,8 +39,8 @@ func main() {
 
 	port := 8080
 	fmt.Printf("Server is running on :%d...\n", port)
-	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
-	if err != nil {
-		fmt.Println(err)
+	err2 := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	if err2 != nil {
+		fmt.Println(err2)
 	}
 }

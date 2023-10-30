@@ -1,26 +1,27 @@
 package routes
 
 import (
+	"database/sql"
 	"project/handlers"
 
 	"github.com/gorilla/mux"
 )
 
-func SetupRouter() *mux.Router {
+func SetupRouter(db *sql.DB) *mux.Router {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/questions/get", handlers.RetrieveQuestionsHandler)
-	r.HandleFunc("/question/post", handlers.CreateQuestionHandler)
-	r.HandleFunc("/tests/get", handlers.RetrieveTestsHandler)
-	r.HandleFunc("/test/post", handlers.CreateTestHandler)
-	r.HandleFunc("/attempts/get", handlers.RetrieveAttemptsHandler)
-	r.HandleFunc("/attempt/post", handlers.CreateAttemptHandler)
-	r.HandleFunc("/students/get", handlers.RetrieveStudentsHandler)
-	r.HandleFunc("/student/post", handlers.CreateStudentHandler)
-	r.HandleFunc("/options/get", handlers.RetrieveOptionsHandler)
-	r.HandleFunc("/option/post", handlers.CreateOptionsHandler)
-	r.HandleFunc("/studentresponses/get", handlers.RetrieveStudentResponsesHandler)
-	r.HandleFunc("/studentresponse/post", handlers.CreateStudentResponseHandler)
+	r.HandleFunc("/questions/get", handlers.RetrieveQuestionsHandler(db))
+	r.HandleFunc("/question/post", handlers.CreateQuestionHandler(db))
+	r.HandleFunc("/tests/get", handlers.RetrieveTestsHandler(db))
+	r.HandleFunc("/test/post", handlers.CreateTestHandler(db))
+	r.HandleFunc("/attempts/get", handlers.RetrieveAttemptsHandler(db))
+	r.HandleFunc("/attempt/post", handlers.CreateAttemptHandler(db))
+	r.HandleFunc("/students/get", handlers.RetrieveStudentsHandler(db))
+	r.HandleFunc("/student/post", handlers.CreateStudentHandler(db))
+	r.HandleFunc("/options/get", handlers.RetrieveOptionsHandler(db))
+	r.HandleFunc("/option/post", handlers.CreateOptionsHandler(db))
+	r.HandleFunc("/studentresponses/get", handlers.RetrieveStudentResponsesHandler(db))
+	r.HandleFunc("/studentresponse/post", handlers.CreateStudentResponseHandler(db))
 	r.HandleFunc("/hello", handlers.HelloHandler)
 	r.HandleFunc("/", handlers.NotFoundHandler)
 
