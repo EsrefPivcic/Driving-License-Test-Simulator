@@ -8,4 +8,5 @@ type Test struct {
 	Category    string
 	Image       []byte
 	Duration    int
+	ImageBase64 string `json:"image,omitempty"`
 }
