@@ -1,60 +1,49 @@
 package handlers
 
 import (
+	"database/sql"
 	"encoding/json"
 	"log"
 	"net/http"
 	"project/models"
 )
 
-func RetrieveTestsHandler(w http.ResponseWriter, r *http.Request) {
-	db, err := connectDB()
-	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
+func RetrieveTestsHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		tests, err := (&models.Test{}).RetrieveFromDBTest(db)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 
-	tests, err := (&models.Test{}).RetrieveFromDBTest(db)
-	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
+		response, err := json.Marshal(tests)
+		if err != nil {
+			log.Fatal(err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 
-	response, err := json.Marshal(tests)
-	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(response)
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(response)
 }
 
-func CreateTestHandler(w http.ResponseWriter, r *http.Request) {
-	var test models.Test
-	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&test); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	defer r.Body.Close()
+func CreateTestHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var test models.Test
+		decoder := json.NewDecoder(r.Body)
+		if err := decoder.Decode(&test); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		defer r.Body.Close()
 
-	db, err := connectDB()
-	if err != nil {
-		log.Fatal(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
+		if err := test.CreateInDBTest(db); err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 
-	if err := test.CreateInDBTest(db); err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
+		respondJSON(w, test)
 	}
-
-	respondJSON(w, test)
 }
