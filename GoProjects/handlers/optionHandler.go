@@ -5,12 +5,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"project/dal"
 	"project/models"
 )
 
 func RetrieveOptionsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		options, err := (&models.Option{}).RetrieveFromDB(db)
+		options, err := dal.RetrieveFromDB(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -39,7 +40,7 @@ func CreateOptionsHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		if err := option.CreateInDBOption(db); err != nil {
+		if err := dal.CreateInDBOption(db, option); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
