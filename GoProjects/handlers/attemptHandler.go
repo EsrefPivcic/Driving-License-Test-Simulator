@@ -5,12 +5,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"project/dal"
 	"project/models"
 )
 
 func RetrieveAttemptsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		attempts, err := (&models.Attempt{}).RetrieveFromDBAttempt(db)
+		attempts, err := dal.RetrieveFromDBAttempt(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -39,7 +40,7 @@ func CreateAttemptHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		if err := attempt.CreateInDBAttempt(db); err != nil {
+		if err := dal.CreateInDBAttempt(db, attempt); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

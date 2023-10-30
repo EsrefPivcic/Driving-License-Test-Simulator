@@ -5,12 +5,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"project/dal"
 	"project/models"
 )
 
 func RetrieveTestsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		tests, err := (&models.Test{}).RetrieveFromDBTest(db)
+		tests, err := dal.RetrieveFromDBTest(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -39,7 +40,7 @@ func CreateTestHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		if err := test.CreateInDBTest(db); err != nil {
+		if err := dal.CreateInDBTest(db, test); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

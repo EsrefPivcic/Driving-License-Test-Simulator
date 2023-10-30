@@ -5,12 +5,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"project/dal"
 	"project/models"
 )
 
 func RetrieveStudentsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		students, err := (&models.Student{}).RetrieveFromDBStudent(db)
+		students, err := dal.RetrieveFromDBStudent(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -39,7 +40,7 @@ func CreateStudentHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		if err := student.CreateInDBStudent(db); err != nil {
+		if err := dal.CreateInDBStudent(db, student); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
