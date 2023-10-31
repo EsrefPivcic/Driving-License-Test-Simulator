@@ -6,7 +6,7 @@ type Test struct {
 	Description string
 	Questions   []int
 	Category    string
-	Image       []byte
 	Duration    int
-	ImageBase64 string `json:"image,omitempty"`
+	Image       []byte
+	ImageBase64 string
 }

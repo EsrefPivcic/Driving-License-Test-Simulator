@@ -2,6 +2,7 @@ package dal
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"log"
 	"project/models"
 
@@ -10,12 +11,15 @@ import (
 
 func CreateInDBTest(db *sql.DB, t models.Test) error {
 	questionArray := pq.Array(t.Questions)
-	_, err := db.Exec("INSERT INTO Test (Title, Description, Questions, Category, Image, Duration) VALUES ($1, $2, $3, $4, NULL, $5)",
-		t.Title, t.Description, questionArray, t.Category, t.Duration)
+	imageArray := pq.ByteaArray([][]byte{t.Image})
+	_, err := db.Exec("INSERT INTO Test (Title, Description, Questions, Category, Duration, Image) VALUES ($1, $2, $3, $4, $5, $6)",
+		t.Title, t.Description, questionArray, t.Category, t.Duration, imageArray)
+
 	if err != nil {
 		log.Printf("Error inserting test into the database: %v", err)
 		return err
 	}
+
 	return nil
 }
 
@@ -35,6 +39,7 @@ func RetrieveFromDBTest(db *sql.DB) ([]models.Test, error) {
 	for rows.Next() {
 		var test models.Test
 		var questionArray pq.Int64Array
+		var imageArray pq.ByteaArray
 
 		err := rows.Scan(
 			&test.ID,
@@ -42,8 +47,8 @@ func RetrieveFromDBTest(db *sql.DB) ([]models.Test, error) {
 			&test.Description,
 			&questionArray,
 			&test.Category,
-			&test.Image,
 			&test.Duration,
+			&imageArray,
 		)
 		if err != nil {
 			log.Fatal(err)
@@ -54,6 +59,13 @@ func RetrieveFromDBTest(db *sql.DB) ([]models.Test, error) {
 		for i, val := range questionArray {
 			test.Questions[i] = int(val)
 		}
+
+		var imageBytes []byte
+		for _, chunk := range imageArray {
+			imageBytes = append(imageBytes, chunk...)
+		}
+
+		test.ImageBase64 = base64.StdEncoding.EncodeToString(imageBytes)
 
 		tests = append(tests, test)
 	}
