@@ -35,96 +35,13 @@ const App = () => {
     );
 };
 
-export default App;
-*/
+export default App;*/
 
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-
-const buttonStyle = {
-  background: '#333',
-  color: '#fff',
-  padding: '20px',
-  margin: '10px',
-  cursor: 'pointer',
-  border: 'none',
-  borderRadius: '10px',
-  width: '300px',
-  height: '300px',
-};
-
-const nextButtonStyle = {
-  background: '#4285f4',
-  color: '#fff',
-  padding: '15px',
-  margin: '20px 0',
-  cursor: 'pointer',
-  border: 'none',
-  borderRadius: '5px',
-  fontSize: '18px',
-};
-
-const formContainerStyle = {
-  maxWidth: '600px',
-  margin: '0 auto',
-  padding: '20px',
-  border: '2px solid #61dafb',
-  borderRadius: '10px',
-  marginTop: '7%',
-};
-
-function TestPage({ category, categoryData }) {
-  const { questions } = categoryData[category];
-  const [answers, setAnswers] = useState(Array(questions.length).fill('')); // Initial answers array
-
-  const handleAnswerChange = (index, selectedAnswer) => {
-    const newAnswers = [...answers];
-    newAnswers[index] = selectedAnswer;
-    setAnswers(newAnswers);
-  };
-
-  const isCategoryA = category === 'a';
-
-  const containerStyle = {
-    marginBottom: '20px',
-    fontSize: '20px',
-    // Add specific styles for the "a" category if it is selected
-    ...(isCategoryA),
-  };
-
-  return (
-    <div style={containerStyle}>
-      <h2>{categoryData[category].headline} Test</h2>
-      <div style={formContainerStyle}>
-        <form>
-          {questions.map((question, index) => (
-            <div key={index} style={{ marginBottom: '20px' }}>
-              <p>{question.question}</p>
-              <div>
-                {question.answers.map((answer, answerIndex) => (
-                  <label key={answerIndex} style={{ display: 'block', marginBottom: '10px' }}>
-                    <input
-                      type="radio"
-                      name={`question_${index}`}
-                      value={answer}
-                      checked={answers[index] === answer}
-                      onChange={() => handleAnswerChange(index, answer)}
-                    />
-                    {answer}
-                  </label>
-                ))}
-              </div>
-            </div>
-          ))}
-          <button type="button" style={nextButtonStyle}>
-            Next Question
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import CategoryButtons from './CategoryButtons';
+import CategoryPage from './CategoryPage';
+import ACategoryPage from './ACategoryPage';
 
 function App() {
   const bodyStyle = {
@@ -155,7 +72,7 @@ function App() {
           question: 'What should you do when approaching a stop sign?',
           answers: ['Stop completely and then proceed', 'Slow down and proceed without stopping', 'Ignore it and keep going'],
         },
-        /*{
+        {
           question: 'When should you use your motorcycle headlights?',
           answers: [
             'Only at night',
@@ -207,7 +124,6 @@ function App() {
             'Lack of proper protective gear',
           ],
         },
-        // Add more questions as needed*/
       ],
     },
     b: {
@@ -252,7 +168,7 @@ function App() {
                 path={`/${category.toLowerCase()}test`}
                 element={
                   category === 'a' ? (
-                    <TestPage category={category} categoryData={categoryData} />
+                    <ACategoryPage category={category} categoryData={categoryData} />
                   ) : (
                     <CategoryPage category={category} categoryData={categoryData} />
                   )
@@ -263,38 +179,6 @@ function App() {
         </div>
       </div>
     </BrowserRouter>
-  );
-}
-
-function CategoryButtons({ categoryData }) {
-  return (
-    <div className="categories">
-      {Object.keys(categoryData).map((category) => (
-        <Link key={category} to={`/${category.toLowerCase()}test`} style={{ textDecoration: 'none' }}>
-          <button style={buttonStyle}>
-            <img
-              src={categoryData[category].photo}
-              alt={categoryData[category].headline}
-              style={{ maxWidth: '100%', maxHeight: '100%', marginBottom: '10px' }}
-            />
-            <h2>{categoryData[category].headline}</h2>
-            <p>{categoryData[category].description}</p>
-          </button>
-        </Link>
-      ))}
-    </div>
-  );
-}
-
-function CategoryPage({ category, categoryData }) {
-  const { headline, description, photo } = categoryData[category];
-
-  return (
-    <div>
-      <h2>{headline}</h2>
-      <img src={photo} alt={headline} style={{ maxWidth: '100%', maxHeight: '100%' }} />
-      <p>{description}</p>
-    </div>
   );
 }
 
