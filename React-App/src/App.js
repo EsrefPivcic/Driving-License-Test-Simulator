@@ -37,8 +37,9 @@ const App = () => {
 
 export default App;
 */
+
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 const buttonStyle = {
   background: '#333',
@@ -52,6 +53,26 @@ const buttonStyle = {
   height: '300px',
 };
 
+const nextButtonStyle = {
+  background: '#4285f4',
+  color: '#fff',
+  padding: '15px',
+  margin: '20px 0',
+  cursor: 'pointer',
+  border: 'none',
+  borderRadius: '5px',
+  fontSize: '18px',
+};
+
+const formContainerStyle = {
+  maxWidth: '600px',
+  margin: '0 auto',
+  padding: '20px',
+  border: '2px solid #61dafb',
+  borderRadius: '10px',
+  marginTop: '7%',
+};
+
 function TestPage({ category, categoryData }) {
   const { questions } = categoryData[category];
   const [answers, setAnswers] = useState(Array(questions.length).fill('')); // Initial answers array
@@ -62,53 +83,44 @@ function TestPage({ category, categoryData }) {
     setAnswers(newAnswers);
   };
 
-  const submitTest = () => {
-    // You can add logic here to handle the submitted answers
-    console.log('Submitted Answers:', answers);
-  };
-
   const isCategoryA = category === 'a';
 
   const containerStyle = {
     marginBottom: '20px',
-    fontSize: '18px',
+    fontSize: '20px',
     // Add specific styles for the "a" category if it is selected
     ...(isCategoryA),
   };
 
-  const questionsAnswers = {
-    paddingTop: '10%',
-  }
-
   return (
     <div style={containerStyle}>
       <h2>{categoryData[category].headline} Test</h2>
-      <form>
-        {questions.map((question, index) => (
-          <div style={questionsAnswers}>
-          <div key={index} style={{ marginBottom: '20px' }}>
-            <p>{question.question}</p>
-            <div>
-              {question.answers.map((answer, answerIndex) => (
-                <label key={answerIndex} style={{ marginRight: '10px' }}>
-                  <input
-                    type="radio"
-                    name={`question_${index}`}
-                    value={answer}
-                    checked={answers[index] === answer}
-                    onChange={() => handleAnswerChange(index, answer)}
-                  />
-                  {answer}
-                </label>
-              ))}
+      <div style={formContainerStyle}>
+        <form>
+          {questions.map((question, index) => (
+            <div key={index} style={{ marginBottom: '20px' }}>
+              <p>{question.question}</p>
+              <div>
+                {question.answers.map((answer, answerIndex) => (
+                  <label key={answerIndex} style={{ display: 'block', marginBottom: '10px' }}>
+                    <input
+                      type="radio"
+                      name={`question_${index}`}
+                      value={answer}
+                      checked={answers[index] === answer}
+                      onChange={() => handleAnswerChange(index, answer)}
+                    />
+                    {answer}
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
-          </div>
-        ))}
-        <button type="button" onClick={submitTest}>
-          Submit Test
-        </button>
-      </form>
+          ))}
+          <button type="button" style={nextButtonStyle}>
+            Next Question
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
