@@ -1,44 +1,59 @@
 # eDrivingSchool
 
-The **eDrivingSchool** is your go-to platform for honing your skills and knowledge in preparation for obtaining a driver's license. Whether you're a new driver eager to learn the ropes or someone looking to brush up on your driving know-how, this app has got you covered.
+Welcome to the eDrivingSchool project! This application aims to provide a realistic simulation of tests for obtaining a driver's license, covering various vehicle categories such as cars, motorbikes, and more. Currently a work in progress, we are utilizing the Go language for the backend and React for the frontend.
 
-**eDrivingSchool** is currently under development, and it's shaping up to be a valuable resource for anyone looking to excel in their driver's license exams.
+## Getting Started
 
-## What is it?
+To get started with the project, follow these steps:
 
-This simulator provides a diverse range of practice tests, mirroring real-world driver's license exams. You can choose from a variety of tests, each categorized to help you focus on specific aspects of driving. These tests come complete with a set of questions designed to challenge your knowledge and understanding.
+1. Clone the repository:
 
-## Key Features
+    ```bash
+    git clone https://github.com/NedzmijaMuminovic/eDrivingSchool
+    ```
 
-### Test Browsing
-- Browse through an array of available driving tests.
-- Select and begin your chosen test to challenge your driving knowledge.
+2. Navigate to the project directory:
 
-### Test Taking
-- Face questions that closely resemble those on actual exams.
-- Optionally view images relevant to the questions.
-- Submit your answers and receive immediate feedback, including your score.
+    ```bash
+    cd eDrivingSchool
+    ```
 
-### Realistic Experience
-- Experience an app that adapts to various screen sizes for a user-friendly design.
-- Enjoy an optional time limit to simulate the real driving test environment.
+3. Open the project in VS Code:
 
-## Technology
+    ```bash
+    code .
+    ```
 
-The eDrivingSchool consists of two main components:
+4. Navigate to the Go API directory, install dependencies and run the backend:
 
-### Backend: Golang REST API
-- Powers the functionality of the app.
-- Handles test data, questions, and user attempts.
-- Offers endpoints for accessing available tests and submitting answers for evaluation.
-- Utilizes a database system and Docker for efficient data management.
+    ```bash
+    cd Go-API
+    go get
+    go run main.go
+    ```
 
-### Frontend: React Application
-- Provides an intuitive and interactive user interface.
-- Allows users to browse, select, and take tests.
-- Offers responsive design for use on different devices.
-- Includes optional enhancements such as explanations for incorrect answers and timed tests.
+5. Navigate to the React App directory, install dependencies, and run the frontend:
 
-## Get Ready for Success
+    ```bash
+    cd ../React-App
+    npm install
+    npm start
+    ```
+    
+## Project Structure
 
-Get ready to ace your driver's license exam with eDrivingSchool! Please keep in mind that this app is still in development, and we're working hard to bring you the best possible resource for your exam preparation.
+The project is organized into two main components:
+
+- **Backend (Go):** The backend logic is written in Go, providing the necessary APIs and data for the frontend.
+
+- **Frontend (React):** The user interface is developed using React, presenting a user-friendly experience for taking driving tests.
+
+## Features
+
+- **Homepage:** The app currently features a homepage with different tests categorized by vehicle types.
+
+- **Test Categories:** Each category, such as cars or motorbikes, contains a set of questions for simulation.
+
+- **Quiz-like Interface:** Users can go through the questions and select their answers, simulating a real driving test experience.
+
+Thank you for your interest in our eDrivingSchool project! Stay tuned for updates and happy coding!
