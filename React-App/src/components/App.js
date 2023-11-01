@@ -39,9 +39,9 @@ const App = () => {
 
 export default App;*/
 
-/*
-___________TEST-POST___________
-import React, { useState } from 'react';
+
+//___________TEST-POST___________
+/*import React, { useState } from 'react';
 
 function TestUploadForm() {
   const [test, setTest] = useState({
@@ -128,13 +128,11 @@ function TestUploadForm() {
   );
 }
 
-export default TestUploadForm;
-______________________________
-*/
+export default TestUploadForm;*/
+//______________________________
 
-/*
-___________TESTS-GET__________
-import React, { useState, useEffect } from "react";
+//___________TESTS-GET__________
+/*import React, { useState, useEffect } from "react";
 
 function TestButton() {
   const [testData, setTestData] = useState([]);
@@ -190,9 +188,8 @@ function TestButton() {
   );
 }
 
-export default TestButton;
-____________________
-*/
+export default TestButton;*/
+//____________________
 
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
