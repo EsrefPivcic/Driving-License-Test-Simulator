@@ -192,29 +192,13 @@ export default TestButton;*/
 //____________________
 
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import CategoryButtons from './CategoryButtons';
-import CategoryPage from './CategoryPage';
-import ACategoryPage from './ACategoryPage';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import CategoryButtons from './CategoryButtons/CategoryButtons';
+import CategoryPage from './CategoryPage/CategoryPage';
+import ACategoryPage from './ACategoryPage/ACategoryPage';
+import './App.css';
 
 function App() {
-  const bodyStyle = {
-    background: '#111',
-    color: '#fff',
-    margin: 0,
-    padding: 0,
-  };
-
-  const appStyle = {
-    textAlign: 'center',
-    padding: '20px',
-  };
-
-  const titleStyle = {
-    color: '#61dafb',
-    margin: 0,
-    padding: 0,
-  };
 
   const categoryData = {
     a: {
@@ -309,10 +293,10 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="app" style={bodyStyle}>
-        <div style={appStyle}>
-          <h1 className="app-title" style={titleStyle}>
-            eDrivingSchool
+      <div className="app">
+        <div className="app-content">
+        <h1 className="app-title">
+            <Link to="/">eDrivingSchool</Link>
           </h1>
           <Routes>
             <Route path="/" element={<CategoryButtons categoryData={categoryData} />} />

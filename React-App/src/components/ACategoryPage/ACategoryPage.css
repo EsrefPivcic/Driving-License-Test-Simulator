@@ -1,0 +1,83 @@
+.form-container {
+    max-width: 600px;
+    height: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #61dafb;
+    border-radius: 10px;
+    margin-top: 3%;
+  }
+  
+  .button {
+    padding: 15px;
+    margin: 20px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 150px;
+  }
+
+  .start-test-button {
+    background-color: #4285f4;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #357ae8;
+    }
+  }
+
+  .back-to-home-button {
+    background-color: #f44336;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #d32f2f;
+    }
+  }
+  
+  .next-button {
+    background: #4285f4;
+    color: #fff;
+
+    &:hover {
+      background-color: #357ae8;
+    }
+  }
+  
+  .submit-button {
+    background: #4CAF50;
+    color: #fff;
+    
+    &:hover {
+      background-color: #388E3C;
+    }
+  }
+  
+  .back-button, .back-to-previous-content-button {
+    background: #f44336;
+    color: #fff;
+
+    &:hover {
+      background-color: #d32f2f;
+    }
+  }
+  
+  .container {
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+
+  .question-container {
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+  }  

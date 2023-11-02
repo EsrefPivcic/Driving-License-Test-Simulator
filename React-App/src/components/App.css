@@ -1,0 +1,26 @@
+body {
+  background: #111;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  text-align: center;
+  padding: 20px;
+}
+
+.app-title, .app-title a {
+  color: #61dafb;
+  margin: 0;
+  padding: 0;
+}
+
+.app-title a {
+  text-decoration: none;
+}
+
+.app-title a:hover {
+  text-decoration: underline;
+  transform: scale(1.05);
+}
