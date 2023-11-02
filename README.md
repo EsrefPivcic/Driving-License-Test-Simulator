@@ -4,7 +4,7 @@ Welcome to the eDrivingSchool project! This application aims to provide a realis
 
 ## Getting Started
 
-To get started with the project, follow these steps:
+To get started with the project, follow these steps in your terminal:
 
 1. Clone the repository:
 
@@ -12,34 +12,32 @@ To get started with the project, follow these steps:
     git clone https://github.com/NedzmijaMuminovic/eDrivingSchool
     ```
 
-2. Navigate to the project directory:
+2. Open the Go API directory:
 
     ```bash
-    cd eDrivingSchool
+    cd eDrivingSchool/Go-API
     ```
 
-3. Open the project in VS Code:
+3. Install dependencies and run the backend:
 
     ```bash
-    code .
-    ```
-
-4. Navigate to the Go API directory, install dependencies and run the backend:
-
-    ```bash
-    cd Go-API
     go get
     go run main.go
     ```
 
-5. Navigate to the React App directory, install dependencies, and run the frontend:
+4. Open the React App directory in a new terminal window:
 
     ```bash
-    cd ../React-App
+    cd eDrivingSchool/React-App
+    ```
+
+5. Install dependencies and start the frontend:
+
+    ```bash
     npm install
     npm start
     ```
-    
+ 
 ## Project Structure
 
 The project is organized into two main components:
