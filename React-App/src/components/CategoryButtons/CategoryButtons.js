@@ -1,3 +1,4 @@
+// CategoryButtons.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './CategoryButtons.css';
@@ -11,7 +12,7 @@ function CategoryButtons({ categoryData }) {
             <img
               src={categoryData[category].photo}
               alt={categoryData[category].headline}
-              style={{ maxWidth: '100%', maxHeight: '100%', marginBottom: '10px' }}
+              className="category-image"
             />
             <h2>{categoryData[category].headline}</h2>
             <p>{categoryData[category].description}</p>

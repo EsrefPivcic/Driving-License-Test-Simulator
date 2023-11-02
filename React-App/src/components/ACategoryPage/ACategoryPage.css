@@ -7,6 +7,19 @@
     border-radius: 10px;
     margin-top: 3%;
   }
+
+  .start-test-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #61dafb;
+    border-radius: 10px;
+    margin-top: 3%;
+  }
+
+  .start-test-container p {
+    font-size: 18px;
+  }
   
   .button {
     padding: 15px;

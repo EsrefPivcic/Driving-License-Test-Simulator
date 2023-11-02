@@ -1,8 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSpring, animated } from 'react-spring';
 import './ACategoryPage.css';
 
 function ACategoryPage({ category, categoryData }) {
+  const navigate = useNavigate();
+
+  const [isComponentVisible, setComponentVisible] = useState(false);
+  const [testStarted, setTestStarted] = useState(false);
+  const fadeIn = useSpring({
+    opacity: isComponentVisible ? 1 : 0,
+    from: { opacity: 0 },
+  });
+
+  const questionAnimation = useSpring({
+    opacity: testStarted ? 1 : 0,
+    from: { opacity: 0 },
+  });
+
+  useEffect(() => {
+    setComponentVisible(true);
+  }, []);
+
   const buttonStyle = 'button';
   const nextButtonStyle = `${buttonStyle} next-button`;
   const submitButtonStyle = `${buttonStyle} submit-button`;
@@ -12,10 +31,7 @@ function ACategoryPage({ category, categoryData }) {
   const { questions } = categoryData[category];
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState(Array(questions.length).fill(''));
-  const [testStarted, setTestStarted] = useState(false);
   const [questionCount, setQuestionCount] = useState(0);
-
-  const navigate = useNavigate();
 
   const handleAnswerChange = (index, selectedAnswer) => {
     const newAnswers = [...answers];
@@ -57,13 +73,15 @@ function ACategoryPage({ category, categoryData }) {
   const isCategoryA = category === 'a';
 
   return (
-    <div className={`container ${isCategoryA ? 'category-a' : ''}`}>
+    <animated.div className={`container ${isCategoryA ? 'category-a' : ''}`} style={fadeIn}>
       {!testStarted ? (
         <div className="start-test-container">
           <div className="category-page">
             <h2>{headline}</h2>
             <img src={photo} alt={headline} />
-            <p>{description}</p>
+            <p><strong>{description}</strong></p>
+            <p>The exam for Category A consists of 20 theory questions, 10 signs, and 10 intersections.</p>
+            <p>The required passing score is 108, with a maximum score of 120.</p>
           </div>
           <button type="button" className={`button back-to-home-button`} onClick={handleBackToHome}>
             Quit
@@ -73,7 +91,7 @@ function ACategoryPage({ category, categoryData }) {
           </button>
         </div>
       ) : (
-        <>
+        <animated.div style={questionAnimation}>
           <h2>{categoryData[category].headline} Test</h2>
           <p>Question {questionCount} of {questions.length}</p>
           <div className="form-container">
@@ -126,10 +144,10 @@ function ACategoryPage({ category, categoryData }) {
               </div>
             </form>
           </div>
-        </>
+        </animated.div>
       )}
-    </div>
+    </animated.div>
   );
-};
+}
 
 export default ACategoryPage;
