@@ -1,5 +1,4 @@
-/*
-___________STUDENTS-GET___________
+/*___________STUDENTS-GET___________
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -165,16 +164,24 @@ function TestButton() {
       <table>
         <thead>
           <tr>
+            <th style={razmakni}>ID</th>
             <th style={razmakni}>Title</th>
             <th style={razmakni}>Description</th>
+            <th style={razmakni}>Questions</th>
+            <th style={razmakni}>Category</th>
+            <th style={razmakni}>Duration</th>
             <th style={razmakni}>Image</th>
           </tr>
         </thead>
         <tbody>
           {testData.map((test) => (
             <tr key={test.ID}>
+              <td style={razmakni}>{test.ID}</td>
               <td style={razmakni}>{test.Title}</td>
               <td style={razmakni}>{test.Description}</td>
+              <td style={razmakni}>{test.Questions.join(", ")}</td>
+              <td style={razmakni}>{test.Category}</td>
+              <td style={razmakni}>{test.Duration}</td>
               <td style={razmakni}>
                 {test.ImageBase64 && (
                   <img src={`data:image/png;base64,${test.ImageBase64}`} alt={`Test: ${test.Title}`} width="150" />
@@ -194,8 +201,12 @@ export default TestButton;*/
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import CategoryButtons from './CategoryButtons/CategoryButtons';
-import CategoryPage from './CategoryPage/CategoryPage';
 import ACategoryPage from './ACategoryPage/ACategoryPage';
+import BCategoryPage from './BCategoryPage/BCategoryPage';
+import CCategoryPage from './CCategoryPage/CCategoryPage';
+import DCategoryPage from './DCategoryPage/DCategoryPage';
+import TCategoryPage from './TCategoryPage/TCategoryPage';
+import FirstAid from './FirstAid/FirstAid';
 import './App.css';
 
 function App() {
@@ -268,26 +279,316 @@ function App() {
       headline: 'B Category',
       description: 'B and B1 category (car and moped)',
       photo: process.env.PUBLIC_URL + '/images/taxi.png',
+      questions: [
+        {
+          question: 'What should you do when approaching a stop sign?',
+          answers: ['Stop completely and then proceed', 'Slow down and proceed without stopping', 'Ignore it and keep going'],
+        },
+        {
+          question: 'When should you use your motorcycle headlights?',
+          answers: [
+            'Only at night',
+            'During the day to increase visibility',
+            'Only in bad weather conditions',
+          ],
+        },
+        {
+          question: 'What is the recommended safe following distance behind a vehicle?',
+          answers: ['1 second', '2 seconds', '3 seconds'],
+        },
+        {
+          question: 'In heavy traffic, what should you do to increase your visibility?',
+          answers: [
+            'Stay close to the vehicle in front of you',
+            'Ride in the center of the lane',
+            'Frequently change lanes',
+          ],
+        },
+        {
+          question: 'When should you use your motorcycles horn?',
+          answers: [
+            'To alert others of your presence in a dangerous situation',
+            'To express frustration with other road users',
+            'Only in residential areas',
+          ],
+        },
+        {
+          question: 'What is the correct hand signal for a right turn?',
+          answers: ['Extend your left arm and point right', 'Extend your right arm and point right', 'Extend your left arm downward'],
+        },
+        {
+          question: 'When is it important to check your mirrors?',
+          answers: ['Only when changing lanes', 'Before slowing down or stopping', 'Only in urban areas'],
+        },
+        {
+          question: 'What does it mean when a traffic light is flashing yellow?',
+          answers: ['Proceed with caution', 'Stop and wait for a green light', 'Slow down and prepare to stop'],
+        },
+        {
+          question: 'How often should you check your motorcycles tire pressure?',
+          answers: ['Once a month', 'Once a year', 'Only when you notice a problem'],
+        },
+        {
+          question: 'What is the most common cause of motorcycle accidents at intersections?',
+          answers: [
+            'Failure to yield the right of way',
+            'Excessive speed',
+            'Lack of proper protective gear',
+          ],
+        },
+      ],
     },
     c: {
       headline: 'C Category',
       description: 'C and C1 category (truck and truck 7.5t)',
       photo: process.env.PUBLIC_URL + '/images/truck.png',
+      questions: [
+        {
+          question: 'What should you do when approaching a stop sign?',
+          answers: ['Stop completely and then proceed', 'Slow down and proceed without stopping', 'Ignore it and keep going'],
+        },
+        {
+          question: 'When should you use your motorcycle headlights?',
+          answers: [
+            'Only at night',
+            'During the day to increase visibility',
+            'Only in bad weather conditions',
+          ],
+        },
+        {
+          question: 'What is the recommended safe following distance behind a vehicle?',
+          answers: ['1 second', '2 seconds', '3 seconds'],
+        },
+        {
+          question: 'In heavy traffic, what should you do to increase your visibility?',
+          answers: [
+            'Stay close to the vehicle in front of you',
+            'Ride in the center of the lane',
+            'Frequently change lanes',
+          ],
+        },
+        {
+          question: 'When should you use your motorcycles horn?',
+          answers: [
+            'To alert others of your presence in a dangerous situation',
+            'To express frustration with other road users',
+            'Only in residential areas',
+          ],
+        },
+        {
+          question: 'What is the correct hand signal for a right turn?',
+          answers: ['Extend your left arm and point right', 'Extend your right arm and point right', 'Extend your left arm downward'],
+        },
+        {
+          question: 'When is it important to check your mirrors?',
+          answers: ['Only when changing lanes', 'Before slowing down or stopping', 'Only in urban areas'],
+        },
+        {
+          question: 'What does it mean when a traffic light is flashing yellow?',
+          answers: ['Proceed with caution', 'Stop and wait for a green light', 'Slow down and prepare to stop'],
+        },
+        {
+          question: 'How often should you check your motorcycles tire pressure?',
+          answers: ['Once a month', 'Once a year', 'Only when you notice a problem'],
+        },
+        {
+          question: 'What is the most common cause of motorcycle accidents at intersections?',
+          answers: [
+            'Failure to yield the right of way',
+            'Excessive speed',
+            'Lack of proper protective gear',
+          ],
+        },
+      ],
     },
     d: {
       headline: 'D Category',
       description: 'D category (bus)',
       photo: process.env.PUBLIC_URL + '/images/bus.png',
+      questions: [
+        {
+          question: 'What should you do when approaching a stop sign?',
+          answers: ['Stop completely and then proceed', 'Slow down and proceed without stopping', 'Ignore it and keep going'],
+        },
+        {
+          question: 'When should you use your motorcycle headlights?',
+          answers: [
+            'Only at night',
+            'During the day to increase visibility',
+            'Only in bad weather conditions',
+          ],
+        },
+        {
+          question: 'What is the recommended safe following distance behind a vehicle?',
+          answers: ['1 second', '2 seconds', '3 seconds'],
+        },
+        {
+          question: 'In heavy traffic, what should you do to increase your visibility?',
+          answers: [
+            'Stay close to the vehicle in front of you',
+            'Ride in the center of the lane',
+            'Frequently change lanes',
+          ],
+        },
+        {
+          question: 'When should you use your motorcycles horn?',
+          answers: [
+            'To alert others of your presence in a dangerous situation',
+            'To express frustration with other road users',
+            'Only in residential areas',
+          ],
+        },
+        {
+          question: 'What is the correct hand signal for a right turn?',
+          answers: ['Extend your left arm and point right', 'Extend your right arm and point right', 'Extend your left arm downward'],
+        },
+        {
+          question: 'When is it important to check your mirrors?',
+          answers: ['Only when changing lanes', 'Before slowing down or stopping', 'Only in urban areas'],
+        },
+        {
+          question: 'What does it mean when a traffic light is flashing yellow?',
+          answers: ['Proceed with caution', 'Stop and wait for a green light', 'Slow down and prepare to stop'],
+        },
+        {
+          question: 'How often should you check your motorcycles tire pressure?',
+          answers: ['Once a month', 'Once a year', 'Only when you notice a problem'],
+        },
+        {
+          question: 'What is the most common cause of motorcycle accidents at intersections?',
+          answers: [
+            'Failure to yield the right of way',
+            'Excessive speed',
+            'Lack of proper protective gear',
+          ],
+        },
+      ],
     },
     t: {
       headline: 'T Category',
       description: 'T category (tractor, working machines)',
       photo: process.env.PUBLIC_URL + '/images/tractor.png',
+      questions: [
+        {
+          question: 'What should you do when approaching a stop sign?',
+          answers: ['Stop completely and then proceed', 'Slow down and proceed without stopping', 'Ignore it and keep going'],
+        },
+        {
+          question: 'When should you use your motorcycle headlights?',
+          answers: [
+            'Only at night',
+            'During the day to increase visibility',
+            'Only in bad weather conditions',
+          ],
+        },
+        {
+          question: 'What is the recommended safe following distance behind a vehicle?',
+          answers: ['1 second', '2 seconds', '3 seconds'],
+        },
+        {
+          question: 'In heavy traffic, what should you do to increase your visibility?',
+          answers: [
+            'Stay close to the vehicle in front of you',
+            'Ride in the center of the lane',
+            'Frequently change lanes',
+          ],
+        },
+        {
+          question: 'When should you use your motorcycles horn?',
+          answers: [
+            'To alert others of your presence in a dangerous situation',
+            'To express frustration with other road users',
+            'Only in residential areas',
+          ],
+        },
+        {
+          question: 'What is the correct hand signal for a right turn?',
+          answers: ['Extend your left arm and point right', 'Extend your right arm and point right', 'Extend your left arm downward'],
+        },
+        {
+          question: 'When is it important to check your mirrors?',
+          answers: ['Only when changing lanes', 'Before slowing down or stopping', 'Only in urban areas'],
+        },
+        {
+          question: 'What does it mean when a traffic light is flashing yellow?',
+          answers: ['Proceed with caution', 'Stop and wait for a green light', 'Slow down and prepare to stop'],
+        },
+        {
+          question: 'How often should you check your motorcycles tire pressure?',
+          answers: ['Once a month', 'Once a year', 'Only when you notice a problem'],
+        },
+        {
+          question: 'What is the most common cause of motorcycle accidents at intersections?',
+          answers: [
+            'Failure to yield the right of way',
+            'Excessive speed',
+            'Lack of proper protective gear',
+          ],
+        },
+      ],
     },
     firstAid: {
       headline: 'First Aid',
       description: 'First aid - the most important test',
       photo: process.env.PUBLIC_URL + '/images/ambulance.png',
+      questions: [
+        {
+          question: 'What should you do when approaching a stop sign?',
+          answers: ['Stop completely and then proceed', 'Slow down and proceed without stopping', 'Ignore it and keep going'],
+        },
+        {
+          question: 'When should you use your motorcycle headlights?',
+          answers: [
+            'Only at night',
+            'During the day to increase visibility',
+            'Only in bad weather conditions',
+          ],
+        },
+        {
+          question: 'What is the recommended safe following distance behind a vehicle?',
+          answers: ['1 second', '2 seconds', '3 seconds'],
+        },
+        {
+          question: 'In heavy traffic, what should you do to increase your visibility?',
+          answers: [
+            'Stay close to the vehicle in front of you',
+            'Ride in the center of the lane',
+            'Frequently change lanes',
+          ],
+        },
+        {
+          question: 'When should you use your motorcycles horn?',
+          answers: [
+            'To alert others of your presence in a dangerous situation',
+            'To express frustration with other road users',
+            'Only in residential areas',
+          ],
+        },
+        {
+          question: 'What is the correct hand signal for a right turn?',
+          answers: ['Extend your left arm and point right', 'Extend your right arm and point right', 'Extend your left arm downward'],
+        },
+        {
+          question: 'When is it important to check your mirrors?',
+          answers: ['Only when changing lanes', 'Before slowing down or stopping', 'Only in urban areas'],
+        },
+        {
+          question: 'What does it mean when a traffic light is flashing yellow?',
+          answers: ['Proceed with caution', 'Stop and wait for a green light', 'Slow down and prepare to stop'],
+        },
+        {
+          question: 'How often should you check your motorcycles tire pressure?',
+          answers: ['Once a month', 'Once a year', 'Only when you notice a problem'],
+        },
+        {
+          question: 'What is the most common cause of motorcycle accidents at intersections?',
+          answers: [
+            'Failure to yield the right of way',
+            'Excessive speed',
+            'Lack of proper protective gear',
+          ],
+        },
+      ],
     },
   };
 
@@ -307,8 +608,16 @@ function App() {
                 element={
                   category === 'a' ? (
                     <ACategoryPage category={category} categoryData={categoryData} />
+                  ) : category === 'b' ? (
+                    <BCategoryPage category={category} categoryData={categoryData} />
+                  ) : category === 'c' ? (
+                    <CCategoryPage category={category} categoryData={categoryData} />
+                  ) : category === 'd' ? (
+                    <DCategoryPage category={category} categoryData={categoryData} />
+                  ) : category === 't' ? (
+                    <TCategoryPage category={category} categoryData={categoryData} />
                   ) : (
-                    <CategoryPage category={category} categoryData={categoryData} />
+                    <FirstAid category={category} categoryData={categoryData} />
                   )
                 }
               />

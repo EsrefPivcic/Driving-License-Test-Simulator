@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSpring, animated } from 'react-spring';
-import './ACategoryPage.css';
+import './FirstAid.css';
 
-function ACategoryPage({ category, categoryData }) {
+function FirstAid({ category, categoryData }) {
   const navigate = useNavigate();
 
   const [isComponentVisible, setComponentVisible] = useState(false);
@@ -81,8 +81,8 @@ function ACategoryPage({ category, categoryData }) {
             <h2>{headline}</h2>
             <img src={photo} alt={headline} />
             <p><strong>{description}</strong></p>
-            <p>The exam for Category A consists of 20 theory questions, 10 signs, and 10 intersections.</p>
-            <p>The required passing score is 108, with a maximum score of 120.</p>
+            <p>The First Aid exam consists of 10 questions. Each question has 1 correct answer.</p>
+            <p>The required passing score is 9, or 90%.</p>
           </div>
           <button type="button" className={`button back-to-home-button`} onClick={handleBackToHome}>
             Quit
@@ -151,4 +151,4 @@ function ACategoryPage({ category, categoryData }) {
   );
 }
 
-export default ACategoryPage;
+export default FirstAid;
