@@ -1,4 +1,75 @@
-/*___________STUDENTS-GET___________
+import { useState } from "react";
+import { useEffect } from "react";
+import React from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import AllTestsPage from "./AllTestsPage/AllTestsPage";
+import TestPage from "./TestPage/TestPage";
+import "./App.css";
+import AddTestsPage from "./AddTestsPage/AddTestsPage";
+
+function App() {
+  const [testData, setTestData] = useState([]);
+
+  useEffect(() => {
+    fetchTestData();
+  }, []);
+
+  const fetchTestData = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/tests/get");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setTestData(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  return (
+    <BrowserRouter>
+      <div className="app">
+        <div className="app-content">
+          <h1 className="app-title">
+            <Link to="/">eDrivingSchool</Link>
+          </h1>
+          <Routes>
+            <Route path="addtests" element={<AddTestsPage />}></Route>
+            <Route path="/" element={<AllTestsPage testData={testData} />} />
+            {Object.keys(testData).map((test) => (
+              <Route
+                key={test}
+                path={`/${testData[test].Category.toLowerCase()}test`}
+                element={
+                  testData[test].Category === "A" ? (
+                    <TestPage test={test} testData={testData} />
+                  ) : testData[test].Category === "B" ? (
+                    <TestPage test={test} testData={testData} />
+                  ) : testData[test].Category === "C" ? (
+                    <TestPage test={test} testData={testData} />
+                  ) : testData[test].Category === "D" ? (
+                    <TestPage test={test} testData={testData} />
+                  ) : testData[test].Category === "T" ? (
+                    <TestPage test={test} testData={testData} />
+                  ) : (
+                    <TestPage test={test} testData={testData} />
+                  )
+                }
+              />
+            ))}
+          </Routes>
+        </div>
+      </div>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+
+//DUMP
+
+/*___________STUDENTS-GET_________________________________
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -38,99 +109,7 @@ const App = () => {
 
 export default App;*/
 
-
-//___________TEST-POST___________
-/*import React, { useState } from 'react';
-
-function TestUploadForm() {
-  const [test, setTest] = useState({
-    Title: '',
-    Description: '',
-    Questions: [],
-    Category: '',
-    ImageBase64: '',
-    Duration: 0,
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'Duration') {
-      const duration = parseInt(value, 10);
-      setTest({ ...test, [name]: duration });
-    } else if (name === 'Questions') {
-      const questionsArray = value.split(',').map((str) => parseInt(str.trim(), 10));
-      setTest({ ...test, [name]: questionsArray });
-    } else {
-      setTest({ ...test, [name]: value });
-    }
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const base64Image = e.target.result.split(',')[1];
-      setTest({ ...test, ImageBase64: base64Image });
-    };
-
-    reader.readAsDataURL(file);
-    setTest({ ...test, ImageName: file.name });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('http://localhost:8080/test/post', {
-        method: 'POST',
-        body: JSON.stringify(test),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (response.ok) {
-      } else {
-      }
-    } catch (error) {
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Title:
-        <input type="text" name="Title" value={test.Title} onChange={handleInputChange} />
-      </label>
-      <label>
-        Description:
-        <input type="text" name="Description" value={test.Description} onChange={handleInputChange} />
-      </label>
-      <label>
-        Category:
-        <input type="text" name="Category" value={test.Category} onChange={handleInputChange} />
-      </label>
-      <label>
-        Duration:
-        <input type="number" name="Duration" value={test.Duration} onChange={handleInputChange} />
-      </label>
-      <label>
-        Questions (comma-separated):
-        <textarea name="Questions" value={test.Questions} onChange={handleInputChange} />
-      </label>
-      <label>
-        Image:
-        <input type="file" name="ImageBase64" onChange={handleImageUpload} />
-      </label>
-      <button type="submit">Upload Test</button>
-    </form>
-  );
-}
-
-export default TestUploadForm;*/
-//______________________________
-
-//___________TESTS-GET__________
+//___________TESTS-GET_________________________________________
 /*import React, { useState, useEffect } from "react";
 
 function TestButton() {
@@ -139,11 +118,6 @@ function TestButton() {
   useEffect(() => {
     fetchTestData();
   }, []);
-
-  const razmakni = {
-    margin: '20px',
-    padding: '20px'
-  };
 
   const fetchTestData = async () => {
     try {
@@ -156,6 +130,11 @@ function TestButton() {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  };
+
+  const razmakni = {
+    margin: '20px',
+    padding: '20px'
   };
 
   return (
@@ -198,20 +177,8 @@ function TestButton() {
 export default TestButton;*/
 //____________________
 
-import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import CategoryButtons from './CategoryButtons/CategoryButtons';
-import ACategoryPage from './ACategoryPage/ACategoryPage';
-import BCategoryPage from './BCategoryPage/BCategoryPage';
-import CCategoryPage from './CCategoryPage/CCategoryPage';
-import DCategoryPage from './DCategoryPage/DCategoryPage';
-import TCategoryPage from './TCategoryPage/TCategoryPage';
-import FirstAid from './FirstAid/FirstAid';
-import './App.css';
-
-function App() {
-
-  const categoryData = {
+//______________CategoryData za svaki slučaj________________
+/*const categoryData = {
     a: {
       headline: 'A Category',
       description: 'A and A1 category (motorcycle and moped)',
@@ -590,43 +557,4 @@ function App() {
         },
       ],
     },
-  };
-
-  return (
-    <BrowserRouter>
-      <div className="app">
-        <div className="app-content">
-        <h1 className="app-title">
-            <Link to="/">eDrivingSchool</Link>
-          </h1>
-          <Routes>
-            <Route path="/" element={<CategoryButtons categoryData={categoryData} />} />
-            {Object.keys(categoryData).map((category) => (
-              <Route
-                key={category}
-                path={`/${category.toLowerCase()}test`}
-                element={
-                  category === 'a' ? (
-                    <ACategoryPage category={category} categoryData={categoryData} />
-                  ) : category === 'b' ? (
-                    <BCategoryPage category={category} categoryData={categoryData} />
-                  ) : category === 'c' ? (
-                    <CCategoryPage category={category} categoryData={categoryData} />
-                  ) : category === 'd' ? (
-                    <DCategoryPage category={category} categoryData={categoryData} />
-                  ) : category === 't' ? (
-                    <TCategoryPage category={category} categoryData={categoryData} />
-                  ) : (
-                    <FirstAid category={category} categoryData={categoryData} />
-                  )
-                }
-              />
-            ))}
-          </Routes>
-        </div>
-      </div>
-    </BrowserRouter>
-  );
-}
-
-export default App;
+  };*/
