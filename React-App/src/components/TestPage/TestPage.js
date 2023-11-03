@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSpring, animated } from 'react-spring';
-import './BCategoryPage.css';
+import './TestPage.css';
 
-function BCategoryPage({ category, categoryData }) {
+function TestPage({ test, testData }) {
   const navigate = useNavigate();
 
   const [isComponentVisible, setComponentVisible] = useState(false);
@@ -28,10 +28,10 @@ function BCategoryPage({ category, categoryData }) {
   const submitButtonStyle = `${buttonStyle} submit-button`;
   const backButtonStyle = `${buttonStyle} back-button`;
 
-  const { headline, description, photo } = categoryData[category];
-  const { questions } = categoryData[category];
+  const { Title, Description, ImageBase64, Category, Duration } = testData[test];
+  const { Questions } = testData[test];
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState(Array(questions.length).fill(''));
+  const [answers, setAnswers] = useState(Array(Questions.length).fill(''));
   const [questionCount, setQuestionCount] = useState(0);
 
   const handleAnswerChange = (index, selectedAnswer) => {
@@ -41,7 +41,7 @@ function BCategoryPage({ category, categoryData }) {
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestion < questions.length - 1) {
+    if (currentQuestion < Questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setQuestionCount(questionCount + 1);
     }
@@ -71,17 +71,16 @@ function BCategoryPage({ category, categoryData }) {
     console.log('Answers submitted:', answers);
   };
 
-  const isCategoryA = category === 'a';
-
   return (
-    <animated.div className={`container ${isCategoryA ? 'category-a' : ''}`} style={fadeIn}>
+    <animated.div className={`container ${Title}`} style={fadeIn}>
       {!testStarted ? (
         <div className="start-test-container">
           <div className="category-page">
-            <h2>{headline}</h2>
-            <img src={photo} alt={headline} />
-            <p><strong>{description}</strong></p>
-            <p>The exam for Category B consists of 20 theory questions, 10 signs, and 10 intersections.</p>
+            <h2>{Title}</h2>
+            <img src={`data:image/png;base64,${ImageBase64}`} alt={`Test: ${Title}`} width={"150"} className="category-image"/>
+            <p><strong>{Description}</strong></p>
+            <p>The exam for Category {Category} consists of {Questions.length} questions.</p>
+            <p>You have {Duration} minutes to finish the exam.</p>
             <p>The required passing score is 108, with a maximum score of 120.</p>
           </div>
           <button type="button" className={`button back-to-home-button`} onClick={handleBackToHome}>
@@ -93,7 +92,10 @@ function BCategoryPage({ category, categoryData }) {
         </div>
       ) : (
         <animated.div style={questionAnimation}>
-          <h2>{categoryData[category].headline} Test</h2>
+        <h2>{testData[test].Title} Test</h2>
+        </animated.div>
+        /*<animated.div style={questionAnimation}>
+          <h2>{testData[test].headline} Test</h2>
           <p>Question {questionCount} of {questions.length}</p>
           <div className="form-container">
             <form>
@@ -145,10 +147,10 @@ function BCategoryPage({ category, categoryData }) {
               </div>
             </form>
           </div>
-        </animated.div>
+        </animated.div>*/
       )}
     </animated.div>
   );
 }
 
-export default BCategoryPage;
+export default TestPage;
