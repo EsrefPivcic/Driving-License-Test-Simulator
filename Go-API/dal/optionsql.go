@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"project/models"
+	"strconv"
 )
 
 func CreateInDBOption(db *sql.DB, o models.Option) error {
@@ -59,6 +60,44 @@ func RetrieveFromDB(db *sql.DB) ([]models.Option, error) {
 		}
 
 		option.Question = question
+		options = append(options, option)
+	}
+
+	return options, nil
+}
+
+func RetrieveOptionsByQuestionIdsFromDB(db *sql.DB, questionIDs []int) ([]models.Option, error) {
+	ids := ""
+	for i, id := range questionIDs {
+		if i > 0 {
+			ids += ","
+		}
+		ids += strconv.Itoa(id)
+	}
+
+	query := "SELECT * FROM Option WHERE questionid IN (" + ids + ")"
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Printf("Error executing SQL query: %v", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var options []models.Option
+
+	for rows.Next() {
+		var option models.Option
+		err := rows.Scan(
+			&option.ID,
+			&option.QuestionID,
+			&option.OptionText,
+			&option.IsCorrect,
+		)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+
 		options = append(options, option)
 	}
 
