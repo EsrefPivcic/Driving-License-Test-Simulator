@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"project/models"
+	"strconv"
 )
 
 func CreateInDBQuestion(db *sql.DB, q models.Question) error {
@@ -18,6 +19,45 @@ func CreateInDBQuestion(db *sql.DB, q models.Question) error {
 
 func RetrieveFromDBQuestion(db *sql.DB) ([]models.Question, error) {
 	rows, err := db.Query("SELECT * FROM Question")
+	if err != nil {
+		log.Printf("Error executing SQL query: %v", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var questions []models.Question
+
+	for rows.Next() {
+		var question models.Question
+		err := rows.Scan(
+			&question.ID,
+			&question.QuestionText,
+			&question.Image,
+			&question.Points,
+			&question.MultipleSelect,
+		)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+
+		questions = append(questions, question)
+	}
+
+	return questions, nil
+}
+
+func RetrieveQuestionsByIdsFromDB(db *sql.DB, questionIDs []int) ([]models.Question, error) {
+	ids := ""
+	for i, id := range questionIDs {
+		if i > 0 {
+			ids += ","
+		}
+		ids += strconv.Itoa(id)
+	}
+
+	query := "SELECT * FROM Question WHERE ID IN (" + ids + ")"
+	rows, err := db.Query(query)
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
 		return nil, err
