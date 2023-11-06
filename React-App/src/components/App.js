@@ -5,7 +5,8 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import AllTestsPage from "./AllTestsPage/AllTestsPage";
 import TestPage from "./TestPage/TestPage";
 import "./App.css";
-import AddTestsPage from "./AddTestsPage/AddTestsPage";
+import AddTestPage from "./AddTestPage/AddTestPage";
+import AddQuestionPage from "./AddQuestionPage/AddQuestionPage";
 
 function App() {
   const [testData, setTestData] = useState([]);
@@ -35,7 +36,8 @@ function App() {
             <Link to="/">eDrivingSchool</Link>
           </h1>
           <Routes>
-            <Route path="addtests" element={<AddTestsPage />}></Route>
+            <Route path="addtest" element={<AddTestPage />}></Route>
+            <Route path="addquestion" element={<AddQuestionPage />}></Route>
             <Route path="/" element={<AllTestsPage testData={testData} />} />
             {Object.keys(testData).map((test) => (
               <Route
@@ -186,7 +188,9 @@ export default TestButton;*/
       questions: [
         {
           question: 'What should you do when approaching a stop sign?',
-          answers: ['Stop completely and then proceed', 'Slow down and proceed without stopping', 'Ignore it and keep going'],
+          answers: ['Stop completely and then proceed', 
+          'Slow down and proceed without stopping', 
+          'Ignore it and keep going'],
         },
         {
           question: 'When should you use your motorcycle headlights?',
@@ -218,7 +222,9 @@ export default TestButton;*/
         },
         {
           question: 'What is the correct hand signal for a right turn?',
-          answers: ['Extend your left arm and point right', 'Extend your right arm and point right', 'Extend your left arm downward'],
+          answers: ['Extend your left arm and point right', 
+          'Extend your right arm and point right', 
+          'Extend your left arm downward'],
         },
         {
           question: 'When is it important to check your mirrors?',

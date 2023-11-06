@@ -120,7 +120,7 @@ function TestPage({ test, testData }) {
   };
 
   const getOptionsForCurrentQuestion = () => {
-    const currentQuestionID = currentQuestion + 1;
+    const currentQuestionID = questionData[currentQuestion].ID;
     return optionData.filter((option) => option.QuestionID === currentQuestionID);
   };
 
@@ -170,72 +170,75 @@ function TestPage({ test, testData }) {
             Question {questionCount} of {Questions.length}
           </p>
           <div className="form-container">
-        <form>
-          <div
-            key={currentQuestion}
-            className="question-container"
-            style={{ marginBottom: "20px" }}
-          >
-            <p>{questionData[currentQuestion].QuestionText}</p>
-            <div>
-              {getOptionsForCurrentQuestion().map((option, optionIndex) => (
-                <label
-                  key={optionIndex}
-                  style={{ display: "block", marginBottom: "10px" }}
-                >
-                  <input
-                    type="radio"
-                    name={`question_${currentQuestion}`}
-                    value={option.OptionText}
-                    checked={answers[currentQuestion] === option.OptionText}
-                    onChange={() =>
-                      handleAnswerChange(currentQuestion, option.OptionText)
-                    }
+            <form>
+              <div key={currentQuestion} className="question-container" style={{ marginBottom: "20px" }}>
+                <p>{questionData[currentQuestion].QuestionText}</p>
+                {questionData[currentQuestion].ImageBase64 && (
+                  <img
+                    src={`data:image/png;base64,${questionData[currentQuestion].ImageBase64}`}
+                    alt={`Test: ${questionData[currentQuestion].QuestionText}`}
+                    className="category-image"
                   />
-                  {option.OptionText}
-                </label>
-              ))}
-            </div>
+                )}
+                <div>
+                  {getOptionsForCurrentQuestion().map((option, optionIndex) => (
+                    <label
+                      key={optionIndex}
+                      style={{ display: "block", marginBottom: "10px" }}
+                    >
+                      <input
+                        type="radio"
+                        name={`question_${questionData[currentQuestion].ID}`}
+                        value={option.OptionText}
+                        checked={answers[questionData[currentQuestion].ID] === option.OptionText}
+                        onChange={() =>
+                          handleAnswerChange(questionData[currentQuestion].ID, option.OptionText)
+                        }
+                      />
+                      {option.OptionText}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="button-container">
+                {currentQuestion === 0 && (
+                  <button
+                    type="button"
+                    className={`button back-to-previous-content-button`}
+                    onClick={handleBackToPreviousContent}
+                  >
+                    Quit
+                  </button>
+                )}
+                {currentQuestion > 0 && (
+                  <button
+                    type="button"
+                    className={backButtonStyle}
+                    onClick={handleBackQuestion}
+                  >
+                    Back
+                  </button>
+                )}
+                {currentQuestion < Questions.length - 1 ? (
+                  <button
+                    type="button"
+                    className={nextButtonStyle}
+                    onClick={handleNextQuestion}
+                  >
+                    Next
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className={submitButtonStyle}
+                    onClick={handleSubmission}
+                  >
+                    Submit
+                  </button>
+                )}
+              </div>
+            </form>
           </div>
-          <div className="button-container">
-            {currentQuestion === 0 && (
-              <button
-                type="button"
-                className={`button back-to-previous-content-button`}
-                onClick={handleBackToPreviousContent}
-              >
-                Quit
-              </button>
-            )}
-            {currentQuestion > 0 && (
-              <button
-                type="button"
-                className={backButtonStyle}
-                onClick={handleBackQuestion}
-              >
-                Back
-              </button>
-            )}
-            {currentQuestion < Questions.length - 1 ? (
-              <button
-                type="button"
-                className={nextButtonStyle}
-                onClick={handleNextQuestion}
-              >
-                Next
-              </button>
-            ) : (
-              <button
-                type="button"
-                className={submitButtonStyle}
-                onClick={handleSubmission}
-              >
-                Submit
-              </button>
-            )}
-          </div>
-        </form>
-      </div>
         </animated.div>
       )}
     </animated.div>

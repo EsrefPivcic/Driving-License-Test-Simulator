@@ -1,6 +1,6 @@
 .form-container {
     max-width: 600px;
-    height: 300px;
+    height: auto;
     margin: 0 auto;
     padding: 20px;
     border: 2px solid #61dafb;
@@ -82,15 +82,10 @@
     margin-bottom: 20px;
     font-size: 20px;
   }
-
-  .question-container {
-    height: 200px;
-    overflow: hidden;
-  }
   
   .button-container {
     display: flex;
     justify-content: center;
     gap: 5px;
     width: 100%;
-  }  
+  }

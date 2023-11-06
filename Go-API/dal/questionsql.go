@@ -2,14 +2,18 @@ package dal
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"log"
 	"project/models"
 	"strconv"
+
+	"github.com/lib/pq"
 )
 
 func CreateInDBQuestion(db *sql.DB, q models.Question) error {
-	_, err := db.Exec("INSERT INTO Question (QuestionText, Image, Points, MultipleSelect) VALUES ($1, NULL, $2, $3)",
-		q.QuestionText, q.Points, q.MultipleSelect)
+	imageArray := pq.ByteaArray([][]byte{q.Image})
+	_, err := db.Exec("INSERT INTO Question (QuestionText, Points, MultipleSelect, Image) VALUES ($1, $2, $3, $4)",
+		q.QuestionText, q.Points, q.MultipleSelect, imageArray)
 	if err != nil {
 		log.Printf("Error inserting option into the database: %v", err)
 		return err
@@ -29,17 +33,26 @@ func RetrieveFromDBQuestion(db *sql.DB) ([]models.Question, error) {
 
 	for rows.Next() {
 		var question models.Question
+		var imageArray pq.ByteaArray
+
 		err := rows.Scan(
 			&question.ID,
 			&question.QuestionText,
-			&question.Image,
 			&question.Points,
 			&question.MultipleSelect,
+			&imageArray,
 		)
 		if err != nil {
 			log.Fatal(err)
 			return nil, err
 		}
+
+		var imageBytes []byte
+		for _, chunk := range imageArray {
+			imageBytes = append(imageBytes, chunk...)
+		}
+
+		question.ImageBase64 = base64.StdEncoding.EncodeToString(imageBytes)
 
 		questions = append(questions, question)
 	}
@@ -68,17 +81,26 @@ func RetrieveQuestionsByIdsFromDB(db *sql.DB, questionIDs []int) ([]models.Quest
 
 	for rows.Next() {
 		var question models.Question
+		var imageArray pq.ByteaArray
+
 		err := rows.Scan(
 			&question.ID,
 			&question.QuestionText,
-			&question.Image,
 			&question.Points,
 			&question.MultipleSelect,
+			&imageArray,
 		)
 		if err != nil {
 			log.Fatal(err)
 			return nil, err
 		}
+
+		var imageBytes []byte
+		for _, chunk := range imageArray {
+			imageBytes = append(imageBytes, chunk...)
+		}
+
+		question.ImageBase64 = base64.StdEncoding.EncodeToString(imageBytes)
 
 		questions = append(questions, question)
 	}

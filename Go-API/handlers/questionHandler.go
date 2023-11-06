@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -70,6 +71,14 @@ func CreateQuestionHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		defer r.Body.Close()
+
+		imageBase64 := question.ImageBase64
+		imageBytes, err := base64.StdEncoding.DecodeString(imageBase64)
+		if err != nil {
+			http.Error(w, "Invalid image data", http.StatusBadRequest)
+			return
+		}
+		question.Image = imageBytes
 
 		if err := dal.CreateInDBQuestion(db, question); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)

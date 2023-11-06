@@ -23,28 +23,18 @@ function AllTestsPage({ testData }) {
         </Link>
       ))}
       <div>
-        <Link to={`/addtests`} style={{ textDecoration: "none" }}>
+        <Link to={`/addtest`} style={{ textDecoration: "none" }}>
           <button className="buttonStyle2">
-            <h2>Add tests</h2>
+            <h2>Add Test</h2>
+          </button>
+        </Link>
+        <Link to={`/addquestion`} style={{ textDecoration: "none" }}>
+          <button className="buttonStyle2">
+            <h2>Add Question</h2>
           </button>
         </Link>
       </div>
     </div>
-    /*<div className="categories">
-      {Object.keys(categoryData).map((category) => (
-        <Link key={category} to={`/${category.toLowerCase()}test`} style={{ textDecoration: 'none' }}>
-          <button className="buttonStyle">
-            <img
-              src={categoryData[category].photo}
-              alt={categoryData[category].headline}
-              className="category-image"
-            />
-            <h2>{categoryData[category].headline}</h2>
-            <p>{categoryData[category].description}</p>
-          </button>
-        </Link>
-      ))}
-    </div>*/
   );
 }
 
