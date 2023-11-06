@@ -120,7 +120,7 @@ function TestPage({ test, testData }) {
   };
 
   const getOptionsForCurrentQuestion = () => {
-    const currentQuestionID = currentQuestion + 1;
+    const currentQuestionID = questionData[currentQuestion].ID;
     return optionData.filter((option) => option.QuestionID === currentQuestionID);
   };
 
@@ -185,11 +185,11 @@ function TestPage({ test, testData }) {
                 >
                   <input
                     type="radio"
-                    name={`question_${currentQuestion}`}
+                    name={`question_${questionData[currentQuestion].ID}`}
                     value={option.OptionText}
-                    checked={answers[currentQuestion] === option.OptionText}
+                    checked={answers[questionData[currentQuestion].ID] === option.OptionText}
                     onChange={() =>
-                      handleAnswerChange(currentQuestion, option.OptionText)
+                      handleAnswerChange(questionData[currentQuestion].ID, option.OptionText)
                     }
                   />
                   {option.OptionText}

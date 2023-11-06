@@ -66,7 +66,6 @@ function App() {
 }
 
 export default App;
-
 //DUMP
 
 /*___________STUDENTS-GET_________________________________
@@ -186,7 +185,9 @@ export default TestButton;*/
       questions: [
         {
           question: 'What should you do when approaching a stop sign?',
-          answers: ['Stop completely and then proceed', 'Slow down and proceed without stopping', 'Ignore it and keep going'],
+          answers: ['Stop completely and then proceed', 
+          'Slow down and proceed without stopping', 
+          'Ignore it and keep going'],
         },
         {
           question: 'When should you use your motorcycle headlights?',
@@ -218,7 +219,9 @@ export default TestButton;*/
         },
         {
           question: 'What is the correct hand signal for a right turn?',
-          answers: ['Extend your left arm and point right', 'Extend your right arm and point right', 'Extend your left arm downward'],
+          answers: ['Extend your left arm and point right', 
+          'Extend your right arm and point right', 
+          'Extend your left arm downward'],
         },
         {
           question: 'When is it important to check your mirrors?',
