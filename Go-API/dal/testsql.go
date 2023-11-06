@@ -24,10 +24,7 @@ func CreateInDBTest(db *sql.DB, t models.Test) error {
 }
 
 func RetrieveFromDBTest(db *sql.DB) ([]models.Test, error) {
-	rows, err := db.Query(`
-        SELECT *
-        FROM Test
-    `)
+	rows, err := db.Query(`SELECT * FROM Test`)
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
 		return nil, err

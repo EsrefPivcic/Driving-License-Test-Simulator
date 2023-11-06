@@ -5,7 +5,8 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import AllTestsPage from "./AllTestsPage/AllTestsPage";
 import TestPage from "./TestPage/TestPage";
 import "./App.css";
-import AddTestsPage from "./AddTestsPage/AddTestsPage";
+import AddTestPage from "./AddTestPage/AddTestPage";
+import AddQuestionPage from "./AddQuestionPage/AddQuestionPage";
 
 function App() {
   const [testData, setTestData] = useState([]);
@@ -35,7 +36,8 @@ function App() {
             <Link to="/">eDrivingSchool</Link>
           </h1>
           <Routes>
-            <Route path="addtests" element={<AddTestsPage />}></Route>
+            <Route path="addtest" element={<AddTestPage />}></Route>
+            <Route path="addquestion" element={<AddQuestionPage />}></Route>
             <Route path="/" element={<AllTestsPage testData={testData} />} />
             {Object.keys(testData).map((test) => (
               <Route

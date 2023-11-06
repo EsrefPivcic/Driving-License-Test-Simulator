@@ -14,13 +14,14 @@
 .buttonStyle2 {
   background: #333;
   color: #fff;
-  padding: 20px;
+  font-size: 12px;
   margin: 10px;
+  padding: 0;
   cursor: pointer;
   border: none;
   border-radius: 10px;
-  width: 100;
-  height: 100;
+  width: 150px;
+  height: 50px;
   transition: background 0.3s, transform 0.2s;
 }
 
