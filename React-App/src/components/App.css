@@ -3,6 +3,7 @@ body {
   color: #fff;
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
 .app {
@@ -39,15 +40,20 @@ body {
   transform: scale(1.05);
 }
 
-.app.fadeOut {
-  animation: fadeOut 1s ease-in-out;
+.login-button {
+  background-color: #3a85d3;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  position: absolute;
+  top: 3%;
+  right: 7.5%;
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+.login-button:hover {
+  background-color: #3069b1;
 }
