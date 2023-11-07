@@ -52,9 +52,7 @@ function AddTestPage() {
       });
 
       if (response.ok) {
-        // Handle success
       } else {
-        // Handle failure
       }
     } catch (error) {
       console.error('Error:', error);

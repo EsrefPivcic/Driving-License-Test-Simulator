@@ -7,7 +7,7 @@ function AllTestsPage({ testData }) {
     <div className="categories">
       {testData.map((test) => (
         <Link
-          key={test}
+          key={test.ID}
           to={`/${test.Category.toLowerCase()}test`}
           style={{ textDecoration: "none" }}
         >

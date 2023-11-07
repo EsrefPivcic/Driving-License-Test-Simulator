@@ -4,7 +4,6 @@ import AllTestsPage from "./AllTestsPage/AllTestsPage";
 import TestPage from "./TestPage/TestPage";
 import AddTestPage from "./AddTestPage/AddTestPage";
 import AddQuestionPage from "./AddQuestionPage/AddQuestionPage";
-
 import "./App.css";
 
 function App() {
@@ -48,7 +47,7 @@ function App() {
             <Route path="/" element={<AllTestsPage testData={testData} />} />
             {Object.keys(testData).map((test) => (
               <Route
-                key={test}
+                key={testData[test].ID}
                 path={`/${testData[test].Category.toLowerCase()}test`}
                 element={
                   testData[test].Category === "A" ? (
