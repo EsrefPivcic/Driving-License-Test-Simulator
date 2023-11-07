@@ -79,18 +79,36 @@ function TestPage({ test, testData }) {
     testData[test];
   const { Questions } = testData[test];
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState([]);
   const [questionCount, setQuestionCount] = useState(0);
 
-  const handleAnswerChange = (questionID, selectedOptions) => {
+  const handleAnswerChange = (questionID, selectedOptionID) => {
     setAnswers((prevAnswers) => {
-      return {
-        ...prevAnswers,
-        [questionID]: selectedOptions,
-      };
+      const updatedAnswers = [...prevAnswers];
+      const existingAnswerIndex = updatedAnswers.findIndex((answer) => answer.questionID === questionID);
+  
+      if (existingAnswerIndex !== -1) {
+        // Initialize selectedOptions as an array if it's undefined
+        if (!updatedAnswers[existingAnswerIndex].selectedOptions) {
+          updatedAnswers[existingAnswerIndex].selectedOptions = [];
+        }
+        if (updatedAnswers[existingAnswerIndex].selectedOptions.includes(selectedOptionID)) {
+          // If the option is already selected, remove it
+          updatedAnswers[existingAnswerIndex].selectedOptions = updatedAnswers[existingAnswerIndex].selectedOptions.filter(
+            (option) => option !== selectedOptionID
+          );
+        } else {
+          // Otherwise, add the option
+          updatedAnswers[existingAnswerIndex].selectedOptions.push(selectedOptionID);
+        }
+      } else {
+        updatedAnswers.push({ questionID, selectedOptions: [selectedOptionID] });
+      }
+  
+      return updatedAnswers;
     });
-  };
-
+  };  
+  
   const handleNextQuestion = () => {
     if (currentQuestion < Questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
@@ -185,16 +203,17 @@ function TestPage({ test, testData }) {
                 )}
                 <div>
                   {getOptionsForCurrentQuestion().map((option, optionIndex) => (
-                    <label
-                      key={optionIndex}
-                      style={{ display: "block", marginBottom: "10px" }}
-                    >
+                    <label key={optionIndex} style={{ display: "block", marginBottom: "10px" }}>
                       <input
                         type={questionData[currentQuestion].MultipleSelect ? "checkbox" : "radio"}
                         name={`question_${questionData[currentQuestion].ID}`}
                         value={option.OptionText}
-                        checked={answers[questionData[currentQuestion].ID]?.includes(option.OptionText) || false}
-                        onChange={() => handleAnswerChange(questionData[currentQuestion].ID, option.OptionText)}
+                        checked={answers.some(
+                          (answer) =>
+                            answer.questionID === questionData[currentQuestion].ID &&
+                            answer.selectedOptions.includes(option.ID)
+                        )}
+                        onChange={() => handleAnswerChange(questionData[currentQuestion].ID, option.ID, questionData[currentQuestion].MultipleSelect)}
                       />
                       {option.OptionText}
                     </label>
