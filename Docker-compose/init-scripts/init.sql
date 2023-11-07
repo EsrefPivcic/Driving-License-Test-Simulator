@@ -1,3 +1,5 @@
+CREATE SEQUENCE question_id_seq START 1;
+
 CREATE TABLE IF NOT EXISTS public.question
 (
     id integer NOT NULL DEFAULT nextval('question_id_seq'::regclass),
@@ -10,8 +12,10 @@ CREATE TABLE IF NOT EXISTS public.question
 
 TABLESPACE pg_default;
 
+CREATE SEQUENCE test_id_seq START 1;
+
 ALTER TABLE IF EXISTS public.question
-    OWNER to admin;
+    OWNER to admin5;
 
 CREATE TABLE IF NOT EXISTS public.test
 (
@@ -27,8 +31,10 @@ CREATE TABLE IF NOT EXISTS public.test
 
 TABLESPACE pg_default;
 
+CREATE SEQUENCE option_id_seq START 1;
+
 ALTER TABLE IF EXISTS public.test
-    OWNER to admin;
+    OWNER to admin5;
 
 CREATE TABLE IF NOT EXISTS public.option
 (
@@ -44,8 +50,10 @@ CREATE TABLE IF NOT EXISTS public.option
 
 TABLESPACE pg_default;
 
+CREATE SEQUENCE student_id_seq START 1;
+
 ALTER TABLE IF EXISTS public.option
-    OWNER to admin;
+    OWNER to admin5;
 
 	CREATE TABLE IF NOT EXISTS public.student
 (
@@ -60,8 +68,10 @@ ALTER TABLE IF EXISTS public.option
 
 TABLESPACE pg_default;
 
+CREATE SEQUENCE attempt_id_seq START 1;
+
 ALTER TABLE IF EXISTS public.student
-    OWNER to admin;
+    OWNER to admin5;
 	
 CREATE TABLE IF NOT EXISTS public.attempt
 (
@@ -83,8 +93,10 @@ CREATE TABLE IF NOT EXISTS public.attempt
 
 TABLESPACE pg_default;
 
+CREATE SEQUENCE studentresponse_id_seq START 1;
+
 ALTER TABLE IF EXISTS public.attempt
-    OWNER to admin;
+    OWNER to admin5;
 
 CREATE TABLE IF NOT EXISTS public.studentresponse
 (
@@ -107,4 +119,4 @@ CREATE TABLE IF NOT EXISTS public.studentresponse
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.studentresponse
-    OWNER to admin;
+    OWNER to admin5;

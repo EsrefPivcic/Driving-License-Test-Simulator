@@ -79,13 +79,16 @@ function TestPage({ test, testData }) {
     testData[test];
   const { Questions } = testData[test];
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState(Array(Questions.length).fill(""));
+  const [answers, setAnswers] = useState({});
   const [questionCount, setQuestionCount] = useState(0);
 
-  const handleAnswerChange = (index, selectedAnswer) => {
-    const newAnswers = [...answers];
-    newAnswers[index] = selectedAnswer;
-    setAnswers(newAnswers);
+  const handleAnswerChange = (questionID, selectedOptions) => {
+    setAnswers((prevAnswers) => {
+      return {
+        ...prevAnswers,
+        [questionID]: selectedOptions,
+      };
+    });
   };
 
   const handleNextQuestion = () => {
@@ -187,13 +190,11 @@ function TestPage({ test, testData }) {
                       style={{ display: "block", marginBottom: "10px" }}
                     >
                       <input
-                        type="radio"
+                        type={questionData[currentQuestion].MultipleSelect ? "checkbox" : "radio"}
                         name={`question_${questionData[currentQuestion].ID}`}
                         value={option.OptionText}
-                        checked={answers[questionData[currentQuestion].ID] === option.OptionText}
-                        onChange={() =>
-                          handleAnswerChange(questionData[currentQuestion].ID, option.OptionText)
-                        }
+                        checked={answers[questionData[currentQuestion].ID]?.includes(option.OptionText) || false}
+                        onChange={() => handleAnswerChange(questionData[currentQuestion].ID, option.OptionText)}
                       />
                       {option.OptionText}
                     </label>
