@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import AllTestsPage from "./AllTestsPage/AllTestsPage";
 import TestPage from "./TestPage/TestPage";
-import "./App.css";
 import AddTestPage from "./AddTestPage/AddTestPage";
 import AddQuestionPage from "./AddQuestionPage/AddQuestionPage";
 
+import "./App.css";
+
 function App() {
   const [testData, setTestData] = useState([]);
+  const [isLoggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     fetchTestData();
@@ -28,6 +28,10 @@ function App() {
     }
   };
 
+  const handleLogin = () => {
+    setLoggedIn(!isLoggedIn);
+  };
+
   return (
     <BrowserRouter>
       <div className="app">
@@ -35,6 +39,9 @@ function App() {
           <h1 className="app-title">
             <Link to="/">eDrivingSchool</Link>
           </h1>
+          <button className="login-button" onClick={handleLogin}>
+            {isLoggedIn ? "Logout" : "Login"}
+          </button>
           <Routes>
             <Route path="addtest" element={<AddTestPage />}></Route>
             <Route path="addquestion" element={<AddQuestionPage />}></Route>
