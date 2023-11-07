@@ -5,7 +5,8 @@ import "./TestPage.css";
 
 function TestPage({ test, testData }) {
   const navigate = useNavigate();
-
+  const [showWarning, setShowWarning] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [isComponentVisible, setComponentVisible] = useState(false);
   const [testStarted, setTestStarted] = useState(false);
 
@@ -45,13 +46,16 @@ function TestPage({ test, testData }) {
 
   const fetchOptionData = async () => {
     try {
-      const response = await fetch("http://localhost:8080/options/getbyquestionids", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ Questions }),
-      });
+      const response = await fetch(
+        "http://localhost:8080/options/getbyquestionids",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ Questions }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -74,41 +78,42 @@ function TestPage({ test, testData }) {
   const nextButtonStyle = `${buttonStyle} next-button`;
   const submitButtonStyle = `${buttonStyle} submit-button`;
   const backButtonStyle = `${buttonStyle} back-button`;
+  const [selectedOptions, setSelectedOptions] = useState({});
 
   const { Title, Description, ImageBase64, Category, Duration } =
     testData[test];
   const { Questions } = testData[test];
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState([]);
   const [questionCount, setQuestionCount] = useState(0);
 
-  const handleAnswerChange = (questionID, selectedOptionID) => {
-    setAnswers((prevAnswers) => {
-      const updatedAnswers = [...prevAnswers];
-      const existingAnswerIndex = updatedAnswers.findIndex((answer) => answer.questionID === questionID);
-  
-      if (existingAnswerIndex !== -1) {
-        // Initialize selectedOptions as an array if it's undefined
-        if (!updatedAnswers[existingAnswerIndex].selectedOptions) {
-          updatedAnswers[existingAnswerIndex].selectedOptions = [];
-        }
-        if (updatedAnswers[existingAnswerIndex].selectedOptions.includes(selectedOptionID)) {
-          // If the option is already selected, remove it
-          updatedAnswers[existingAnswerIndex].selectedOptions = updatedAnswers[existingAnswerIndex].selectedOptions.filter(
-            (option) => option !== selectedOptionID
-          );
-        } else {
-          // Otherwise, add the option
-          updatedAnswers[existingAnswerIndex].selectedOptions.push(selectedOptionID);
-        }
-      } else {
-        updatedAnswers.push({ questionID, selectedOptions: [selectedOptionID] });
-      }
-  
-      return updatedAnswers;
+  const handleOptionChange = (questionId, optionId) => {
+    const isMultipleSelect = questionData[currentQuestion].MultipleSelect;
+    if (isMultipleSelect) {
+      setSelectedOptions((prevSelectedOptions) => ({
+        ...prevSelectedOptions,
+        [questionId]: [...(prevSelectedOptions[questionId] || []), optionId],
+      }));
+    } else {
+      setSelectedOptions((prevSelectedOptions) => {
+        return {
+          ...prevSelectedOptions,
+          [questionId]: [optionId],
+        };
+      });
+    }
+  };
+
+  const handleOptionRemove = (questionId, optionId) => {
+    setSelectedOptions((prevSelectedOptions) => {
+      const options = prevSelectedOptions[questionId] || [];
+      const updatedOptions = options.filter((id) => id !== optionId);
+      return {
+        ...prevSelectedOptions,
+        [questionId]: updatedOptions,
+      };
     });
-  };  
-  
+  };
+
   const handleNextQuestion = () => {
     if (currentQuestion < Questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
@@ -137,12 +142,33 @@ function TestPage({ test, testData }) {
   };
 
   const handleSubmission = () => {
-    console.log("Answers submitted:", answers);
+    const studentresponses = Object.entries(selectedOptions).map(
+      ([questionId, selectedOptionIds]) => [questionId, selectedOptionIds]
+    );
+    const hasEmptySelection = Object.values(selectedOptions).some(
+      (selectedOptionIds) => selectedOptionIds.length === 0
+    );
+    if (hasEmptySelection) {
+      setShowWarning(true);
+      setShowSuccess(false);
+    } else {
+      if (studentresponses.length < Questions.length) {
+        setShowWarning(true);
+        setShowSuccess(false);
+      } 
+      else {
+        setShowWarning(false);
+        setShowSuccess(true);
+        console.log("Answers submitted:", studentresponses);
+      }
+    }
   };
 
   const getOptionsForCurrentQuestion = () => {
     const currentQuestionID = questionData[currentQuestion].ID;
-    return optionData.filter((option) => option.QuestionID === currentQuestionID);
+    return optionData.filter(
+      (option) => option.QuestionID === currentQuestionID
+    );
   };
 
   return (
@@ -192,7 +218,11 @@ function TestPage({ test, testData }) {
           </p>
           <div className="form-container">
             <form>
-              <div key={currentQuestion} className="question-container" style={{ marginBottom: "20px" }}>
+              <div
+                key={currentQuestion}
+                className="question-container"
+                style={{ marginBottom: "20px" }}
+              >
                 <p>{questionData[currentQuestion].QuestionText}</p>
                 {questionData[currentQuestion].ImageBase64 && (
                   <img
@@ -203,17 +233,36 @@ function TestPage({ test, testData }) {
                 )}
                 <div>
                   {getOptionsForCurrentQuestion().map((option, optionIndex) => (
-                    <label key={optionIndex} style={{ display: "block", marginBottom: "10px" }}>
+                    <label
+                      key={optionIndex}
+                      style={{ display: "block", marginBottom: "10px" }}
+                    >
                       <input
-                        type={questionData[currentQuestion].MultipleSelect ? "checkbox" : "radio"}
+                        type={
+                          questionData[currentQuestion].MultipleSelect
+                            ? "checkbox"
+                            : "radio"
+                        }
                         name={`question_${questionData[currentQuestion].ID}`}
-                        value={option.OptionText}
-                        checked={answers.some(
-                          (answer) =>
-                            answer.questionID === questionData[currentQuestion].ID &&
-                            answer.selectedOptions.includes(option.ID)
-                        )}
-                        onChange={() => handleAnswerChange(questionData[currentQuestion].ID, option.ID, questionData[currentQuestion].MultipleSelect)}
+                        value={option.ID}
+                        checked={
+                          selectedOptions[
+                            questionData[currentQuestion].ID
+                          ]?.includes(option.ID) || false
+                        }
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            handleOptionChange(
+                              questionData[currentQuestion].ID,
+                              option.ID
+                            );
+                          } else {
+                            handleOptionRemove(
+                              questionData[currentQuestion].ID,
+                              option.ID
+                            );
+                          }
+                        }}
                       />
                       {option.OptionText}
                     </label>
@@ -260,6 +309,16 @@ function TestPage({ test, testData }) {
             </form>
           </div>
         </animated.div>
+      )}
+      {showWarning && (
+        <div className="submitwarning">
+          <h5>Please select at least one answer for each question before submitting.</h5>
+        </div>
+      )}
+      {showSuccess && (
+        <div className="submitsuccess">
+          <h5>Answers submitted successfully!</h5>
+        </div>
       )}
     </animated.div>
   );

@@ -1,3 +1,5 @@
+
+
 .form-container {
     max-width: 600px;
     height: auto;
@@ -6,6 +8,14 @@
     border: 2px solid #61dafb;
     border-radius: 10px;
     margin-top: 3%;
+  }
+
+  .submitsuccess {
+    color: #4CAF50;
+  }
+
+  .submitwarning{
+    color: #f44336;
   }
 
   .start-test-container {
