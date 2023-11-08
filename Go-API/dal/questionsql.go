@@ -3,6 +3,7 @@ package dal
 import (
 	"database/sql"
 	"encoding/base64"
+	"errors"
 	"log"
 	"project/models"
 	"strconv"
@@ -106,4 +107,45 @@ func RetrieveQuestionsByIdsFromDB(db *sql.DB, questionIDs []int) ([]models.Quest
 	}
 
 	return questions, nil
+}
+
+func RetrieveQuestionByIdFromDB(db *sql.DB, questionID int) (models.Question, error) {
+	id := questionID
+
+	query := "SELECT * FROM \"question\" WHERE id = $1"
+	rows, err := db.Query(query, id)
+	if err != nil {
+		log.Printf("Error executing SQL query: %v", err)
+		return models.Question{}, err
+	}
+	defer rows.Close()
+
+	var question models.Question
+
+	var imageArray pq.ByteaArray
+
+	if rows.Next() {
+		err = rows.Scan(
+			&question.ID,
+			&question.QuestionText,
+			&question.Points,
+			&question.MultipleSelect,
+			&imageArray,
+		)
+		if err != nil {
+			log.Fatal(err)
+			return models.Question{}, err
+		}
+
+		var imageBytes []byte
+		for _, chunk := range imageArray {
+			imageBytes = append(imageBytes, chunk...)
+		}
+
+		question.ImageBase64 = base64.StdEncoding.EncodeToString(imageBytes)
+	} else {
+		return models.Question{}, errors.New("question not found")
+	}
+
+	return question, nil
 }

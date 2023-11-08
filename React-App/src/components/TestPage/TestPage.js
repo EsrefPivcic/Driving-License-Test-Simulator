@@ -44,6 +44,28 @@ function TestPage({ test, testData }) {
     }
   };
 
+  const submitAttempt = async (responses) => {  
+    const submit = {
+      testid: testData[test].Id,
+      studentresponses: responses
+    }
+    try {
+      const response = await fetch("http://localhost:8080/attempt/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ submit }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   const fetchOptionData = async () => {
     try {
       const response = await fetch(
@@ -143,7 +165,7 @@ function TestPage({ test, testData }) {
 
   const handleSubmission = () => {
     const studentresponses = Object.entries(selectedOptions).map(
-      ([questionId, selectedOptionIds]) => [questionId, selectedOptionIds]
+      ([questionId, selectedOptionIds]) => [+questionId, selectedOptionIds]
     );
     const hasEmptySelection = Object.values(selectedOptions).some(
       (selectedOptionIds) => selectedOptionIds.length === 0
@@ -159,7 +181,8 @@ function TestPage({ test, testData }) {
       else {
         setShowWarning(false);
         setShowSuccess(true);
-        console.log("Answers submitted:", studentresponses);
+        console.log(studentresponses);
+        //submitAttempt(studentresponses);
       }
     }
   };
