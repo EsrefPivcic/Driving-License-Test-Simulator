@@ -1,19 +1,21 @@
-.add-question-form {
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  max-width: 350px;
-  margin-top: 30px;
-}
+.login-container {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 50px;
+  }
 
-.add-question-label {
+  .login-headline {
+    margin-top: 0;
+  }
+
+  .add-login-label {
     margin-bottom: 10px;
   }
   
-  .add-question-input {
+  .add-login-input {
     padding: 8px;
     margin-top: 5px;
     margin-bottom: 10px;
@@ -25,7 +27,7 @@
     color: #fff;
   }
   
-  .add-question-button {
+  .add-login-button {
     background-color: #4caf50;
     color: white;
     padding: 10px;
@@ -34,10 +36,6 @@
     cursor: pointer;
   }
   
-  .add-question-button:hover {
+  .add-login-button:hover {
     background-color: #45a049;
-  }
-
-  .add-question-headline {
-    margin-top: 0;
   }

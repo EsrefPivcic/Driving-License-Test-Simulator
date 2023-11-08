@@ -1,9 +1,12 @@
 .add-test-form {
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   max-width: 400px;
-  margin: 0 auto;
-  margin-top: 1%;
+  margin-top: 30px;
 }
 
 .add-test-label {
@@ -33,4 +36,8 @@
 
 .add-test-button:hover {
   background-color: #45a049;
+}
+
+.add-test-headline {
+  margin-top: 0;
 }

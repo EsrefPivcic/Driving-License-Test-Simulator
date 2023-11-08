@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './AddQuestionPage.css';
 
-function AddTestPage() {
-  const [test, setTest] = useState({
+function AddQuestionPage() {
+  const [question, setQuestion] = useState({
     QuestionText: '',
     Points: '',
     MultipleSelect: false,
@@ -13,12 +13,12 @@ function AddTestPage() {
     const { name, value, type, checked } = e.target;
   
     if (type === 'checkbox') {
-      setTest({ ...test, [name]: checked });
+      setQuestion({ ...question, [name]: checked });
     } else if (name === 'Points') {
       const points = parseInt(value, 10);
-      setTest({ ...test, [name]: points });
+      setQuestion({ ...question, [name]: points });
     } else {
-      setTest({ ...test, [name]: value });
+      setQuestion({ ...question, [name]: value });
     }
   };  
 
@@ -28,22 +28,22 @@ function AddTestPage() {
 
     reader.onload = (e) => {
       const base64Image = e.target.result.split(',')[1];
-      setTest({ ...test, ImageBase64: base64Image });
+      setQuestion({ ...question, ImageBase64: base64Image });
     };
 
     reader.readAsDataURL(file);
-    setTest({ ...test, ImageName: file.name });
+    setQuestion({ ...question, ImageName: file.name });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const updatedTest = { ...test};
+      const updatedQuestion = { ...question};
         
       const response = await fetch('http://localhost:8080/question/post', {
         method: 'POST',
-        body: JSON.stringify(updatedTest),
+        body: JSON.stringify(updatedQuestion),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -60,26 +60,27 @@ function AddTestPage() {
   };
 
   return (
-    <form className="add-test-form" onSubmit={handleSubmit}>
-      <label className="add-test-label">
+    <form className="add-question-form" onSubmit={handleSubmit}>
+      <h2 className="add-question-headline">Add a Question</h2>
+      <label className="add-question-label">
         Question Text:
-        <input type="text" name="QuestionText" value={test.QuestionText} onChange={handleInputChange} className="add-test-input" />
+        <input type="text" name="QuestionText" value={question.QuestionText} onChange={handleInputChange} className="add-question-input" />
       </label>
-      <label className="add-test-label">
+      <label className="add-question-label">
         Points:
-        <input type="number" name="Points" value={test.Points} onChange={handleInputChange} className="add-test-input" />
+        <input type="number" name="Points" value={question.Points} onChange={handleInputChange} className="add-question-input" />
       </label>
-      <label className="add-test-label">
+      <label className="add-question-label">
         Multiple Select:
-        <input type="checkbox" name="MultipleSelect" value={test.MultipleSelect} onChange={handleInputChange} className="add-test-input" />
+        <input type="checkbox" name="MultipleSelect" value={question.MultipleSelect} onChange={handleInputChange} className="add-question-input" />
       </label>
-      <label className="add-test-label">
+      <label className="add-question-label">
         Image:
-        <input type="file" name="ImageBase64" onChange={handleImageUpload} className="add-test-input" />
+        <input type="file" name="ImageBase64" onChange={handleImageUpload} className="add-question-input" />
       </label>
-      <button type="submit" className="add-test-button">Upload Question</button>
+      <button type="submit" className="add-question-button">Upload Question</button>
     </form>
   );
 }
 
-export default AddTestPage;
+export default AddQuestionPage;
