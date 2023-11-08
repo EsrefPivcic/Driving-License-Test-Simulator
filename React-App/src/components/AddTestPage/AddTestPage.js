@@ -5,10 +5,10 @@ function AddTestPage() {
   const [test, setTest] = useState({
     Title: '',
     Description: '',
-    Questions: '',
     Category: '',
-    ImageBase64: '',
     Duration: 0,
+    Questions: '',
+    ImageBase64: '',
   });
 
   const handleInputChange = (e) => {
@@ -16,8 +16,6 @@ function AddTestPage() {
     if (name === 'Duration') {
       const duration = parseInt(value, 10);
       setTest({ ...test, [name]: duration });
-    } else if (name === 'Questions') {
-      setTest({ ...test, [name]: value });
     } else {
       setTest({ ...test, [name]: value });
     }
@@ -52,7 +50,9 @@ function AddTestPage() {
       });
 
       if (response.ok) {
+        // Handle success
       } else {
+        // Handle failure
       }
     } catch (error) {
       console.error('Error:', error);
@@ -60,33 +60,34 @@ function AddTestPage() {
   };
 
   return (
-    <form className="add-test-form" onSubmit={handleSubmit}>
-      <label className="add-test-label">
-        Title:
-        <input type="text" name="Title" value={test.Title} onChange={handleInputChange} className="add-test-input" />
-      </label>
-      <label className="add-test-label">
-        Description:
-        <input type="text" name="Description" value={test.Description} onChange={handleInputChange} className="add-test-input" />
-      </label>
-      <label className="add-test-label">
-        Category:
-        <input type="text" name="Category" value={test.Category} onChange={handleInputChange} className="add-test-input" />
-      </label>
-      <label className="add-test-label">
-        Duration:
-        <input type="number" name="Duration" value={test.Duration} onChange={handleInputChange} className="add-test-input" />
-      </label>
-      <label className="add-test-label">
-        Questions (comma-separated):
-        <input type="text" name="Questions" value={test.Questions} onChange={handleInputChange} className="add-test-input" />
-      </label>
-      <label className="add-test-label">
-        Image:
-        <input type="file" name="ImageBase64" onChange={handleImageUpload} className="add-test-input" />
-      </label>
-      <button type="submit" className="add-test-button">Upload Test</button>
-    </form>
+      <form className="add-test-form" onSubmit={handleSubmit}>
+        <h2 className="add-test-headline">Add a Test</h2>
+        <label className="add-test-label">
+          Title:
+          <input type="text" name="Title" value={test.Title} onChange={handleInputChange} className="add-test-input" />
+        </label>
+        <label className="add-test-label">
+          Description:
+          <input type="text" name="Description" value={test.Description} onChange={handleInputChange} className="add-test-input" />
+        </label>
+        <label className="add-test-label">
+          Category:
+          <input type="text" name="Category" value={test.Category} onChange={handleInputChange} className="add-test-input" />
+        </label>
+        <label className="add-test-label">
+          Duration:
+          <input type="number" name="Duration" value={test.Duration} onChange={handleInputChange} className="add-test-input" />
+        </label>
+        <label className="add-test-label">
+          Questions (comma-separated):
+          <input type="text" name="Questions" value={test.Questions} onChange={handleInputChange} className="add-test-input" />
+        </label>
+        <label className="add-test-label">
+          Image:
+          <input type="file" name="ImageBase64" onChange={handleImageUpload} className="add-test-input" />
+        </label>
+        <button type="submit" className="add-test-button">Upload Test</button>
+      </form>
   );
 }
 

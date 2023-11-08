@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./AllTestsPage.css";
+import "./HomePage.css";
 
-function AllTestsPage({ testData }) {
+function HomePage({ testData }) {
+  const [isLoggedIn, setLoggedIn] = useState(!!localStorage.getItem('token'));
+
+  const handleLogin = () => {
+    if (isLoggedIn) {
+      localStorage.removeItem('token');
+      setLoggedIn(false);
+    } else {
+      setLoggedIn(!isLoggedIn);
+    }
+  };
+
   return (
     <div className="categories">
+      <div className="login">
+        {isLoggedIn ? (
+          <button className="login-button" onClick={handleLogin}>
+            Logout
+          </button>
+        ) : (
+          <Link to={`/login`} style={{ textDecoration: "none" }}>
+            <button className="login-button" onClick={handleLogin}>
+              Login
+            </button>
+          </Link>
+        )}
+      </div>
       {testData.map((test) => (
         <Link
           key={test.ID}
@@ -24,12 +48,12 @@ function AllTestsPage({ testData }) {
       ))}
       <div>
         <Link to={`/addtest`} style={{ textDecoration: "none" }}>
-          <button className="buttonStyle2">
+          <button className="buttonStyleAdd">
             <h2>Add Test</h2>
           </button>
         </Link>
         <Link to={`/addquestion`} style={{ textDecoration: "none" }}>
-          <button className="buttonStyle2">
+          <button className="buttonStyleAdd">
             <h2>Add Question</h2>
           </button>
         </Link>
@@ -38,4 +62,4 @@ function AllTestsPage({ testData }) {
   );
 }
 
-export default AllTestsPage;
+export default HomePage;

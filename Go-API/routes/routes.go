@@ -25,6 +25,7 @@ func SetupRouter(db *sql.DB) *mux.Router {
 	r.HandleFunc("/studentresponses/get", handlers.RetrieveStudentResponsesHandler(db))
 	r.HandleFunc("/studentresponse/post", handlers.CreateStudentResponseHandler(db))
 	r.HandleFunc("/login", handlers.AuthenticateHandler(db))
+	r.HandleFunc("/logout", handlers.LogoutHandler(db))
 	r.HandleFunc("/hello", handlers.HelloHandler)
 	r.HandleFunc("/", handlers.NotFoundHandler)
 

@@ -11,7 +11,12 @@
   transition: background 0.3s, transform 0.2s;
 }
 
-.buttonStyle2 {
+.buttonStyle:hover {
+  background: #555;
+  transform: scale(1.05);
+}
+
+.buttonStyleAdd {
   background: #333;
   color: #fff;
   font-size: 12px;
@@ -25,12 +30,7 @@
   transition: background 0.3s, transform 0.2s;
 }
 
-.buttonStyle2:hover {
-  background: #555;
-  transform: scale(1.05);
-}
-
-.buttonStyle:hover {
+.buttonStyleAdd:hover {
   background: #555;
   transform: scale(1.05);
 }
