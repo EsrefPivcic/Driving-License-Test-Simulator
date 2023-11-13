@@ -34,6 +34,7 @@ func RetrieveAttemptsHandler(db *sql.DB) http.HandlerFunc {
 func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var attempt models.Attempt
+		var responses []models.StudentResponse
 		var request struct {
 			TestID           int                      `json:"testid"`
 			StudentResponses []models.StudentResponse `json:"studentresponses"`
@@ -45,34 +46,15 @@ func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		var MaxScore int = 0
-		var Score int = 0
-		for i := 0; i < len(request.StudentResponses); i++ {
-			var question, err1 = dal.RetrieveQuestionByIdFromDB(db, request.StudentResponses[i].QuestionID)
-			result, err2 := services.CheckStudentResponseCorrect(db, request.StudentResponses[i])
-			MaxScore += question.Points
-			if err1 != nil {
-				log.Printf("error: ", err1)
-			}
-			if err2 != nil {
-				log.Printf("error: ", err2)
-			}
-			if result {
-				Score += question.Points
-			}
-			var pass = Score / MaxScore * 100
-			if pass < 90 {
-				attempt.Passed = false
-			}
-			if pass >= 90 {
-				attempt.Passed = true
-			}
-			attempt.StudentID = 3
-			attempt.TestID = request.TestID
-			attempt.Score = Score
+		attempt, responses = services.CalculateTestPass(db, request.StudentResponses, request.TestID)
+
+		attemptID, err := dal.CreateInDBAttemptGetId(db, attempt)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
 		}
 
-		if err := dal.CreateInDBAttempt(db, attempt); err != nil {
+		if err := dal.CreateInDBStudentResponses(db, responses, attemptID); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

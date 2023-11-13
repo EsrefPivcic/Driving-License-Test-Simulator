@@ -19,6 +19,20 @@ func CreateInDBStudentResponse(db *sql.DB, s models.StudentResponse) error {
 	return nil
 }
 
+func CreateInDBStudentResponses(db *sql.DB, responses []models.StudentResponse, attemptid int) error {
+	for i := 0; i < len(responses); i++ {
+		s := responses[i]
+		optionsArray := pq.Array(s.SelectedOptions)
+		_, err := db.Exec("INSERT INTO StudentResponse (AttemptID, QuestionID, SelectedOptions, IsCorrect) VALUES ($1, $2, $3, $4)",
+			attemptid, s.QuestionID, optionsArray, s.IsCorrect)
+		if err != nil {
+			log.Printf("Error inserting test into the database: %v", err)
+			return err
+		}
+	}
+	return nil
+}
+
 func RetrieveFromDBStudentResponse(db *sql.DB) ([]models.StudentResponse, error) {
 	rows, err := db.Query(`
 	SELECT
