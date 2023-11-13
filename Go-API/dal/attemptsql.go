@@ -9,13 +9,24 @@ import (
 )
 
 func CreateInDBAttempt(db *sql.DB, a models.Attempt) error {
-	_, err := db.Exec("INSERT INTO Attempt (StudentID, TestID, Score, Passed) VALUES ($1, $2, $3, $4)",
-		a.StudentID, a.TestID, a.Score, a.Passed)
+	_, err := db.Exec("INSERT INTO Attempt (StudentID, TestID, Score, Passed, MaxScore, Percentage) VALUES ($1, $2, $3, $4, $5, $6)",
+		a.StudentID, a.TestID, a.Score, a.Passed, a.MaxScore, a.Percentage)
 	if err != nil {
 		log.Printf("Error inserting attempt into the database: %v", err)
 		return err
 	}
 	return nil
+}
+
+func CreateInDBAttemptGetId(db *sql.DB, a models.Attempt) (int, error) {
+	var id int
+	err := db.QueryRow("INSERT INTO Attempt (StudentID, TestID, Score, Passed, MaxScore, Percentage) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ID",
+		a.StudentID, a.TestID, a.Score, a.Passed, a.MaxScore, a.Percentage).Scan(&id)
+	if err != nil {
+		log.Printf("Error inserting attempt into the database: %v", err)
+		return 0, err
+	}
+	return id, nil
 }
 
 func RetrieveFromDBAttempt(db *sql.DB) ([]models.Attempt, error) {
@@ -26,6 +37,8 @@ func RetrieveFromDBAttempt(db *sql.DB) ([]models.Attempt, error) {
 	a.TestID AS AttemptTestID,
 	a.Score AS Score,
 	a.Passed AS Passed,
+	a.MaxScore AS MaxScore,
+	a.Percentage AS Percentage,
 	s.ID AS StudentID,
 	s.Name AS Name,
 	s.Surname AS Surname,
@@ -64,6 +77,8 @@ INNER JOIN Test AS t ON a.TestID = t.ID
 			&attempt.TestID,
 			&attempt.Score,
 			&attempt.Passed,
+			&attempt.MaxScore,
+			&attempt.Percentage,
 			&student.ID,
 			&student.Name,
 			&student.Surname,

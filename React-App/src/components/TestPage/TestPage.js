@@ -6,9 +6,13 @@ import "./TestPage.css";
 function TestPage({ test, testData }) {
   const navigate = useNavigate();
   const [showWarning, setShowWarning] = useState(false);
+  const [showFail, setshowFail] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isComponentVisible, setComponentVisible] = useState(false);
   const [testStarted, setTestStarted] = useState(false);
+  const [score, setScore] = useState(null);
+  const [maxScore, setMaxScore] = useState(null);
+  const [percentage, setPercentage] = useState(null);
 
   const fadeIn = useSpring({
     opacity: isComponentVisible ? 1 : 0,
@@ -44,27 +48,45 @@ function TestPage({ test, testData }) {
     }
   };
 
-  const submitAttempt = async (responses) => {  
-    const submit = {
-      testid: testData[test].Id,
-      studentresponses: responses
-    }
+  const submitAttempt = async (studentresponses) => {
+    console.log(ID);
+    console.log(studentresponses);
+    var testid = ID;
+    const formattedStudentResponses = studentresponses.map(([questionId, selectedOptionIds]) => ({
+      questionid: questionId,
+      selectedoptions: selectedOptionIds,
+    }));
+  
     try {
       const response = await fetch("http://localhost:8080/attempt/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ submit }),
+        body: JSON.stringify({ testid, studentresponses: formattedStudentResponses }),
       });
+  
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const data = await response.json();;
+  
+      const data = await response.json();
+      setScore(data.Score); 
+      setMaxScore(data.MaxScore);
+      setPercentage(data.Percentage);
+      if (data.Passed == true) {
+        setShowSuccess(true);
+        setshowFail(false);
+      } 
+      else {
+        setshowFail(true);
+        setShowSuccess(false);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+  
 
   const fetchOptionData = async () => {
     try {
@@ -106,6 +128,7 @@ function TestPage({ test, testData }) {
   const [questionCount, setQuestionCount] = useState(0);
   const { Title, Description, ImageBase64, Category, Duration } = testData[test];
   const { Questions } = testData[test];
+  const { ID } = testData[test];
 
   const handleOptionChange = (questionId, optionId) => {
     const isMultipleSelect = questionData[currentQuestion].MultipleSelect;
@@ -179,9 +202,7 @@ function TestPage({ test, testData }) {
       }
       else {
         setShowWarning(false);
-        setShowSuccess(true);
-        console.log(studentresponses);
-        //submitAttempt(studentresponses);
+        submitAttempt(studentresponses);
       }
     }
   };
@@ -232,7 +253,7 @@ function TestPage({ test, testData }) {
                   {getOptionsForCurrentQuestion().map((option, optionIndex) => (
                     <label key={optionIndex} style={{ display: "block", marginBottom: "10px" }}>
                       <input
-                        type={questionData[currentQuestion].MultipleSelectb ? "checkbox" : "radio"}
+                        type={questionData[currentQuestion].MultipleSelect ? "checkbox" : "radio"}
                         name={`question_${questionData[currentQuestion].ID}`} 
                         value={option.ID}
                         checked={selectedOptions[questionData[currentQuestion].ID]?.includes(option.ID) || false}
@@ -273,7 +294,14 @@ function TestPage({ test, testData }) {
       )}
       {showSuccess && (
         <div className="submitsuccess">
-          <h5>Answers submitted successfully!</h5>
+          <h5>Congratulations! You passed the test!</h5>
+          <h5>Your score: {score}/{maxScore}({percentage}%)</h5>
+        </div>
+      )}
+      {showFail && (
+        <div className="submitwarning">
+          <h5>We are sorry but you didn't pass the test.</h5>      
+          <h5>Your score: {score}/{maxScore}({percentage}%)</h5>
         </div>
       )}
     </animated.div>
