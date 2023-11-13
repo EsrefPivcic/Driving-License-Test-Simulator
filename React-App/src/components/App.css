@@ -9,10 +9,12 @@ body {
 .app {
   text-align: center;
   padding: 20px;
+  margin: 0 auto;
 }
 
 .app-content {
   animation: fadeIn 1s ease-in-out;
+  width: 100%;
 }
 
 @keyframes fadeIn {

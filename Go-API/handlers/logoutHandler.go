@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
+	"project/dal"
 	"project/models"
 	"sync"
 )
@@ -24,6 +25,12 @@ func LogoutHandler(db *sql.DB) http.HandlerFunc {
 		mutex.Lock()
 		invalidatedTokens[logoutRequest.Token] = true
 		mutex.Unlock()
+
+		err := dal.DeleteToken(db, logoutRequest.Token)
+		if err != nil {
+			http.Error(w, "Error deleting token", http.StatusInternalServerError)
+			return
+		}
 
 		respondJSON(w, map[string]string{"message": "Logout successful"})
 	}

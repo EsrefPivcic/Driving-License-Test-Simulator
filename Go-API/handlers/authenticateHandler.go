@@ -19,7 +19,7 @@ func AuthenticateHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		valid, err := dal.ValidateCredentials(db, loginRequest.Username, loginRequest.Password)
+		valid, studentid, err := dal.ValidateCredentials(db, loginRequest.Username, loginRequest.Password)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -32,6 +32,11 @@ func AuthenticateHandler(db *sql.DB) http.HandlerFunc {
 
 		token, err := utils.GenerateToken(loginRequest.Username)
 		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		if err := dal.CreateInDBAuthentication(db, studentid, token); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

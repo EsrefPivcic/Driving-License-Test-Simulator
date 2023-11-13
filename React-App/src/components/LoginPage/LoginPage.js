@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 
- function LoginPage () {
+function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,6 +38,11 @@ import './LoginPage.css';
     }
   };
 
+  const handleRegisterClick = () => {
+    // Navigate to the RegisterPage when the register button is clicked
+    navigate('/register');
+  };
+
   return (
     <div className="login-container">
       <h2 className="login-headline">Login</h2>
@@ -66,8 +71,14 @@ import './LoginPage.css';
           {isLoggedIn ? '' : 'Login'} {}
         </button>
       </form>
+      <p>
+        Don't have an account?{' '}
+        <span className="register-button" onClick={handleRegisterClick}>
+          Register
+        </span>
+      </p>
     </div>
   );
-};
+}
 
 export default LoginPage;
