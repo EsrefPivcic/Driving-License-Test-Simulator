@@ -39,3 +39,12 @@
   .add-login-button:hover {
     background-color: #45a049;
   }
+
+  .register-button {
+    color: #4da1ff;
+    cursor: pointer;
+    text-decoration: underline;
+    margin: 10px 0;
+    display: inline-block;
+  }
+  

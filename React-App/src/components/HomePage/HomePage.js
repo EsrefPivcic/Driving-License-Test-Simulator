@@ -1,21 +1,65 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 function HomePage({ testData }) {
   const [isLoggedIn, setLoggedIn] = useState(!!localStorage.getItem('token'));
+  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setMessage('Welcome! You are now logged in.');
+      setTimeout(() => {
+        setMessage('');
+      }, 2000);
+    }
+  }, [isLoggedIn]);
+
+  const logout = async () => {
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch('http://localhost:8080/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      localStorage.removeItem('token');
+      setLoggedIn(false);
+      navigate('/');
+      setMessage('You have been successfully logged out.');
+      setTimeout(() => {
+        setMessage('');
+      }, 2000);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   const handleLogin = () => {
     if (isLoggedIn) {
-      localStorage.removeItem('token');
-      setLoggedIn(false);
+      setMessage('You have been successfully logged out.');
+      logout();
     } else {
       setLoggedIn(!isLoggedIn);
+      setMessage('Welcome! You are now logged in.');
+      setTimeout(() => {
+        setMessage('');
+      }, 2000);
     }
   };
 
   return (
     <div className="categories">
+      {message && <p className="message">{message}</p>}
       <div className="login">
         {isLoggedIn ? (
           <button className="login-button" onClick={handleLogin}>

@@ -6,6 +6,7 @@ import AddTestPage from "./AddTestPage/AddTestPage";
 import AddQuestionPage from "./AddQuestionPage/AddQuestionPage";
 import "./App.css";
 import LoginPage from "./LoginPage/LoginPage";
+import RegistrationPage from "./RegistrationPage/RegistrationPage";
 
 function App() {
   const [testData, setTestData] = useState([]);
@@ -38,6 +39,7 @@ function App() {
             <Route path="addtest" element={<AddTestPage />}></Route>
             <Route path="addquestion" element={<AddQuestionPage />}></Route>
             <Route path="login" element={<LoginPage />}></Route>
+            <Route path="register" element={<RegistrationPage />}></Route>
             <Route path="/" element={<HomePage testData={testData} />} />
             {Object.keys(testData).map((test) => (
               <Route
