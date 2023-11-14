@@ -33,6 +33,46 @@ func CreateInDBStudentResponses(db *sql.DB, responses []models.StudentResponse, 
 	return nil
 }
 
+func RetrieveStudentResponsesByAttemptIdFromDB(db *sql.DB, attemptID int) ([]models.StudentResponse, error) {
+	id := attemptID
+
+	query := "SELECT * FROM \"studentresponse\" WHERE attemptid = $1"
+	rows, err := db.Query(query, id)
+	if err != nil {
+		log.Printf("Error executing SQL query: %v", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var studentresponses []models.StudentResponse
+
+	for rows.Next() {
+		var studentresponse models.StudentResponse
+		var optionsArray pq.Int64Array
+
+		err := rows.Scan(
+			&studentresponse.ID,
+			&studentresponse.AttemptID,
+			&studentresponse.QuestionID,
+			&optionsArray,
+			&studentresponse.IsCorrect,
+		)
+
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+
+		studentresponse.SelectedOptions = make([]int, len(optionsArray))
+		for i, val := range optionsArray {
+			studentresponse.SelectedOptions[i] = int(val)
+		}
+		studentresponses = append(studentresponses, studentresponse)
+	}
+
+	return studentresponses, nil
+}
+
 func RetrieveFromDBStudentResponse(db *sql.DB) ([]models.StudentResponse, error) {
 	rows, err := db.Query(`
 	SELECT

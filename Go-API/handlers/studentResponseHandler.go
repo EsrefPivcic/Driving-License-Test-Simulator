@@ -30,6 +30,37 @@ func RetrieveStudentResponsesHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+func RetrieveStudentResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request struct {
+			AttemptID int `json:"attemptid"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&request)
+		if err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		studentresponses, err := dal.RetrieveStudentResponsesByAttemptIdFromDB(db, request.AttemptID)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		response, err := json.Marshal(studentresponses)
+		if err != nil {
+			log.Fatal(err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(response)
+	}
+}
+
 func CreateStudentResponseHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var studentresponse models.StudentResponse

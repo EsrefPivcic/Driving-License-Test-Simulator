@@ -59,6 +59,8 @@ func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		attempt.ID = attemptID
+
 		respondJSON(w, attempt)
 	}
 }

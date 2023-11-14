@@ -9,5 +9,5 @@ type Attempt struct {
 	Score      int
 	Passed     bool
 	MaxScore   int
-	Percentage int
+	Percentage float64
 }

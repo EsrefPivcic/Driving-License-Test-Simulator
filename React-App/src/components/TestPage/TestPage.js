@@ -74,14 +74,9 @@ function TestPage({ test, testData }) {
       setScore(data.Score); 
       setMaxScore(data.MaxScore);
       setPercentage(data.Percentage);
-      if (data.Passed == true) {
-        setShowSuccess(true);
-        setshowFail(false);
-      } 
-      else {
-        setshowFail(true);
-        setShowSuccess(false);
-      }
+
+      navigate(`/testresults`, { state: { attempt: data } });
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -229,7 +224,7 @@ function TestPage({ test, testData }) {
             <p><strong>{Description}</strong></p>
             <p>The exam for Category {Category} consists of {Questions.length}{" "} questions.</p>
             <p>You have {Duration} minutes to finish the exam.</p>
-            <p>The required passing score is 108, with a maximum score of 120.</p>
+            <p>The required passing score is 90%.</p>
           </div>
           <button type="button" className={`button back-to-home-button`} onClick={handleBackToHome}>Quit</button>
           <button type="button" className={`button start-test-button`} onClick={handleStartTest}>Start</button>

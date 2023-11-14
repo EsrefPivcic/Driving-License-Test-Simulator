@@ -3,6 +3,7 @@ package services
 import (
 	"database/sql"
 	"log"
+	"math"
 	"project/dal"
 	"project/models"
 )
@@ -27,18 +28,18 @@ func CalculateTestPass(db *sql.DB, responses []models.StudentResponse, testID in
 			Score += question.Points
 		}
 	}
-	var percentage = Score / MaxScore * 100
-	if percentage < 90 {
+	var percentage = float64(Score) / float64(MaxScore) * float64(100)
+	if percentage < float64(90) {
 		attempt.Passed = false
 	}
-	if percentage >= 90 {
+	if percentage >= float64(90) {
 		attempt.Passed = true
 	}
-	percentageInt := int(percentage)
+	percentageFloat := float64(percentage)
 	attempt.StudentID = 3
 	attempt.TestID = testID
 	attempt.Score = Score
 	attempt.MaxScore = MaxScore
-	attempt.Percentage = percentageInt
+	attempt.Percentage = math.Round(percentageFloat)
 	return attempt, responses
 }

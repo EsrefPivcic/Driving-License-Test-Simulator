@@ -69,3 +69,49 @@ func RetrieveFromDBTest(db *sql.DB) ([]models.Test, error) {
 
 	return tests, nil
 }
+
+func RetrieveTestByIdFromDB(db *sql.DB, testID int) (models.Test, error) {
+	id := testID
+
+	query := "SELECT * FROM \"test\" WHERE id = $1"
+	rows, err := db.Query(query, id)
+	if err != nil {
+		log.Printf("Error executing SQL query: %v", err)
+		return models.Test{}, err
+	}
+	defer rows.Close()
+
+	var test models.Test
+	var questionArray pq.Int64Array
+	var imageArray pq.ByteaArray
+	if rows.Next() {
+
+		err := rows.Scan(
+			&test.ID,
+			&test.Title,
+			&test.Description,
+			&questionArray,
+			&test.Category,
+			&test.Duration,
+			&imageArray,
+		)
+		if err != nil {
+			log.Fatal(err)
+			return models.Test{}, err
+		}
+
+		test.Questions = make([]int, len(questionArray))
+		for i, val := range questionArray {
+			test.Questions[i] = int(val)
+		}
+
+		var imageBytes []byte
+		for _, chunk := range imageArray {
+			imageBytes = append(imageBytes, chunk...)
+		}
+
+		test.ImageBase64 = base64.StdEncoding.EncodeToString(imageBytes)
+	}
+
+	return test, nil
+}
