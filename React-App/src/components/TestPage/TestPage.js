@@ -74,9 +74,7 @@ function TestPage({ test, testData }) {
       setScore(data.Score); 
       setMaxScore(data.MaxScore);
       setPercentage(data.Percentage);
-
       navigate(`/testresults`, { state: { attempt: data } });
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }

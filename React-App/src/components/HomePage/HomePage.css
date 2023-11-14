@@ -58,3 +58,61 @@
     opacity: 1;
   }
 }
+
+.profile-dropdown {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-block;
+  align-items: center;
+}
+
+.profile-image {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 10px;
+  padding: 10px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 8px;
+  width: 160px;
+  text-align: center;
+  top: 100%;
+  right: 20px;
+}
+
+.dropdown-content p:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.dropdown-content p:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.dropdown-content p {
+  color: #fff;
+  padding: 12px 0;
+  margin: 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dropdown-content p:hover {
+  background-color: #555;
+}
+
+
+.profile-dropdown:hover .dropdown-content {
+  display: block;
+  flex-direction: column;
+}

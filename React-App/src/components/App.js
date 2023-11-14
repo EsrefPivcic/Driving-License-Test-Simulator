@@ -8,6 +8,8 @@ import "./App.css";
 import LoginPage from "./LoginPage/LoginPage";
 import RegistrationPage from "./RegistrationPage/RegistrationPage";
 import TestResultsPage from "./TestResultsPage/TestResultsPage";
+import UserProfilePage from "./UserProfilePage/UserProfilePage"
+
 
 function App() {
   const [testData, setTestData] = useState([]);
@@ -42,6 +44,7 @@ function App() {
             <Route path="login" element={<LoginPage />}></Route>
             <Route path="register" element={<RegistrationPage />}></Route>
             <Route path="testresults" element={<TestResultsPage />}></Route>
+            <Route path="userprofile" element={<UserProfilePage />}></Route>
             <Route path="/" element={<HomePage testData={testData} />} />
             {Object.keys(testData).map((test) => (
               <Route

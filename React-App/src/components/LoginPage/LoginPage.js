@@ -39,7 +39,6 @@ function LoginPage() {
   };
 
   const handleRegisterClick = () => {
-    // Navigate to the RegisterPage when the register button is clicked
     navigate('/register');
   };
 

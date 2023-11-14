@@ -62,9 +62,19 @@ function HomePage({ testData }) {
       {message && <p className="message">{message}</p>}
       <div className="login">
         {isLoggedIn ? (
-          <button className="login-button" onClick={handleLogin}>
-            Logout
-          </button>
+          <div className="profile-dropdown">
+            <img
+              src="images/userimage.jpg"
+              alt="User Profile"
+              className="profile-image"
+            />
+            <div className="dropdown-content">
+              <Link to={`/userprofile`} style={{ textDecoration: "none" }}>
+                <p>User Profile</p>
+              </Link>
+              <p onClick={logout}>Logout</p>
+            </div>
+          </div>
         ) : (
           <Link to={`/login`} style={{ textDecoration: "none" }}>
             <button className="login-button" onClick={handleLogin}>
