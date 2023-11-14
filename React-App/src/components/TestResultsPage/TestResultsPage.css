@@ -1,0 +1,92 @@
+.result-container {
+    max-width: 750px;
+    margin: 20px auto;
+  }
+  
+  .result-start-test-container {
+    background-color: #606060;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .result-category-page {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .result-category-image {
+    border-radius: 5px;
+  }
+  
+  .result-score-container {
+    background-color: #505050;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .result-passed {
+    color: #4caf50; /* Green color for Passed */
+  }
+  
+  .result-failed {
+    color: #f44336; /* Red color for Failed */
+  }
+  
+  .result-question-container {
+    background-color: #424242;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .result-question-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .result-options-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  
+  .result-option {
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .result-option:hover {
+    background-color: #555555;
+  }
+  
+  .result-selected-correct {
+    background-color: #8eff8e;
+  }
+  
+  .result-selected-incorrect {
+    background-color: #ff8e8e;
+  }
+  
+  .result-back-to-home-button {
+    background-color: #2196f3;
+    color: #7d7d7d;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .result-back-to-home-button:hover {
+    background-color: #0d8bf2;
+  }
+  
