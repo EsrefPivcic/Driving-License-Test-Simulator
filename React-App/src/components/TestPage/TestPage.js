@@ -74,7 +74,7 @@ function TestPage({ test, testData }) {
       setScore(data.Score); 
       setMaxScore(data.MaxScore);
       setPercentage(data.Percentage);
-      if (data.Passed == true) {
+      if (data.Passed === true) {
         setShowSuccess(true);
         setshowFail(false);
       } 
