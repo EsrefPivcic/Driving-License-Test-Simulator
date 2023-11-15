@@ -6,6 +6,16 @@ import (
 	"project/utils"
 )
 
+func CheckTokenDB(db *sql.DB, token string) (bool, error) {
+	var count int
+	err := db.QueryRow("SELECT COUNT(*) FROM AuthenticationToken WHERE Value = $1", token).Scan(&count)
+	if err != nil {
+		log.Printf("Error checking user existence: %v", err)
+		return false, err
+	}
+	return count > 0, nil
+}
+
 func CreateInDBAuthentication(db *sql.DB, studentid int, token string) error {
 	_, err := db.Exec("INSERT INTO AuthenticationToken (Value, StudentID) VALUES ($1, $2)",
 		token, studentid)

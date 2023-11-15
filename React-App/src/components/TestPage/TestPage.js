@@ -6,13 +6,18 @@ import "./TestPage.css";
 function TestPage({ test, testData }) {
   const navigate = useNavigate();
   const [showWarning, setShowWarning] = useState(false);
-  const [showFail, setshowFail] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [isComponentVisible, setComponentVisible] = useState(false);
   const [testStarted, setTestStarted] = useState(false);
-  const [score, setScore] = useState(null);
-  const [maxScore, setMaxScore] = useState(null);
-  const [percentage, setPercentage] = useState(null);
+  const buttonStyle = "button";
+  const nextButtonStyle = `${buttonStyle} next-button`;
+  const submitButtonStyle = `${buttonStyle} submit-button`;
+  const backButtonStyle = `${buttonStyle} back-button`;
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [questionCount, setQuestionCount] = useState(0);
+  const { Title, Description, ImageBase64, Category, Duration } = testData[test];
+  const { Questions } = testData[test];
+  const { ID } = testData[test];
 
   const fadeIn = useSpring({
     opacity: isComponentVisible ? 1 : 0,
@@ -71,16 +76,12 @@ function TestPage({ test, testData }) {
       }
   
       const data = await response.json();
-      setScore(data.Score); 
-      setMaxScore(data.MaxScore);
-      setPercentage(data.Percentage);
       navigate(`/testresults`, { state: { attempt: data } });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
   
-
   const fetchOptionData = async () => {
     try {
       const response = await fetch(
@@ -110,18 +111,6 @@ function TestPage({ test, testData }) {
     fetchQuestionData();
     fetchOptionData();
   }, []);
-
-  const buttonStyle = "button";
-  const nextButtonStyle = `${buttonStyle} next-button`;
-  const submitButtonStyle = `${buttonStyle} submit-button`;
-  const backButtonStyle = `${buttonStyle} back-button`;
-
-  const [selectedOptions, setSelectedOptions] = useState({});
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [questionCount, setQuestionCount] = useState(0);
-  const { Title, Description, ImageBase64, Category, Duration } = testData[test];
-  const { Questions } = testData[test];
-  const { ID } = testData[test];
 
   const handleOptionChange = (questionId, optionId) => {
     const isMultipleSelect = questionData[currentQuestion].MultipleSelect;
@@ -187,11 +176,9 @@ function TestPage({ test, testData }) {
     );
     if (hasEmptySelection) {
       setShowWarning(true);
-      setShowSuccess(false);
     } else {
       if (studentresponses.length < Questions.length) {
         setShowWarning(true);
-        setShowSuccess(false);
       }
       else {
         setShowWarning(false);
@@ -244,8 +231,9 @@ function TestPage({ test, testData }) {
                 )}
                 <div>
                   {getOptionsForCurrentQuestion().map((option, optionIndex) => (
-                    <label key={optionIndex} style={{ display: "block", marginBottom: "10px" }}>
-                      <input
+                    <label className="option-input" key={optionIndex} style={{ display: "block", marginBottom: "10px" }}>
+                      <input 
+                      className="option-input"           
                         type={questionData[currentQuestion].MultipleSelect ? "checkbox" : "radio"}
                         name={`question_${questionData[currentQuestion].ID}`} 
                         value={option.ID}
@@ -283,18 +271,6 @@ function TestPage({ test, testData }) {
       {showWarning && (
         <div className="submitwarning">
           <h5>Please select at least one answer for each question before submitting.</h5>
-        </div>
-      )}
-      {showSuccess && (
-        <div className="submitsuccess">
-          <h5>Congratulations! You passed the test!</h5>
-          <h5>Your score: {score}/{maxScore}({percentage}%)</h5>
-        </div>
-      )}
-      {showFail && (
-        <div className="submitwarning">
-          <h5>We are sorry but you didn't pass the test.</h5>      
-          <h5>Your score: {score}/{maxScore}({percentage}%)</h5>
         </div>
       )}
     </animated.div>

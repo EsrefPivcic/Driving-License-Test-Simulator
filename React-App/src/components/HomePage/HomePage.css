@@ -111,7 +111,6 @@
   background-color: #555;
 }
 
-
 .profile-dropdown:hover .dropdown-content {
   display: block;
   flex-direction: column;

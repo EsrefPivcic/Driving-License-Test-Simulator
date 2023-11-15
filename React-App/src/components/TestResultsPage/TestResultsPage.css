@@ -4,7 +4,7 @@
   }
   
   .result-start-test-container {
-    background-color: #606060;
+    border: 2px solid #61dafb;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -22,7 +22,7 @@
   }
   
   .result-score-container {
-    background-color: #505050;
+    background-color: #232323;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
@@ -30,19 +30,23 @@
   }
   
   .result-passed {
-    color: #4caf50; /* Green color for Passed */
+    color: #4caf50;
   }
   
   .result-failed {
-    color: #f44336; /* Red color for Failed */
+    color: #d44a40;
   }
   
   .result-question-container {
-    background-color: #424242;
+    background-color: #232323;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .result-points {
+    margin-top: 10px;
   }
   
   .result-question-text {
@@ -60,25 +64,21 @@
   .result-option {
     padding: 10px;
     border-radius: 5px;
-    cursor: pointer;
+    background-color: #393939;
     transition: background-color 0.3s;
   }
   
-  .result-option:hover {
-    background-color: #555555;
-  }
-  
   .result-selected-correct {
-    background-color: #8eff8e;
+    background-color: #58a058;
   }
   
   .result-selected-incorrect {
-    background-color: #ff8e8e;
+    background-color: #9c4c4c;
   }
   
   .result-back-to-home-button {
     background-color: #2196f3;
-    color: #7d7d7d;
+    color: #fff;  
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
@@ -87,6 +87,7 @@
   }
   
   .result-back-to-home-button:hover {
-    background-color: #0d8bf2;
+    background-color: #0d75ca;
+    color: #d8d8d8;  
   }
   

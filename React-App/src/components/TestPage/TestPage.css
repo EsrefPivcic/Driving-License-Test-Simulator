@@ -16,6 +16,12 @@
     color: #f44336;
   }
 
+  .option-input {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+  }
+
   .start-test-container {
     max-width: 600px;
     margin: 0 auto;

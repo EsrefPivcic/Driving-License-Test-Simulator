@@ -44,3 +44,25 @@ func AuthenticateHandler(db *sql.DB) http.HandlerFunc {
 		respondJSON(w, map[string]string{"token": token})
 	}
 }
+
+func CheckToken(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request struct {
+			Token string `json:"token"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&request)
+		if err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		exists, err := dal.CheckTokenDB(db, request.Token)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		respondJSON(w, exists)
+	}
+}
