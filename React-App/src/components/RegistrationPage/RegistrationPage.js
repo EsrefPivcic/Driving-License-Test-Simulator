@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSpring, animated } from "react-spring";
 import { useNavigate } from 'react-router-dom';
 import './RegistrationPage.css';
 
@@ -12,7 +13,17 @@ function RegistrationPage() {
   });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [isComponentVisible, setComponentVisible] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setComponentVisible(true);
+  }, []);
+
+  const fadeIn = useSpring({
+    opacity: isComponentVisible ? 1 : 0,
+    from: { opacity: 0 },
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +40,6 @@ function RegistrationPage() {
   };
 
   const validateEmail = (email) => {
-    // Basic email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
@@ -92,7 +102,7 @@ function RegistrationPage() {
   };
 
   return (
-    <div>
+    <animated.div style={fadeIn}>
       {message && <p className="message">{message}</p>}
       <form className="add-registration-form" onSubmit={handleSubmit}>
         <h2 className="add-registration-headline">Create an Account</h2>
@@ -119,7 +129,7 @@ function RegistrationPage() {
         <button type="submit" className="add-registration-button">Register</button>
         {error && <p className="error-message">{error}</p>}
       </form>
-    </div>
+      </animated.div>
   );
 }
 

@@ -2,9 +2,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px;
-    border-radius: 10px;
+    padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    border: 2px solid #61dafb;
+    border-radius: 10px;
+    max-width: 400px;
+    margin-top: 30px;
 }
   
 .profile-image-container {
@@ -26,18 +30,28 @@
     margin-top: 10px;
 }
   
-  .user-info-container {
-    width: 300px;
-  }
+.user-info-container {
+    width: 350px;
+}
   
-  .user-info-row {
+.user-info-row {
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
     font-size: 16px;
+    padding: 8px;
+    margin-top: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    text-align: center;
 }
 
-button {
+.edit-button {
     background-color: #3498db;
     color: #fff;
     border: none;
@@ -47,6 +61,51 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.edit-button:hover {
     background-color: #007bb5;
+}
+
+.file-input-container {
+    position: relative;
+    width: 300px;
+    margin: 20px;
+  }
+  
+  .choose-file-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .file-name {
+    margin-top: 10px;
+    margin-left: 10px;
+    color: #fff;
+  }
+  
+  .default-choosefile {
+    display: none;
+  }
+
+  .edit-input {
+    position: absolute;
+    margin-left: 85px;
+    width: 150px;
+    height: 20px;
+    padding: 5px;
+    border: 1px solid #3498db;
+    border-radius: 4px;
+    margin-right: 10px;
+    background-color: #444;
+    color: white;
+    text-align: center;
+}
+
+.data-span {
+    position: absolute;
+    margin-left: 100px;
 }

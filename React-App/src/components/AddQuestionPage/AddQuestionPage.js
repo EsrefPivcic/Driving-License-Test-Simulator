@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSpring, animated } from "react-spring";
 import './AddQuestionPage.css';
 
 function AddQuestionPage() {
@@ -7,6 +8,17 @@ function AddQuestionPage() {
     Points: '',
     MultipleSelect: false,
     ImageBase64: '',
+  });
+
+  const [isComponentVisible, setComponentVisible] = useState(false);
+
+  useEffect(() => {
+    setComponentVisible(true);
+  }, []);
+
+  const fadeIn = useSpring({
+    opacity: isComponentVisible ? 1 : 0,
+    from: { opacity: 0 },
   });
 
   const handleInputChange = (e) => {
@@ -60,6 +72,7 @@ function AddQuestionPage() {
   };
 
   return (
+    <animated.div style={fadeIn}>
     <form className="add-question-form" onSubmit={handleSubmit}>
       <h2 className="add-question-headline">Add a Question</h2>
       <label className="add-question-label">
@@ -80,6 +93,7 @@ function AddQuestionPage() {
       </label>
       <button type="submit" className="add-question-button">Upload Question</button>
     </form>
+    </animated.div>
   );
 }
 

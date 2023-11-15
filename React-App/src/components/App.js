@@ -10,7 +10,6 @@ import RegistrationPage from "./RegistrationPage/RegistrationPage";
 import TestResultsPage from "./TestResultsPage/TestResultsPage";
 import UserProfilePage from "./UserProfilePage/UserProfilePage"
 
-
 function App() {
   const [testData, setTestData] = useState([]);
 
