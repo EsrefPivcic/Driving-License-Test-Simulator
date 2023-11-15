@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSpring, animated } from "react-spring";
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 
@@ -6,10 +7,26 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [error, setError] = useState('');
+  const [isComponentVisible, setComponentVisible] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setComponentVisible(true);
+  }, []);
+
+  const fadeIn = useSpring({
+    opacity: isComponentVisible ? 1 : 0,
+    from: { opacity: 0 },
+  });
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    if (!username || !password) {
+      setError('Both username and password are required');
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:8080/login', {
@@ -35,6 +52,7 @@ function LoginPage() {
       navigate('/');
     } catch (error) {
       console.error('Login failed:', error);
+      setError('Invalid username or password');
     }
   };
 
@@ -43,6 +61,7 @@ function LoginPage() {
   };
 
   return (
+    <animated.div style={fadeIn}>
     <div className="login-container">
       <h2 className="login-headline">Login</h2>
       <form onSubmit={handleFormSubmit}>
@@ -66,9 +85,10 @@ function LoginPage() {
             required
           />
         </label>
-        <button type="submit" className="add-login-button">
+        <button type="submit" className="add-login-button" disabled={isLoggedIn}>
           {isLoggedIn ? '' : 'Login'} {}
         </button>
+        {error && <p className="error-message">{error}</p>}
       </form>
       <p>
         Don't have an account?{' '}
@@ -77,6 +97,7 @@ function LoginPage() {
         </span>
       </p>
     </div>
+    </animated.div>
   );
 }
 

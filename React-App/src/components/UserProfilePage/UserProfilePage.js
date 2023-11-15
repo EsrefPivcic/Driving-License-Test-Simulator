@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSpring, animated } from "react-spring";
 import './UserProfilePage.css';
 
 function UserProfilePage() {
-    const [isEditing, setEditing] = useState(false);
+
+  const [isComponentVisible, setComponentVisible] = useState(false);
+
+    const [isEditing, setEditing] = useState({
+        name: false,
+        surname: false,
+        username: false,
+        email: false,
+        password: false,
+    });
 
     const userData = {
         name: 'John',
@@ -12,70 +22,124 @@ function UserProfilePage() {
         password: '********',
     };
 
-    const handleEditClick = () => {
-        setEditing(!isEditing);
+    useEffect(() => {
+        setComponentVisible(true);
+      }, []);
+    
+      const fadeIn = useSpring({
+        opacity: isComponentVisible ? 1 : 0,
+        from: { opacity: 0 },
+      });
+
+    const handleEditClick = (field) => {
+        setEditing((prevState) => ({
+            ...prevState,
+            [field]: !prevState[field],
+        }));
+    };
+
+    const handleSaveClick = (field) => {
+        setEditing((prevState) => ({
+            ...prevState,
+            [field]: false,
+        }));
     };
 
     return (
+    <animated.div style={fadeIn}>
         <div className="user-profile-container">
+            <h2 className="add-question-headline">Your Profile</h2>
             <div className="profile-image-container">
                 <img src="images/userimage.jpg" alt="Profile" />
-                <input type="file" accept="image/*" onChange={(e) => console.log(e.target.files[0])} />
+                <div class="file-input-container">
+                    <label for="fileInput" class="choose-file-btn">Choose File</label>
+                    <span class="file-name">No file chosen</span>
+                    <input className="default-choosefile"
+                        type="file"
+                        id="fileInput"
+                        accept="image/*"
+                        onChange="(e) => handleFileChange(e)"
+                    />
+                </div>
             </div>
-
             <div className="user-info-container">
                 <div className="user-info-row">
                     <span>Name:</span>
-                    {isEditing ? (
-                        <input type="text" defaultValue={userData.name} />
+                    {isEditing.name ? (
+                        <input className="edit-input" type="text" defaultValue={userData.name} />
                     ) : (
-                        <span>{userData.name}</span>
+                        <span className="data-span">{userData.name}</span>
                     )}
-                    <button onClick={handleEditClick}>{isEditing ? 'Save' : 'Edit'}</button>
+                    <button
+                        className="edit-button"
+                        onClick={() => (isEditing.name ? handleSaveClick('name') : handleEditClick('name'))}
+                    >
+                        {isEditing.name ? 'Save' : 'Edit'}
+                    </button>
                 </div>
 
                 <div className="user-info-row">
                     <span>Surname:</span>
-                    {isEditing ? (
-                        <input type="text" defaultValue={userData.surname} />
+                    {isEditing.surname ? (
+                        <input className="edit-input" type="text" defaultValue={userData.surname} />
                     ) : (
-                        <span>{userData.surname}</span>
+                        <span className="data-span">{userData.surname}</span>
                     )}
-                    <button onClick={handleEditClick}>{isEditing ? 'Save' : 'Edit'}</button>
+                    <button
+                        className="edit-button"
+                        onClick={() => (isEditing.surname ? handleSaveClick('surname') : handleEditClick('surname'))}
+                    >
+                        {isEditing.surname ? 'Save' : 'Edit'}
+                    </button>
                 </div>
 
                 <div className="user-info-row">
                     <span>Username:</span>
-                    {isEditing ? (
-                        <input type="text" defaultValue={userData.username} />
+                    {isEditing.username ? (
+                        <input className="edit-input" type="text" defaultValue={userData.username} />
                     ) : (
-                        <span>{userData.username}</span>
+                        <span className="data-span">{userData.username}</span>
                     )}
-                    <button onClick={handleEditClick}>{isEditing ? 'Save' : 'Edit'}</button>
+                    <button
+                        className="edit-button"
+                        onClick={() => (isEditing.username ? handleSaveClick('username') : handleEditClick('username'))}
+                    >
+                        {isEditing.username ? 'Save' : 'Edit'}
+                    </button>
                 </div>
 
                 <div className="user-info-row">
                     <span>Email:</span>
-                    {isEditing ? (
-                        <input type="text" defaultValue={userData.email} />
+                    {isEditing.email ? (
+                        <input className="edit-input" type="text" defaultValue={userData.email} />
                     ) : (
-                        <span>{userData.email}</span>
+                        <span className="data-span">{userData.email}</span>
                     )}
-                    <button onClick={handleEditClick}>{isEditing ? 'Save' : 'Edit'}</button>
+                    <button
+                        className="edit-button"
+                        onClick={() => (isEditing.email ? handleSaveClick('email') : handleEditClick('email'))}
+                    >
+                        {isEditing.email ? 'Save' : 'Edit'}
+                    </button>
                 </div>
 
                 <div className="user-info-row">
                     <span>Password:</span>
-                    {isEditing ? (
-                        <input type="password" defaultValue={userData.password} />
+                    {isEditing.password ? (
+                        <input className="edit-input" type="password" defaultValue={userData.password} />
                     ) : (
-                        <span>********</span>
+                        <span className="data-span">********</span>
                     )}
-                    <button onClick={handleEditClick}>{isEditing ? 'Save' : 'Edit'}</button>
+                    <button
+                        className="edit-button"
+                        onClick={() => (isEditing.password ? handleSaveClick('password') : handleEditClick('password'))}
+                    >
+                        {isEditing.password ? 'Save' : 'Edit'}
+                    </button>
                 </div>
-
             </div>
         </div>
+        </animated.div>
     );
 }
 
