@@ -2,10 +2,44 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
+async function validateToken(token) {
+  try {
+    const response = await fetch('http://localhost:8080/checktoken', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Token validation failed:', error);
+  }
+}
+
 function HomePage({ testData }) {
-  const [isLoggedIn, setLoggedIn] = useState(!!localStorage.getItem('token'));
+  const storedToken = localStorage.getItem('token');
+  const [isLoggedIn, setLoggedIn] = useState(false);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkToken = async () => {
+      if (storedToken) {
+        const isValid = await validateToken(storedToken);
+
+        if (!isValid) {
+          localStorage.removeItem('token');
+          setLoggedIn(false);
+        } else {
+          setLoggedIn(true);
+        }
+      }
+    };
+
+    checkToken();
+  }, [storedToken]);
 
   useEffect(() => {
     if (isLoggedIn) {

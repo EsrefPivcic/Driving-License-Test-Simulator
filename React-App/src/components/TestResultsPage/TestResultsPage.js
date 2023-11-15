@@ -14,8 +14,6 @@ function TestResultsPage() {
     const [testData, setTestData] = useState({});
     const [studentResponsesData, setStudentResponsesData] = useState([]);
     const [optionData, setOptionData] = useState([]);
-    const buttonStyle = "result-button";
-    const backButtonStyle = `${buttonStyle} result-back-button`;
 
     const fadeIn = useSpring({
         opacity: isComponentVisible ? 1 : 0,
@@ -120,9 +118,6 @@ function TestResultsPage() {
     };
 
     useEffect(() => {
-        console.log(attempt);
-        setComponentVisible(true);
-
         const fetchData = async () => {
             await fetchTestData();
             await fetchStudentResponsesData();
@@ -135,6 +130,7 @@ function TestResultsPage() {
         if (testData.Questions) {
             fetchQuestionData();
             fetchOptionData();
+            setComponentVisible(true);
         }
     }, [testData]);
 
@@ -180,11 +176,11 @@ function TestResultsPage() {
                                 .map((option) => option.ID)
                         )}
                     </div>
+                    <div className="result-points">Points scored: {response.IsCorrect && (question.Points)}{!response.IsCorrect && (0)}/{question.Points}</div>
                 </div>
             );
         });
     };
-
     return (
         <animated.div className={`result-container ${testData.Title}`} style={fadeIn}>
             <div className="result-start-test-container">
@@ -223,7 +219,7 @@ function TestResultsPage() {
                     className={`result-button result-back-to-home-button`}
                     onClick={handleBackToHome}
                 >
-                    Quit
+                    Done
                 </button>
             </div>
         </animated.div>
