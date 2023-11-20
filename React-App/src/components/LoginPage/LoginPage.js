@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSpring, animated } from "react-spring";
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext/AuthContext';
 import './LoginPage.css';
 
 function LoginPage() {
+  const {setAuthStatus} = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState('');
   const [isComponentVisible, setComponentVisible] = useState(false);
   const navigate = useNavigate();
@@ -44,12 +45,9 @@ function LoginPage() {
       const data = await response.json();
 
       const token = data.token;
-
-      localStorage.setItem('token', token);
-
-      setIsLoggedIn(true);
-
-      navigate('/');
+      setAuthStatus(token);
+      
+      navigate(`/`, { state: { login: true } });
     } catch (error) {
       console.error('Login failed:', error);
       setError('Invalid username or password');
@@ -85,8 +83,8 @@ function LoginPage() {
             required
           />
         </label>
-        <button type="submit" className="add-login-button" disabled={isLoggedIn}>
-          {isLoggedIn ? '' : 'Login'} {}
+        <button type="submit" className="add-login-button">
+          {'Login'} {}
         </button>
         {error && <p className="error-message">{error}</p>}
       </form>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate  } from "react-router-dom";
 import HomePage from "./HomePage/HomePage";
 import TestPage from "./TestPage/TestPage";
 import AddTestPage from "./AddTestPage/AddTestPage";
@@ -8,11 +8,12 @@ import "./App.css";
 import LoginPage from "./LoginPage/LoginPage";
 import RegistrationPage from "./RegistrationPage/RegistrationPage";
 import TestResultsPage from "./TestResultsPage/TestResultsPage";
-import UserProfilePage from "./UserProfilePage/UserProfilePage"
+import UserProfilePage from "./UserProfilePage/UserProfilePage";
+import { useAuth } from "./AuthContext/AuthContext";
 
 function App() {
   const [testData, setTestData] = useState([]);
-
+  const { isAuthenticated } = useAuth();
   useEffect(() => {
     fetchTestData();
   }, []);
@@ -37,14 +38,14 @@ function App() {
           <h1 className="app-title">
             <Link to="/">eDrivingSchool</Link>
           </h1>
-          <Routes>
+          {isAuthenticated ? (<Routes>
             <Route path="addtest" element={<AddTestPage />}></Route>
             <Route path="addquestion" element={<AddQuestionPage />}></Route>
-            <Route path="login" element={<LoginPage />}></Route>
             <Route path="register" element={<RegistrationPage />}></Route>
             <Route path="testresults" element={<TestResultsPage />}></Route>
             <Route path="userprofile" element={<UserProfilePage />}></Route>
             <Route path="/" element={<HomePage testData={testData} />} />
+            <Route path="*" element={<Navigate to="/" />} />
             {Object.keys(testData).map((test) => (
               <Route
                 key={testData[test].ID}
@@ -66,7 +67,11 @@ function App() {
                 }
               />
             ))}
-          </Routes>
+          </Routes>) : (<Routes>
+            <Route path="/" element={<LoginPage />}></Route>     
+            <Route path="*" element={<Navigate to="/" />} />      
+            </Routes>
+          )}      
         </div>
       </div>
     </BrowserRouter>

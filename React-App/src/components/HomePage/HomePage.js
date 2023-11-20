@@ -1,101 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../AuthContext/AuthContext";
 import "./HomePage.css";
 
-async function validateToken(token) {
-  try {
-    const response = await fetch('http://localhost:8080/checktoken', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token }),
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Token validation failed:', error);
-  }
-}
-
 function HomePage({ testData }) {
-  const storedToken = localStorage.getItem('token');
-  const [isLoggedIn, setLoggedIn] = useState(false);
+
+  const { isAuthenticated, clearAuthStatus, ValidateToken, LogOut } = useAuth();
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+  const location = useLocation();
+  const [login, setLogin] = useState(location.state?.login);
 
   useEffect(() => {
     const checkToken = async () => {
-      if (storedToken) {
-        const isValid = await validateToken(storedToken);
-
+      if (isAuthenticated) {
+        const isValid = await ValidateToken();
         if (!isValid) {
-          localStorage.removeItem('token');
-          setLoggedIn(false);
-        } else {
-          setLoggedIn(true);
-        }
+          clearAuthStatus();
+        } 
       }
     };
-
     checkToken();
-  }, [storedToken]);
+  }, [isAuthenticated, ValidateToken, clearAuthStatus]);
 
-  useEffect(() => {
-    if (isLoggedIn) {
+  useEffect(() => { 
+    if (login) {
       setMessage('Welcome! You are now logged in.');
       setTimeout(() => {
         setMessage('');
+        setLogin(false);
       }, 2000);
     }
-  }, [isLoggedIn]);
+  }, [login]);
 
-  const logout = async () => {
-    const token = localStorage.getItem('token');
-
-    try {
-      const response = await fetch('http://localhost:8080/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Logout failed');
-      }
-
-      localStorage.removeItem('token');
-      setLoggedIn(false);
-      navigate('/');
-      setMessage('You have been successfully logged out.');
-      setTimeout(() => {
-        setMessage('');
-      }, 2000);
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
-  };
-
-  const handleLogin = () => {
-    if (isLoggedIn) {
-      setMessage('You have been successfully logged out.');
-      logout();
-    } else {
-      setLoggedIn(!isLoggedIn);
-      setMessage('Welcome! You are now logged in.');
-      setTimeout(() => {
-        setMessage('');
-      }, 2000);
-    }
+  const HandleLogOut = async () => {
+      LogOut();
   };
 
   return (
     <div className="categories">
       {message && <p className="message">{message}</p>}
       <div className="login">
-        {isLoggedIn ? (
+        {isAuthenticated ? (
           <div className="profile-dropdown">
             <img
               src="images/userimage.jpg"
@@ -106,12 +51,12 @@ function HomePage({ testData }) {
               <Link to={`/userprofile`} style={{ textDecoration: "none" }}>
                 <p>User Profile</p>
               </Link>
-              <p onClick={logout}>Logout</p>
+              <p onClick={HandleLogOut}>Logout</p>
             </div>
           </div>
         ) : (
           <Link to={`/login`} style={{ textDecoration: "none" }}>
-            <button className="login-button" onClick={handleLogin}>
+            <button className="login-button">
               Login
             </button>
           </Link>
