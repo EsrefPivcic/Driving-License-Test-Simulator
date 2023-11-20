@@ -47,3 +47,18 @@ func ValidateCredentials(db *sql.DB, username, passwordInput string) (bool, int,
 	valid := utils.ComparePasswords(password, passwordInput)
 	return valid, id, nil
 }
+
+func RetrieveStudentIDByTokenFromDB(db *sql.DB, token string) (int, error) {
+	var studentID int
+
+	query := "SELECT StudentID FROM AuthenticationToken WHERE Value = $1"
+	row := db.QueryRow(query, token)
+
+	err := row.Scan(&studentID)
+	if err != nil {
+		log.Printf("Error executing SQL query: %v", err)
+		return 0, err
+	}
+
+	return studentID, nil
+}

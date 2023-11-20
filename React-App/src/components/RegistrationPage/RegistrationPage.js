@@ -31,9 +31,9 @@ function RegistrationPage() {
   };
 
   const validateName = (name) => {
-    const nameRegex = /^[A-Z][a-z]*$/;
+    const nameRegex = /^[A-Z][a-zA-Z]*$/;
     return nameRegex.test(name);
-  };
+  };  
 
   const validateUsername = (username) => {
     return !/\s/.test(username);

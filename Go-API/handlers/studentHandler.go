@@ -48,3 +48,40 @@ func CreateStudentHandler(db *sql.DB) http.HandlerFunc {
 		respondJSON(w, student)
 	}
 }
+
+func RetrieveStudentByTokenHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request struct {
+			Token string `json:"token"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&request)
+		if err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		student, err := dal.RetrieveStudentByIdFromDB(db, studentID)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		response, err := json.Marshal(student)
+		if err != nil {
+			log.Fatal(err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(response)
+	}
+}

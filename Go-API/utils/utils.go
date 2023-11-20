@@ -1,11 +1,14 @@
 package utils
 
 import (
+	"log"
+
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func ComparePasswords(storedPassword, providedPassword string) bool {
+	log.Printf("Comparing passwords: StoredPassword=%s, ProvidedPassword=%s", storedPassword, providedPassword)
 	err := bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(providedPassword))
 	return err == nil
 }

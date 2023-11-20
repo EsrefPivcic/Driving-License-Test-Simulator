@@ -65,6 +65,10 @@
     background-color: #007bb5;
 }
 
+.edit-button.save-button {
+    height: 32px;
+  }
+
 .file-input-container {
     position: relative;
     width: 300px;
@@ -108,4 +112,30 @@
 .data-span {
     position: absolute;
     margin-left: 100px;
+}
+
+.password-input {
+    position: relative;
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-left: 0;
+  }
+  
+  .password-editing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .password-editing input {
+    margin-bottom: 10px;
+  }
+  
+.error-message-profile {
+  color: #ff4d4d;
+  font-size: 12px;
+  background-color: #ffe5e5;
+  padding: 8px;
+  border-radius: 4px;
+  margin-right: 10px;
 }
