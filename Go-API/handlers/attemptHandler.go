@@ -31,11 +31,48 @@ func RetrieveAttemptsHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+func RetrieveAttemptsByStudentIdHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request struct {
+			Token string `json:"token"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&request)
+		if err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		if err != nil {
+			log.Printf("Error retrieving a StudentID: %v", err)
+		}
+
+		attempts, err := dal.RetrieveAttemptsByStudentIdFromDB(db, studentID)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		response, err := json.Marshal(attempts)
+		if err != nil {
+			log.Fatal(err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(response)
+	}
+}
+
 func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var attempt models.Attempt
 		var responses []models.StudentResponse
 		var request struct {
+			Token            string                   `json:"token"`
 			TestID           int                      `json:"testid"`
 			StudentResponses []models.StudentResponse `json:"studentresponses"`
 		}
@@ -46,7 +83,7 @@ func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		attempt, responses = services.CalculateTestPass(db, request.StudentResponses, request.TestID)
+		attempt, responses = services.CalculateTestPass(db, request.StudentResponses, request.TestID, request.Token)
 
 		attemptID, err := dal.CreateInDBAttemptGetId(db, attempt)
 		if err != nil {

@@ -89,17 +89,8 @@
   right: 20px;
 }
 
-.dropdown-content p:first-child {
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
-.dropdown-content p:last-child {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-
 .dropdown-content p {
+  border-radius: 8px;
   color: #fff;
   padding: 12px 0;
   margin: 0;

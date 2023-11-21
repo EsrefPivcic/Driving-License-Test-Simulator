@@ -10,6 +10,7 @@ import RegistrationPage from "./RegistrationPage/RegistrationPage";
 import TestResultsPage from "./TestResultsPage/TestResultsPage";
 import UserProfilePage from "./UserProfilePage/UserProfilePage";
 import { useAuth } from "./AuthContext/AuthContext";
+import AttemptsHistoryPage from "./AttemptsHistroyPage/AttemptsHistoryPage";
 
 function App() {
   const [testData, setTestData] = useState([]);
@@ -41,7 +42,7 @@ function App() {
           {isAuthenticated ? (<Routes>
             <Route path="addtest" element={<AddTestPage />}></Route>
             <Route path="addquestion" element={<AddQuestionPage />}></Route>
-            <Route path="register" element={<RegistrationPage />}></Route>
+            <Route path="attemptshistory" element={<AttemptsHistoryPage />}></Route>
             <Route path="testresults" element={<TestResultsPage />}></Route>
             <Route path="userprofile" element={<UserProfilePage />}></Route>
             <Route path="/" element={<HomePage testData={testData} />} />
@@ -69,6 +70,7 @@ function App() {
             ))}
           </Routes>) : (<Routes>
             <Route path="/" element={<LoginPage />}></Route>     
+            <Route path="register" element={<RegistrationPage />}></Route>
             <Route path="*" element={<Navigate to="/" />} />      
             </Routes>
           )}      

@@ -7,7 +7,6 @@ function TestResultsPage() {
 
     const location = useLocation();
     const attempt = location.state?.attempt;
-
     const navigate = useNavigate();
     const [isComponentVisible, setComponentVisible] = useState(false);
     const [questionData, setQuestionData] = useState([]);
@@ -181,49 +180,54 @@ function TestResultsPage() {
             );
         });
     };
-    return (
-        <animated.div className={`result-container ${testData.Title}`} style={fadeIn}>
-            <div className="result-start-test-container">
-                <div className="result-category-page">
-                    <h2>{testData.Title} - Results</h2>
-                    <img
-                        src={`data:image/png;base64,${testData.ImageBase64}`}
-                        alt={`Test: ${testData.Title}`}
-                        width={"150"}
-                        className="result-category-image"
-                    />
-                </div>
-                <div className="result-score-container">
-                    {passed ? (
+    if (!attempt) {
+        return <div>Loading...</div>
+    }
+    else {
+        return (
+            <animated.div className={`result-container ${testData.Title}`} style={fadeIn}>
+                <div className="result-start-test-container">
+                    <div className="result-category-page">
+                        <h2>{testData.Title} - Results</h2>
+                        <img
+                            src={`data:image/png;base64,${testData.ImageBase64}`}
+                            alt={`Test: ${testData.Title}`}
+                            width={"150"}
+                            className="result-category-image"
+                        />
+                    </div>
+                    <div className="result-score-container">
+                        {passed ? (
+                            <div>
+                                <strong className="result-passed">Passed!</strong>
+                            </div>
+                        ) : (
+                            <div>
+                                <strong className="result-failed">Failed!</strong>
+                            </div>
+                        )}
                         <div>
-                            <strong className="result-passed">Passed!</strong>
+                            <strong>Score:</strong> {score}
                         </div>
-                    ) : (
                         <div>
-                            <strong className="result-failed">Failed!</strong>
+                            <strong>Max Score:</strong> {maxScore}
                         </div>
-                    )}
-                    <div>
-                        <strong>Score:</strong> {score}
+                        <div>
+                            <strong>Percentage:</strong> {percentage}%
+                        </div>
                     </div>
-                    <div>
-                        <strong>Max Score:</strong> {maxScore}
-                    </div>
-                    <div>
-                        <strong>Percentage:</strong> {percentage}%
-                    </div>
+                    {renderQuestions()}
+                    <button
+                        type="button"
+                        className={`result-button result-back-to-home-button`}
+                        onClick={handleBackToHome}
+                    >
+                        Done
+                    </button>
                 </div>
-                {renderQuestions()}
-                <button
-                    type="button"
-                    className={`result-button result-back-to-home-button`}
-                    onClick={handleBackToHome}
-                >
-                    Done
-                </button>
-            </div>
-        </animated.div>
-    );
+            </animated.div>
+        );
+    }
 }
 
 export default TestResultsPage;

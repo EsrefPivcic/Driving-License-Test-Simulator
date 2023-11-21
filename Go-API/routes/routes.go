@@ -17,6 +17,7 @@ func SetupRouter(db *sql.DB) *mux.Router {
 	r.HandleFunc("/test/getbyid", handlers.RetrieveTestByIdHandler(db))
 	r.HandleFunc("/test/post", handlers.CreateTestHandler(db))
 	r.HandleFunc("/attempts/get", handlers.RetrieveAttemptsHandler(db))
+	r.HandleFunc("/attempts/getbystudentid", handlers.RetrieveAttemptsByStudentIdHandler(db))
 	r.HandleFunc("/attempt/post", handlers.CreateAttemptHandler(db))
 	r.HandleFunc("/attempt/submit", handlers.SubmitAttemptHandler(db))
 	r.HandleFunc("/students/get", handlers.RetrieveStudentsHandler(db))
