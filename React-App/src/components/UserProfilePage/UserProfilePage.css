@@ -139,3 +139,13 @@
   border-radius: 4px;
   margin-right: 10px;
 }
+
+.success-message-profile {
+  background: #4CAF50;
+  color: #fff;
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 1;
+}

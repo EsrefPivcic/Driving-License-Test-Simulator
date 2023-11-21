@@ -36,7 +36,7 @@ function RegistrationPage() {
   };  
 
   const validateUsername = (username) => {
-    return !/\s/.test(username);
+    return /^\S+$/.test(username);
   };
 
   const validateEmail = (email) => {

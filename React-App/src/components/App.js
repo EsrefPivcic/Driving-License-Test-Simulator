@@ -41,7 +41,6 @@ function App() {
           {isAuthenticated ? (<Routes>
             <Route path="addtest" element={<AddTestPage />}></Route>
             <Route path="addquestion" element={<AddQuestionPage />}></Route>
-            <Route path="register" element={<RegistrationPage />}></Route>
             <Route path="testresults" element={<TestResultsPage />}></Route>
             <Route path="userprofile" element={<UserProfilePage />}></Route>
             <Route path="/" element={<HomePage testData={testData} />} />
@@ -68,7 +67,8 @@ function App() {
               />
             ))}
           </Routes>) : (<Routes>
-            <Route path="/" element={<LoginPage />}></Route>     
+            <Route path="/" element={<LoginPage />}></Route>  
+            <Route path="register" element={<RegistrationPage />}></Route>
             <Route path="*" element={<Navigate to="/" />} />      
             </Routes>
           )}      
