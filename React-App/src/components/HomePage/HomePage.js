@@ -51,6 +51,9 @@ function HomePage({ testData }) {
               <Link to={`/userprofile`} style={{ textDecoration: "none" }}>
                 <p>User Profile</p>
               </Link>
+              <Link to={`/attemptshistory`} style={{ textDecoration: "none" }}>
+                <p>Attempts history</p>
+              </Link>
               <p onClick={HandleLogOut}>Logout</p>
             </div>
           </div>

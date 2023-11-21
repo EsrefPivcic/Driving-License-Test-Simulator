@@ -2,6 +2,7 @@ package dal
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"log"
 	"project/models"
 
@@ -105,6 +106,81 @@ INNER JOIN Test AS t ON a.TestID = t.ID
 
 		attempt.Student = student
 		attempt.Test = test
+
+		attempts = append(attempts, attempt)
+	}
+
+	return attempts, nil
+}
+
+func RetrieveAttemptsByStudentIdFromDB(db *sql.DB, studentId int) ([]models.Attempt, error) {
+	query := `SELECT 
+	a.ID AS AttemptID,
+	a.StudentID AS AttemptStudentID,
+	a.TestID AS AttemptTestID,
+	a.Score AS Score,
+	a.Passed AS Passed,
+	a.MaxScore AS MaxScore,
+	a.Percentage AS Percentage,
+	t.ID AS TestID,
+	t.Title AS Title,
+	t.Description AS Description,
+	t.Questions AS Question,
+	t.Category AS Category,
+	t.Image AS Image,
+	t.Duration AS Duration
+FROM Attempt AS a
+INNER JOIN Test AS t ON a.TestID = t.ID
+WHERE a.StudentID = $1`
+	rows, err := db.Query(query, studentId)
+	if err != nil {
+		log.Printf("Error executing SQL query: %v", err)
+		return []models.Attempt{}, err
+	}
+	defer rows.Close()
+
+	var attempts []models.Attempt
+
+	for rows.Next() {
+		var attempt models.Attempt
+		var test models.Test
+
+		var imageArray pq.ByteaArray
+		var questionArray pq.Int64Array
+
+		err := rows.Scan(
+			&attempt.ID,
+			&attempt.StudentID,
+			&attempt.TestID,
+			&attempt.Score,
+			&attempt.Passed,
+			&attempt.MaxScore,
+			&attempt.Percentage,
+			&test.ID,
+			&test.Title,
+			&test.Description,
+			&questionArray,
+			&test.Category,
+			&imageArray,
+			&test.Duration,
+		)
+		if err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+
+		test.Questions = make([]int, len(questionArray))
+		for i, val := range questionArray {
+			test.Questions[i] = int(val)
+		}
+
+		var imageBytes []byte
+		for _, chunk := range imageArray {
+			imageBytes = append(imageBytes, chunk...)
+		}
+
+		attempt.Test = test
+		attempt.Test.ImageBase64 = base64.StdEncoding.EncodeToString(imageBytes)
 
 		attempts = append(attempts, attempt)
 	}

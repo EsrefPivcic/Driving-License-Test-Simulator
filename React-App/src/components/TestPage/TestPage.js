@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import "./TestPage.css";
+import { useAuth } from "../AuthContext/AuthContext";
 
 function TestPage({ test, testData }) {
+  const { authToken } = useAuth();
   const navigate = useNavigate();
   const [showWarning, setShowWarning] = useState(false);
   const [isComponentVisible, setComponentVisible] = useState(false);
@@ -18,6 +20,8 @@ function TestPage({ test, testData }) {
   const { Title, Description, ImageBase64, Category, Duration } = testData[test];
   const { Questions } = testData[test];
   const { ID } = testData[test];
+  const [questionData, setQuestionData] = useState([]);
+  const [optionData, setOptionData] = useState([]);
 
   const fadeIn = useSpring({
     opacity: isComponentVisible ? 1 : 0,
@@ -28,9 +32,6 @@ function TestPage({ test, testData }) {
     opacity: testStarted ? 1 : 0,
     from: { opacity: 0 },
   });
-
-  const [questionData, setQuestionData] = useState([]);
-  const [optionData, setOptionData] = useState([]);
 
   const fetchQuestionData = async () => {
     try {
@@ -61,27 +62,27 @@ function TestPage({ test, testData }) {
       questionid: questionId,
       selectedoptions: selectedOptionIds,
     }));
-  
+
     try {
       const response = await fetch("http://localhost:8080/attempt/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ testid, studentresponses: formattedStudentResponses }),
+        body: JSON.stringify({ token: authToken, testid, studentresponses: formattedStudentResponses }),
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
+
       const data = await response.json();
       navigate(`/testresults`, { state: { attempt: data } });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  
+
   const fetchOptionData = async () => {
     try {
       const response = await fetch(
@@ -232,10 +233,10 @@ function TestPage({ test, testData }) {
                 <div>
                   {getOptionsForCurrentQuestion().map((option, optionIndex) => (
                     <label className="option-input" key={optionIndex} style={{ display: "block", marginBottom: "10px" }}>
-                      <input 
-                      className="option-input"           
+                      <input
+                        className="option-input"
                         type={questionData[currentQuestion].MultipleSelect ? "checkbox" : "radio"}
-                        name={`question_${questionData[currentQuestion].ID}`} 
+                        name={`question_${questionData[currentQuestion].ID}`}
                         value={option.ID}
                         checked={selectedOptions[questionData[currentQuestion].ID]?.includes(option.ID) || false}
                         onChange={(e) => {

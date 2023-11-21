@@ -3,7 +3,6 @@ package handlers
 import (
 	"database/sql"
 	"encoding/json"
-	"log"
 	"net/http"
 	"project/dal"
 	"project/utils"
@@ -25,15 +24,12 @@ func ChangePasswordHandler(db *sql.DB) http.HandlerFunc {
 		}
 
 		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
-		log.Printf("ID=%d", studentID)
-
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
 		student, err := dal.RetrieveStudentPasswordByIdFromDB(db, studentID)
-		log.Printf("ID=%s", student.Password)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return

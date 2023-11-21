@@ -63,9 +63,8 @@ function UserProfilePage() {
       const data = await response.json();
       setUserData(data);
     } catch (error) {
-      console.error('Error changing password:', error);
-      setPasswordChangeError(error.message || 'An error occurred while changing the password');
-    }
+      console.error('Error fetching data:', error);
+    }    
   };
 
   useEffect(() => {
