@@ -10,27 +10,33 @@ import RegistrationPage from "./RegistrationPage/RegistrationPage";
 import TestResultsPage from "./TestResultsPage/TestResultsPage";
 import UserProfilePage from "./UserProfilePage/UserProfilePage";
 import { useAuth } from "./AuthContext/AuthContext";
-import AttemptsHistoryPage from "./AttemptsHistroyPage/AttemptsHistoryPage";
+import ExamHistoryPage from "./ExamHistoryPage/ExamHistoryPage";
 
 function App() {
-  const [testData, setTestData] = useState([]);
-  const { isAuthenticated } = useAuth();
-  useEffect(() => {
-    fetchTestData();
-  }, []);
+  const { isAuthenticated, clearAuthStatus, ValidateToken, login, closeLogin } = useAuth();
+  const [message, setMessage] = useState('');
 
-  const fetchTestData = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/tests/get");
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  useEffect(() => {
+    const checkToken = async () => {
+      if (isAuthenticated) {
+        const isValid = await ValidateToken();
+        if (!isValid) {
+          clearAuthStatus();
+        }
       }
-      const data = await response.json();
-      setTestData(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    };
+    checkToken();
+  }, [isAuthenticated, ValidateToken, clearAuthStatus]);
+
+  useEffect(() => {
+    if (login) {
+      setMessage('Welcome! You are now logged in.');
+      setTimeout(() => {
+        setMessage('');
+        closeLogin();
+      }, 2000);
     }
-  };
+  }, [login]);
 
   return (
     <BrowserRouter>
@@ -39,35 +45,16 @@ function App() {
           <h1 className="app-title">
             <Link to="/">eDrivingSchool</Link>
           </h1>
+          {message && <p className="message">{message}</p>}
           {isAuthenticated ? (<Routes>
+            <Route path="/" element={<HomePage/>} />
             <Route path="addtest" element={<AddTestPage />}></Route>
             <Route path="addquestion" element={<AddQuestionPage />}></Route>
-            <Route path="attemptshistory" element={<AttemptsHistoryPage />}></Route>
+            <Route path="examhistory" element={<ExamHistoryPage />}></Route>
             <Route path="testresults" element={<TestResultsPage />}></Route>
+            <Route path="test" element={<TestPage/>}></Route>
             <Route path="userprofile" element={<UserProfilePage />}></Route>
-            <Route path="/" element={<HomePage testData={testData} />} />
-            <Route path="*" element={<Navigate to="/" />} />
-            {Object.keys(testData).map((test) => (
-              <Route
-                key={testData[test].ID}
-                path={`/${testData[test].Category.toLowerCase()}test`}
-                element={
-                  testData[test].Category === "A" ? (
-                    <TestPage test={test} testData={testData} />
-                  ) : testData[test].Category === "B" ? (
-                    <TestPage test={test} testData={testData} />
-                  ) : testData[test].Category === "C" ? (
-                    <TestPage test={test} testData={testData} />
-                  ) : testData[test].Category === "D" ? (
-                    <TestPage test={test} testData={testData} />
-                  ) : testData[test].Category === "T" ? (
-                    <TestPage test={test} testData={testData} />
-                  ) : (
-                    <TestPage test={test} testData={testData} />
-                  )
-                }
-              />
-            ))}
+            <Route path="*" element={<Navigate to="/" />} />          
           </Routes>) : (<Routes>
             <Route path="/" element={<LoginPage />}></Route>     
             <Route path="register" element={<RegistrationPage />}></Route>

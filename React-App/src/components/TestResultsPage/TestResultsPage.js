@@ -13,6 +13,7 @@ function TestResultsPage() {
     const [testData, setTestData] = useState({});
     const [studentResponsesData, setStudentResponsesData] = useState([]);
     const [optionData, setOptionData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const fadeIn = useSpring({
         opacity: isComponentVisible ? 1 : 0,
@@ -116,10 +117,15 @@ function TestResultsPage() {
         navigate("/");
     };
 
+    const handleToExamHistory = () => {
+        navigate("/examhistory");
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             await fetchTestData();
             await fetchStudentResponsesData();
+            setIsLoading(false);
         };
 
         fetchData();
@@ -138,7 +144,7 @@ function TestResultsPage() {
     const maxScore = attempt.MaxScore;
     const percentage = ((score / maxScore) * 100).toFixed(2);
 
-    const renderOptions = (questionID, selectedOptions, correctOptions) => {
+    const renderOptions = (questionID, selectedOptions) => {
         return optionData
             .filter((option) => option.QuestionID === questionID)
             .map((option) => (
@@ -148,7 +154,7 @@ function TestResultsPage() {
                         ? option.IsCorrect
                             ? "result-selected-correct"
                             : "result-selected-incorrect"
-                        : ""
+                        : option.IsCorrect ? "result-not-selected-correct" : "result-not-selected-incorrect"
                         }`}
                 >
                     {option.OptionText}
@@ -180,8 +186,8 @@ function TestResultsPage() {
             );
         });
     };
-    if (!attempt) {
-        return <div>Loading...</div>
+    if (isLoading) {
+        return <div className="loadingresults">Loading...</div>
     }
     else {
         return (
@@ -217,13 +223,20 @@ function TestResultsPage() {
                         </div>
                     </div>
                     {renderQuestions()}
-                    <button
+                    <div><button
                         type="button"
-                        className={`result-button result-back-to-home-button`}
+                        className={`home-history-button history-button`}
+                        onClick={handleToExamHistory}
+                    >
+                        Exam History
+                    </button></div>
+                    <div><button
+                        type="button"
+                        className={`home-history-button home-button`}
                         onClick={handleBackToHome}
                     >
-                        Done
-                    </button>
+                        Home
+                    </button></div>
                 </div>
             </animated.div>
         );

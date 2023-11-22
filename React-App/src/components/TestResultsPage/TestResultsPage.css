@@ -2,7 +2,15 @@
     max-width: 750px;
     margin: 20px auto;
   }
-  
+
+  .loadingresults {
+    max-width: 250px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #61dafb;
+}
+      
   .result-start-test-container {
     border: 2px solid #61dafb;
     border-radius: 10px;
@@ -71,22 +79,38 @@
   .result-selected-correct {
     background-color: #58a058;
   }
+
+  .result-not-selected-correct {
+    border: 2px solid #58a058;
+  }
+
+  .result-not-selected-incorrect {
+    border: 2px solid #9c4c4c;
+  }
   
   .result-selected-incorrect {
     background-color: #9c4c4c;
   }
   
-  .result-back-to-home-button {
+  .home-history-button {
     background-color: #2196f3;
     color: #fff;  
     border: none;
     border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 10px 10px;
+    font-size: 15px;
     cursor: pointer;
   }
+
+  .home-button{
+    margin-top: 5px;
+  }
+
+  .history-button{
+    margin-bottom: 5px;
+  }
   
-  .result-back-to-home-button:hover {
+  .home-history-button:hover {
     background-color: #0d75ca;
     color: #d8d8d8;  
   }

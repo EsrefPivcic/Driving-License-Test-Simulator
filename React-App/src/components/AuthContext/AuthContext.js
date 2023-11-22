@@ -4,6 +4,7 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(localStorage.getItem('token'));
+  const [login, setLogin] = useState(false);
 
   const setAuthStatus = (token) => {
     setAuthToken(token);
@@ -14,6 +15,14 @@ export const AuthProvider = ({ children }) => {
     setAuthToken(null);
     localStorage.removeItem('token');
   };
+
+  const openLogin = () => {
+    setLogin(true);
+  }
+
+  const closeLogin = () => {
+    setLogin(false);
+  }
 
   const ValidateToken = async () => {
     try {
@@ -54,7 +63,10 @@ export const AuthProvider = ({ children }) => {
 
   const contextValue = {
     authToken,
+    login,
     setAuthStatus,
+    openLogin,
+    closeLogin,
     clearAuthStatus,
     isAuthenticated: !!authToken,
     ValidateToken,

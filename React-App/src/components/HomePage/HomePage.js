@@ -1,87 +1,81 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext/AuthContext";
 import "./HomePage.css";
 
-function HomePage({ testData }) {
+function HomePage() {
+  const { isAuthenticated, LogOut } = useAuth();
+  const [testData, setTestData] = useState([]);
+  const navigate = useNavigate();
 
-  const { isAuthenticated, clearAuthStatus, ValidateToken, LogOut } = useAuth();
-  const [message, setMessage] = useState('');
-  const location = useLocation();
-  const [login, setLogin] = useState(location.state?.login);
+  const fetchTestData = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/tests/get");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setTestData(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    const checkToken = async () => {
-      if (isAuthenticated) {
-        const isValid = await ValidateToken();
-        if (!isValid) {
-          clearAuthStatus();
-        } 
-      }
-    };
-    checkToken();
-  }, [isAuthenticated, ValidateToken, clearAuthStatus]);
-
-  useEffect(() => { 
-    if (login) {
-      setMessage('Welcome! You are now logged in.');
-      setTimeout(() => {
-        setMessage('');
-        setLogin(false);
-      }, 2000);
-    }
-  }, [login]);
+    fetchTestData();
+  }, []);
 
   const HandleLogOut = async () => {
-      LogOut();
+    LogOut();
   };
 
   return (
-    <div className="categories">
-      {message && <p className="message">{message}</p>}
-      <div className="login">
-        {isAuthenticated ? (
-          <div className="profile-dropdown">
-            <img
-              src="images/userimage.jpg"
-              alt="User Profile"
-              className="profile-image"
-            />
-            <div className="dropdown-content">
-              <Link to={`/userprofile`} style={{ textDecoration: "none" }}>
-                <p>User Profile</p>
-              </Link>
-              <Link to={`/attemptshistory`} style={{ textDecoration: "none" }}>
-                <p>Attempts history</p>
-              </Link>
-              <p onClick={HandleLogOut}>Logout</p>
+    <div>
+      <div className="categories">
+        <div className="login">
+          {isAuthenticated ? (
+            <div className="profile-dropdown">
+              <img
+                src="images/userimage.jpg"
+                alt="User Profile"
+                className="profile-image"
+              />
+              <div className="dropdown-content">
+                <Link to={`/userprofile`} style={{ textDecoration: "none" }}>
+                  <p>User Profile</p>
+                </Link>
+                <Link to={`/examhistory`} style={{ textDecoration: "none" }}>
+                  <p>Exam History</p>
+                </Link>
+                <p onClick={HandleLogOut}>Logout</p>
+              </div>
             </div>
-          </div>
-        ) : (
-          <Link to={`/login`} style={{ textDecoration: "none" }}>
-            <button className="login-button">
-              Login
+          ) : (
+            <Link to={`/login`} style={{ textDecoration: "none" }}>
+              <button className="login-button">
+                Login
+              </button>
+            </Link>
+          )}
+        </div>
+        {testData.map((test) => (
+          <div className="testButton"
+            key={test.ID}
+            onClick={() => navigate(`/test`, { state: { test } })}
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            <button className="buttonStyle" key={test.ID}>
+              <img
+                src={`data:image/png;base64,${test.ImageBase64}`}
+                alt={`Test: ${test.Title}`}
+                className="category-image"
+              />
+              <h2>{test.Title}</h2>
+              <p>{test.Description}</p>
             </button>
-          </Link>
-        )}
+          </div>
+        ))}
       </div>
-      {testData.map((test) => (
-        <Link
-          key={test.ID}
-          to={`/${test.Category.toLowerCase()}test`}
-          style={{ textDecoration: "none" }}
-        >
-          <button className="buttonStyle" key={test.ID}>
-            <img
-              src={`data:image/png;base64,${test.ImageBase64}`}
-              alt={`Test: ${test.Title}`}
-              className="category-image"
-            />
-            <h2>{test.Title}</h2>
-            <p>{test.Description}</p>
-          </button>
-        </Link>
-      ))}
       <div>
         <Link to={`/addtest`} style={{ textDecoration: "none" }}>
           <button className="buttonStyleAdd">

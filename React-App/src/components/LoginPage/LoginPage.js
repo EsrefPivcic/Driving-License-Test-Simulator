@@ -5,7 +5,7 @@ import { useAuth } from '../AuthContext/AuthContext';
 import './LoginPage.css';
 
 function LoginPage() {
-  const {setAuthStatus} = useAuth();
+  const {setAuthStatus, openLogin} = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -46,6 +46,7 @@ function LoginPage() {
 
       const token = data.token;
       setAuthStatus(token);
+      openLogin();
       
       navigate(`/`, { state: { login: true } });
     } catch (error) {
