@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import "./TestPage.css";
 import { useAuth } from "../AuthContext/AuthContext";
 
-function TestPage({ test, testData }) {
-  const { authToken } = useAuth();
+function TestPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const test= location.state?.test;
+  const { authToken } = useAuth();
   const [showWarning, setShowWarning] = useState(false);
   const [isComponentVisible, setComponentVisible] = useState(false);
   const [testStarted, setTestStarted] = useState(false);
@@ -17,9 +19,7 @@ function TestPage({ test, testData }) {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [questionCount, setQuestionCount] = useState(0);
-  const { Title, Description, ImageBase64, Category, Duration } = testData[test];
-  const { Questions } = testData[test];
-  const { ID } = testData[test];
+  const { ID, Title, Description, Questions, ImageBase64, Category, Duration } = test;
   const [questionData, setQuestionData] = useState([]);
   const [optionData, setOptionData] = useState([]);
   const [timer, setTimer] = useState(Duration * 60);
@@ -247,7 +247,7 @@ function TestPage({ test, testData }) {
         </div>
       ) : (
         <animated.div style={questionAnimation}>
-          <h2>{testData[test].Title} Test</h2>
+          <h2>{test.Title} Test</h2>
           <p>Question {questionCount} of {Questions.length}</p>
           <div>
             <p>Time Left: {Math.floor(timer / 60)}:{(timer % 60).toLocaleString('en-US', { minimumIntegerDigits: 2 })}</p>

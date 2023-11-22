@@ -2,9 +2,11 @@ package dal
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"log"
 	"project/models"
 
+	"github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -14,9 +16,9 @@ func CreateInDBStudent(db *sql.DB, s models.Student) error {
 		log.Printf("Error hashing password: %v", err)
 		return err
 	}
-
-	_, err = db.Exec("INSERT INTO student (Name, Surname, Username, Email, Password) VALUES ($1, $2, $3, $4, $5)",
-		s.Name, s.Surname, s.Username, s.Email, hashedPassword)
+	imageArray := pq.ByteaArray([][]byte{s.Image})
+	_, err = db.Exec("INSERT INTO student (Name, Surname, Username, Email, Password, Image) VALUES ($1, $2, $3, $4, $5)",
+		s.Name, s.Surname, s.Username, s.Email, hashedPassword, imageArray)
 	if err != nil {
 		log.Printf("Error inserting option into the database: %v", err)
 		return err
@@ -69,10 +71,11 @@ func RetrieveFromDBStudent(db *sql.DB) ([]models.Student, error) {
 func RetrieveStudentByIdFromDB(db *sql.DB, studentID int) (models.Student, error) {
 	id := studentID
 
-	query := "SELECT ID, Name, Surname, Username, Email FROM \"student\" WHERE id = $1"
+	query := "SELECT ID, Name, Surname, Username, Email, Image FROM \"student\" WHERE id = $1"
 	row := db.QueryRow(query, id)
 
 	var student models.Student
+	var imageArray pq.ByteaArray
 
 	err := row.Scan(
 		&student.ID,
@@ -80,11 +83,17 @@ func RetrieveStudentByIdFromDB(db *sql.DB, studentID int) (models.Student, error
 		&student.Surname,
 		&student.Username,
 		&student.Email,
+		&imageArray,
 	)
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
 		return models.Student{}, err
 	}
+	var imageBytes []byte
+	for _, chunk := range imageArray {
+		imageBytes = append(imageBytes, chunk...)
+	}
+	student.ImageBase64 = base64.StdEncoding.EncodeToString(imageBytes)
 
 	return student, nil
 }

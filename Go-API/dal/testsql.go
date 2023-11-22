@@ -19,7 +19,6 @@ func CreateInDBTest(db *sql.DB, t models.Test) error {
 		log.Printf("Error inserting test into the database: %v", err)
 		return err
 	}
-
 	return nil
 }
 

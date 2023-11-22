@@ -1,9 +1,16 @@
-.attempthistory {
+.examhistory {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
     padding-top: 0px;
-    font-family: 'Arial', sans-serif;
+    border-radius: 10px;
+    border: 2px solid #61dafb;
+}
+
+.examhistoryempty {
+    max-width: 250px;
+    margin: 0 auto;
+    padding: 20px;
     border-radius: 10px;
     border: 2px solid #61dafb;
 }
@@ -32,6 +39,7 @@
 
 .attempt-details p {
     margin: 0;
+    text-align: left;
 }
 
 h1 {

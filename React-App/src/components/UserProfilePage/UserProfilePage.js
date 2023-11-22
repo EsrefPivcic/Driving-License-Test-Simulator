@@ -301,6 +301,19 @@ function UserProfilePage() {
     }
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const base64Image = e.target.result.split(',')[1];
+     // setQuestion({ ...question, ImageBase64: base64Image });
+    };
+
+    reader.readAsDataURL(file);
+    //setQuestion({ ...question, ImageName: file.name });
+  };
+
   return (
     <animated.div style={fadeIn}>
       <div className="user-profile-container">
@@ -316,12 +329,12 @@ function UserProfilePage() {
               className="default-choosefile"
               type="file"
               accept="image/*"
-            //onChange={(e) => handleFileChange(e)}
+              onChange={handleImageUpload}
             />
           </div>
         </div>
         <div className="user-info-container">
-          {Object.keys(userData).map((key) => key !== 'ID' && (
+          {Object.keys(userData).map((key) => key !== 'ID' && key !== 'Image' && key !== 'ImageBase64' && (
             <div key={key} className="user-info-row">
               <span>{key.charAt(0).toUpperCase() + key.slice(1)}:</span>
               {isEditing[key] ? (
