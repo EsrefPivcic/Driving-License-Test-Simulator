@@ -22,6 +22,9 @@ function TestPage() {
   const { ID, Title, Description, Questions, ImageBase64, Category, Duration } = test;
   const [questionData, setQuestionData] = useState([]);
   const [optionData, setOptionData] = useState([]);
+  const [timer, setTimer] = useState(Duration * 60);
+  const [timeUp, setTimeUp] = useState(false);
+
 
   const fadeIn = useSpring({
     opacity: isComponentVisible ? 1 : 0,
@@ -111,7 +114,34 @@ function TestPage() {
     setComponentVisible(true);
     fetchQuestionData();
     fetchOptionData();
-  }, []);
+  
+    // Set the initial timer value based on the duration (changed to 1 minute)
+    const initialTimer = 1 * 60;
+    setTimer(initialTimer);
+  
+    // Timer logic
+    const interval = setInterval(() => {
+      setTimer((prevTimer) => {
+        const newTimer = prevTimer - 1;
+  
+        // Check if time is up
+        if (newTimer <= 0) {
+          setTimeUp(true);
+          // Automatically submit the test or take appropriate action here.
+          clearInterval(interval); // Stop the interval when time is up
+          handleSubmission(); // Call your handleSubmission function
+          return 0; // Set the timer to 0 to prevent negative values
+        }
+  
+        return newTimer;
+      });
+    }, 1000);
+  
+    // Cleanup interval on component unmount
+    return () => {
+      clearInterval(interval);
+    };
+  }, []); // Make sure to pass an empty dependency array to run this effect only once on mount  
 
   const handleOptionChange = (questionId, optionId) => {
     const isMultipleSelect = questionData[currentQuestion].MultipleSelect;
@@ -219,6 +249,10 @@ function TestPage() {
         <animated.div style={questionAnimation}>
           <h2>{test.Title} Test</h2>
           <p>Question {questionCount} of {Questions.length}</p>
+          <div>
+            <p>Time Left: {Math.floor(timer / 60)}:{(timer % 60).toLocaleString('en-US', { minimumIntegerDigits: 2 })}</p>
+            {timeUp && <div>Time's up! Finish and submit your test.</div>}
+          </div>
           <div className="form-container">
             <form>
               <div key={currentQuestion} className="question-container" style={{ marginBottom: "20px" }}>

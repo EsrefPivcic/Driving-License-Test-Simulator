@@ -1,0 +1,67 @@
+.add-option-form {
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #61dafb;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin-top: 30px;
+  }
+  
+  .add-option-label {
+    margin-bottom: 10px;
+  }
+  
+  .add-option-input {
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .add-option-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .add-option-button:hover {
+    background-color: #45a049;
+  }
+  
+  .add-option-headline {
+    margin-top: 0;
+  }
+
+  .success-message-option {
+    margin-top: 10px;
+    color: #4caf50;
+    font-weight: bold;
+  }
+
+  .error-message-option {
+    margin-top: 10px;
+    color: red;
+    font-weight: bold;
+  }  
+
+  .add-option-select {
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+  }

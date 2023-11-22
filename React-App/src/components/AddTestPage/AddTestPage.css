@@ -41,3 +41,27 @@
 .add-test-headline {
   margin-top: 0;
 }
+
+.success-message-test {
+  margin-top: 10px;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.error-message-test {
+  margin-top: 10px;
+  color: red;
+  font-weight: bold;
+}  
+
+.add-test-select {
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #333;
+  color: #fff;
+}

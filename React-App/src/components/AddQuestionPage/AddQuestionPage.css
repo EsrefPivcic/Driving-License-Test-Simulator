@@ -41,3 +41,15 @@
   .add-question-headline {
     margin-top: 0;
   }
+
+  .success-message-question {
+    margin-top: 10px;
+    color: #4caf50;
+    font-weight: bold;
+  }
+
+  .error-message-question {
+    margin-top: 10px;
+    color: red;
+    font-weight: bold;
+  }  

@@ -11,6 +11,8 @@ function AddQuestionPage() {
   });
 
   const [isComponentVisible, setComponentVisible] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     setComponentVisible(true);
@@ -50,6 +52,12 @@ function AddQuestionPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!question.QuestionText || !(question.Points > 0)) {
+      setErrorMessage('Please fill in all the required fields.');
+      setSuccessMessage('');
+      return;
+    }
+
     try {
       const updatedQuestion = { ...question};
         
@@ -62,12 +70,16 @@ function AddQuestionPage() {
       });
 
       if (response.ok) {
-        // Handle success
+        setSuccessMessage('Question added successfully!');
+        setErrorMessage('');
       } else {
-        // Handle failure
+        setSuccessMessage('');
+        setErrorMessage('Failed to add question. Please try again.');
       }
     } catch (error) {
       console.error('Error:', error);
+      setSuccessMessage('');
+      setErrorMessage('An error occurred. Please try again.');
     }
   };
 
@@ -93,6 +105,12 @@ function AddQuestionPage() {
       </label>
       <button type="submit" className="add-question-button">Upload Question</button>
     </form>
+    {errorMessage && (
+        <div className="error-message-question">{errorMessage}</div>
+      )}
+      {successMessage && (
+        <div className="success-message-question">{successMessage}</div>
+      )}
     </animated.div>
   );
 }

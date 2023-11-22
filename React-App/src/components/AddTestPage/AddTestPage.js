@@ -8,13 +8,33 @@ function AddTestPage() {
     Description: '',
     Category: '',
     Duration: 0,
-    Questions: '',
+    Questions: [],
     ImageBase64: '',
   });
 
+  const [questions, setQuestions] = useState([]);
   const [isComponentVisible, setComponentVisible] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/questions/get');
+        if (response.ok) {
+          const questionsData = await response.json();
+          setQuestions(questionsData);
+        } else {
+          console.error('Failed to fetch questions');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchQuestions();
+
     setComponentVisible(true);
   }, []);
 
@@ -22,6 +42,17 @@ function AddTestPage() {
     opacity: isComponentVisible ? 1 : 0,
     from: { opacity: 0 },
   });
+
+  const toggleQuestionSelection = (questionId) => {
+    const selectedQuestions = test.Questions.includes(questionId)
+      ? test.Questions.filter((id) => id !== questionId)
+      : [...test.Questions, questionId];
+
+    setTest({
+      ...test,
+      Questions: selectedQuestions,
+    });
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,27 +80,35 @@ function AddTestPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const questionsArray = test.Questions.split(',').map((str) => parseInt(str.trim(), 10));
-      const updatedTest = { ...test, Questions: questionsArray };
+    if (!test.Title || !test.Description || !test.Category || !(test.Duration > 0) || test.Questions.length === 0) {
+      setErrorMessage('Please fill in all the required fields.');
+      setSuccessMessage('');
+      return;
+    }
 
+    try {
       const response = await fetch('http://localhost:8080/test/post', {
         method: 'POST',
-        body: JSON.stringify(updatedTest),
+        body: JSON.stringify(test),
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
       if (response.ok) {
-        // Handle success
+        setSuccessMessage('Test added successfully!');
+        setErrorMessage('');
       } else {
-        // Handle failure
+        setSuccessMessage('');
+        setErrorMessage('Failed to add test. Please try again.');
       }
     } catch (error) {
       console.error('Error:', error);
+      setSuccessMessage('');
+      setErrorMessage('An error occurred. Please try again.');
     }
   };
+
 
   return (
     <animated.div style={fadeIn}>
@@ -92,8 +131,30 @@ function AddTestPage() {
           <input type="number" name="Duration" value={test.Duration} onChange={handleInputChange} className="add-test-input" />
         </label>
         <label className="add-test-label">
-          Questions (comma-separated):
-          <input type="text" name="Questions" value={test.Questions} onChange={handleInputChange} className="add-test-input" />
+          Questions:
+          <div className="questions-dropdown-container">
+            <select
+              multiple
+              value={test.Questions}
+              onChange={() => {}}
+              className="add-test-input"
+            >
+              {questions.map((q) => (
+                <option
+                  key={q.ID}
+                  value={q.ID}
+                  onClick={() => toggleQuestionSelection(q.ID)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={test.Questions.includes(q.ID)}
+                    readOnly
+                  />
+                  {q.QuestionText}
+                </option>
+              ))}
+            </select>
+          </div>
         </label>
         <label className="add-test-label">
           Image:
@@ -101,7 +162,13 @@ function AddTestPage() {
         </label>
         <button type="submit" className="add-test-button">Upload Test</button>
       </form>
-      </animated.div>
+      {errorMessage && (
+        <div className="error-message-test">{errorMessage}</div>
+      )}
+      {successMessage && (
+        <div className="success-message-test">{successMessage}</div>
+      )}
+    </animated.div>
   );
 }
 

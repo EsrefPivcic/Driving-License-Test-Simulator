@@ -11,6 +11,7 @@ import TestResultsPage from "./TestResultsPage/TestResultsPage";
 import UserProfilePage from "./UserProfilePage/UserProfilePage";
 import { useAuth } from "./AuthContext/AuthContext";
 import ExamHistoryPage from "./ExamHistoryPage/ExamHistoryPage";
+import AddOptionPage from "./AddOptionPage/AddOptionPage";
 
 function App() {
   const { isAuthenticated, clearAuthStatus, ValidateToken, login, closeLogin } = useAuth();
@@ -50,6 +51,7 @@ function App() {
             <Route path="/" element={<HomePage/>} />
             <Route path="addtest" element={<AddTestPage />}></Route>
             <Route path="addquestion" element={<AddQuestionPage />}></Route>
+            <Route path="addoption" element={<AddOptionPage />}></Route>
             <Route path="examhistory" element={<ExamHistoryPage />}></Route>
             <Route path="testresults" element={<TestResultsPage />}></Route>
             <Route path="test" element={<TestPage/>}></Route>
