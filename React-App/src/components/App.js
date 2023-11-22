@@ -11,6 +11,7 @@ import TestResultsPage from "./TestResultsPage/TestResultsPage";
 import UserProfilePage from "./UserProfilePage/UserProfilePage";
 import { useAuth } from "./AuthContext/AuthContext";
 import AttemptsHistoryPage from "./AttemptsHistroyPage/AttemptsHistoryPage";
+import AddOptionPage from "./AddOptionPage/AddOptionPage";
 
 function App() {
   const [testData, setTestData] = useState([]);
@@ -42,6 +43,7 @@ function App() {
           {isAuthenticated ? (<Routes>
             <Route path="addtest" element={<AddTestPage />}></Route>
             <Route path="addquestion" element={<AddQuestionPage />}></Route>
+            <Route path="addoption" element={<AddOptionPage />}></Route>
             <Route path="attemptshistory" element={<AttemptsHistoryPage />}></Route>
             <Route path="testresults" element={<TestResultsPage />}></Route>
             <Route path="userprofile" element={<UserProfilePage />}></Route>

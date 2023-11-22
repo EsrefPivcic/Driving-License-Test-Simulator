@@ -93,6 +93,11 @@ function HomePage({ testData }) {
             <h2>Add Question</h2>
           </button>
         </Link>
+        <Link to={`/addoption`} style={{ textDecoration: "none" }}>
+          <button className="buttonStyleAdd">
+            <h2>Add Option</h2>
+          </button>
+        </Link>
       </div>
     </div>
   );
