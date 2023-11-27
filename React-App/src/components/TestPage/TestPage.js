@@ -111,37 +111,42 @@ function TestPage() {
   };
 
   useEffect(() => {
-    setComponentVisible(true);
-    fetchQuestionData();
-    fetchOptionData();
-  
-    // Set the initial timer value based on the duration (changed to 1 minute)
-    const initialTimer = 1 * 60;
+    if (timeUp && Object.keys(selectedOptions).length > 0) {
+      handleSubmissionAutomatically();
+    }
+    if (timeUp && Object.keys(selectedOptions).length === 0) {
+      handleSubmissionEmpty();
+    }
+  }, [timeUp, selectedOptions]);
+
+  const timerFunc = () => {
+    const initialTimer = 1 * 10; //Duration
     setTimer(initialTimer);
-  
-    // Timer logic
+
     const interval = setInterval(() => {
       setTimer((prevTimer) => {
         const newTimer = prevTimer - 1;
-  
-        // Check if time is up
+
         if (newTimer <= 0) {
           setTimeUp(true);
-          // Automatically submit the test or take appropriate action here.
-          clearInterval(interval); // Stop the interval when time is up
-          handleSubmission(); // Call your handleSubmission function
-          return 0; // Set the timer to 0 to prevent negative values
+          clearInterval(interval);
+          return 0;
         }
-  
+
         return newTimer;
       });
     }, 1000);
-  
-    // Cleanup interval on component unmount
+
     return () => {
       clearInterval(interval);
     };
-  }, []); // Make sure to pass an empty dependency array to run this effect only once on mount  
+  };
+
+  useEffect(() => {
+    setComponentVisible(true);
+    fetchQuestionData();
+    fetchOptionData();
+  }, []);
 
   const handleOptionChange = (questionId, optionId) => {
     const isMultipleSelect = questionData[currentQuestion].MultipleSelect;
@@ -158,6 +163,7 @@ function TestPage() {
         };
       });
     }
+    console.log("selectedOptions on change:", selectedOptions);
   };
 
   const handleOptionRemove = (questionId, optionId) => {
@@ -188,6 +194,7 @@ function TestPage() {
   const handleStartTest = () => {
     setTestStarted(true);
     setQuestionCount(1);
+    timerFunc();
   };
 
   const handleBackToHome = () => {
@@ -199,6 +206,7 @@ function TestPage() {
   };
 
   const handleSubmission = () => {
+    console.log("selectedOptions:", selectedOptions);
     const studentresponses = Object.entries(selectedOptions).map(
       ([questionId, selectedOptionIds]) => [+questionId, selectedOptionIds]
     );
@@ -218,6 +226,38 @@ function TestPage() {
       }
     }
   };
+
+  const handleSubmissionAutomatically = () => {
+    console.log("selectedOptions:", selectedOptions);
+    const studentresponses = Object.entries(selectedOptions).map(
+      ([questionId, selectedOptionIds]) => [+questionId, selectedOptionIds]
+    );
+    console.log("studentresponses:", studentresponses);
+      submitAttempt(studentresponses);
+    };
+
+    const handleSubmissionEmpty = async () => {
+      var testid = ID;
+  
+      try {
+        const response = await fetch("http://localhost:8080/attempt/submitempty", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token: authToken, testid}),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+        navigate(`/testresults`, { state: { attempt: data } });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }   
+    };
 
   const getOptionsForCurrentQuestion = () => {
     const currentQuestionID = questionData[currentQuestion].ID;
@@ -306,7 +346,7 @@ function TestPage() {
       )}
       {showWarning && (
         <div className="submitwarning">
-          <h5>Please select at least one answer for each question before submitting.</h5>
+          <h5>Are you sure? You haven't selected an answer for each question.</h5>
         </div>
       )}
     </animated.div>
