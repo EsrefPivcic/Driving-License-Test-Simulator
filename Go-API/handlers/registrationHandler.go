@@ -34,6 +34,7 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			Username: registrationRequest.Username,
 			Email:    registrationRequest.Email,
 			Password: registrationRequest.Password,
+			Image:    nil,
 		}
 
 		if err := dal.CreateInDBStudent(db, student); err != nil {

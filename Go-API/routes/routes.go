@@ -29,6 +29,7 @@ func SetupRouter(db *sql.DB) *mux.Router {
 	r.HandleFunc("/user/changesurname", handlers.ChangeSurnameHandler(db))
 	r.HandleFunc("/user/changeusername", handlers.ChangeUsernameHandler(db))
 	r.HandleFunc("/user/changeemail", handlers.ChangeEmailHandler(db))
+	r.HandleFunc("/user/addprofileimage", handlers.AddProfileImageHandler(db))
 	r.HandleFunc("/options/get", handlers.RetrieveOptionsHandler(db))
 	r.HandleFunc("/options/getbyquestionids", handlers.RetrieveOptionsByQuestionIdsHandler(db))
 	r.HandleFunc("/options/getcorrectbyquestionid", handlers.RetrieveCorrectOptionsByQuestionIdHandler(db))
