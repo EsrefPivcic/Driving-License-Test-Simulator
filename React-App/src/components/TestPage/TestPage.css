@@ -103,3 +103,28 @@
     gap: 5px;
     width: 100%;
   }
+
+  .time-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #61dafb;
+    border-radius: 10px;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .time-left p {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  .time-left div {
+    font-weight: bold;
+  }
+  
