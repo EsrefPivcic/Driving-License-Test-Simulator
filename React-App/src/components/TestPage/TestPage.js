@@ -205,6 +205,7 @@ function TestPage() {
     const hasEmptySelection = Object.values(selectedOptions).some(
       (selectedOptionIds) => selectedOptionIds.length === 0
     );
+    console.log(studentresponses);
     if (hasEmptySelection) {
       setShowWarning(true);
     } else {
