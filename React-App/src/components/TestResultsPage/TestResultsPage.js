@@ -142,51 +142,48 @@ function TestResultsPage() {
     const passed = attempt.Passed;
     const score = attempt.Score;
     const maxScore = attempt.MaxScore;
-    const percentage = ((score / maxScore) * 100).toFixed(2);
-
-    const renderOptions = (questionID, selectedOptions) => {
-        return optionData
-            .filter((option) => option.QuestionID === questionID)
-            .map((option) => (
-                <div
-                    key={option.ID}
-                    className={`result-option ${selectedOptions.includes(option.ID)
-                        ? option.IsCorrect
-                            ? "result-selected-correct"
-                            : "result-selected-incorrect"
-                        : option.IsCorrect ? "result-not-selected-correct" : "result-not-selected-incorrect"
-                        }`}
-                >
-                    {option.OptionText}
-                </div>
-            ));
-    };
+    const percentage = attempt.Percentage;
 
     const renderQuestions = () => {
         return questionData.map((question) => {
-            const response = studentResponsesData.find(
-                (r) => r.QuestionID === question.ID
-            );
-
+            const response = studentResponsesData
+                ? studentResponsesData.find((r) => r.QuestionID === question.ID)
+                : null;
+    
+            const selectedOptions = response ? response.SelectedOptions : [];
+    
             return (
                 <div key={question.ID} className="result-question-container">
                     <div className="result-question-text">{question.QuestionText}</div>
                     <div className="result-options-container">
-                        {renderOptions(
-                            question.ID,
-                            response ? response.SelectedOptions : [],
-                            optionData
-                                .filter((option) => option.QuestionID === question.ID)
-                                .filter((option) => option.IsCorrect)
-                                .map((option) => option.ID)
-                        )}
+                        {optionData
+                            .filter((option) => option.QuestionID === question.ID)
+                            .map((option) => (
+                                <div
+                                    key={option.ID}
+                                    className={`result-option ${
+                                        selectedOptions.includes(option.ID)
+                                            ? option.IsCorrect
+                                                ? "result-selected-correct"
+                                                : "result-selected-incorrect"
+                                            : option.IsCorrect
+                                                ? "result-not-selected-correct"
+                                                : "result-not-selected-incorrect"
+                                    }`}
+                                >
+                                    {option.OptionText}
+                                </div>
+                            ))}
                     </div>
-                    <div className="result-points">Points scored: {response.IsCorrect && (question.Points)}{!response.IsCorrect && (0)}/{question.Points}</div>
+                    <div className="result-points">
+                        Points scored: {response ? (response.IsCorrect ? question.Points : 0) : 0}/{question.Points}
+                    </div>
                 </div>
             );
         });
     };
     
+
     if (isLoading) {
         return <div className="loadingresults">Loading...</div>
     }
