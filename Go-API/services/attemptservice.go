@@ -12,6 +12,17 @@ func CalculateTestPass(db *sql.DB, responses []models.StudentResponse, testID in
 	var MaxScore int = 0
 	var Score int = 0
 	var attempt models.Attempt
+	test, err := dal.RetrieveTestByIdFromDB(db, testID)
+	if err != nil {
+		log.Printf("Error retrieving Test: %v", err)
+	}
+	questions, errq := dal.RetrieveQuestionsByIdsFromDB(db, test.Questions)
+	if errq != nil {
+		log.Printf("Error retrieving Questions: %v", errq)
+	}
+	for i := 0; i < len(questions); i++ {
+		MaxScore += questions[i].Points
+	}
 	for i := 0; i < len(responses); i++ {
 		var question, err1 = dal.RetrieveQuestionByIdFromDB(db, responses[i].QuestionID)
 		if err1 != nil {
@@ -21,7 +32,6 @@ func CalculateTestPass(db *sql.DB, responses []models.StudentResponse, testID in
 		if err2 != nil {
 			log.Printf("Error checking studentResponses: %v", err2)
 		}
-		MaxScore += question.Points
 		responses[i].IsCorrect = false
 		if result {
 			responses[i].IsCorrect = true
