@@ -102,6 +102,43 @@ func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var attempt models.Attempt
+		var request struct {
+			Token  string `json:"token"`
+			TestID int    `json:"testid"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&request)
+		if err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		if err != nil {
+			log.Printf("Error retrieving a StudentID: %v", err)
+		}
+		attempt.StudentID = studentID
+		attempt.TestID = request.TestID
+		attempt.Score = 0
+		attempt.MaxScore = 0
+		attempt.Percentage = 0
+		attempt.Passed = false
+
+		attemptID, err := dal.CreateInDBAttemptGetId(db, attempt)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		attempt.ID = attemptID
+
+		respondJSON(w, attempt)
+	}
+}
+
 func CreateAttemptHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var attempt models.Attempt

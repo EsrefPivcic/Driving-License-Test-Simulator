@@ -186,6 +186,7 @@ function TestResultsPage() {
             );
         });
     };
+    
     if (isLoading) {
         return <div className="loadingresults">Loading...</div>
     }
