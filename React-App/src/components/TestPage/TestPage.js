@@ -7,7 +7,7 @@ import { useAuth } from "../AuthContext/AuthContext";
 function TestPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const test= location.state?.test;
+  const test = location.state?.test;
   const { authToken } = useAuth();
   const [showWarning, setShowWarning] = useState(false);
   const [isComponentVisible, setComponentVisible] = useState(false);
@@ -58,8 +58,6 @@ function TestPage() {
   };
 
   const submitAttempt = async (studentresponses) => {
-    console.log(ID);
-    console.log(studentresponses);
     var testid = ID;
     const formattedStudentResponses = studentresponses.map(([questionId, selectedOptionIds]) => ({
       questionid: questionId,
@@ -120,7 +118,7 @@ function TestPage() {
   }, [timeUp, selectedOptions]);
 
   const timerFunc = () => {
-    const initialTimer = 1 * 10; //Duration
+    const initialTimer = Duration * 60;
     setTimer(initialTimer);
 
     const interval = setInterval(() => {
@@ -163,7 +161,6 @@ function TestPage() {
         };
       });
     }
-    console.log("selectedOptions on change:", selectedOptions);
   };
 
   const handleOptionRemove = (questionId, optionId) => {
@@ -206,14 +203,12 @@ function TestPage() {
   };
 
   const handleSubmission = () => {
-    console.log("selectedOptions:", selectedOptions);
     const studentresponses = Object.entries(selectedOptions).map(
       ([questionId, selectedOptionIds]) => [+questionId, selectedOptionIds]
     );
     const hasEmptySelection = Object.values(selectedOptions).some(
       (selectedOptionIds) => selectedOptionIds.length === 0
     );
-    console.log(studentresponses);
     if (hasEmptySelection) {
       setShowWarning(true);
     } else {
@@ -227,12 +222,19 @@ function TestPage() {
     }
   };
 
+  const handleSubmissionConfirm = () => {
+    if (Object.keys(selectedOptions).length > 0) {
+      handleSubmissionAutomatically();
+    }
+    if (Object.keys(selectedOptions).length === 0) {
+      handleSubmissionEmpty();
+    }
+  };
+
   const handleSubmissionAutomatically = () => {
-    console.log("selectedOptions:", selectedOptions);
     const studentresponses = Object.entries(selectedOptions).map(
       ([questionId, selectedOptionIds]) => [+questionId, selectedOptionIds]
     );
-    console.log("studentresponses:", studentresponses);
       submitAttempt(studentresponses);
     };
 
@@ -289,8 +291,10 @@ function TestPage() {
       ) : (
         <animated.div style={questionAnimation}>
           <h2>{test.Title} Test</h2>
+          <div className="time-left">
+          <div className="question-container">
           <p>Question {questionCount} of {Questions.length}</p>
-          <div>
+          </div>
             <p>Time Left: {Math.floor(timer / 60)}:{(timer % 60).toLocaleString('en-US', { minimumIntegerDigits: 2 })}</p>
             {timeUp && <div>Time's up! Finish and submit your test.</div>}
           </div>
@@ -336,8 +340,10 @@ function TestPage() {
                 )}
                 {currentQuestion < Questions.length - 1 ? (
                   <button type="button" className={nextButtonStyle} onClick={handleNextQuestion}>Next</button>
-                ) : (
+                ) : !showWarning && (
                   <button type="button" className={submitButtonStyle} onClick={handleSubmission}>Submit</button>
+                ) || showWarning && (
+                  <button type="button" className={submitButtonStyle} onClick={handleSubmissionConfirm}>Confirm</button>
                 )}
               </div>
             </form>
