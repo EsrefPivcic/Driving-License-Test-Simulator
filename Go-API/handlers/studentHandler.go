@@ -58,6 +58,49 @@ func CreateStudentHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+func AddProfileImageHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request struct {
+			Token       string `json:"token"`
+			ImageBase64 string `json:"imagebase64"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&request)
+		if err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		student, err := dal.RetrieveStudentByIdFromDB(db, studentID)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		imageBase64 := request.ImageBase64
+		imageBytes, err := base64.StdEncoding.DecodeString(imageBase64)
+		if err != nil {
+			http.Error(w, "Invalid image data", http.StatusBadRequest)
+			return
+		}
+		student.Image = imageBytes
+
+		err = dal.UpdateInDBStudent(db, student)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		respondJSON(w, student)
+	}
+}
+
 func RetrieveStudentByTokenHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {

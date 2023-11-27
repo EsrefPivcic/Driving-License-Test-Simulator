@@ -17,10 +17,21 @@ func CreateInDBStudent(db *sql.DB, s models.Student) error {
 		return err
 	}
 	imageArray := pq.ByteaArray([][]byte{s.Image})
-	_, err = db.Exec("INSERT INTO student (Name, Surname, Username, Email, Password, Image) VALUES ($1, $2, $3, $4, $5)",
+	_, err = db.Exec("INSERT INTO student (Name, Surname, Username, Email, Password, Image) VALUES ($1, $2, $3, $4, $5, $6)",
 		s.Name, s.Surname, s.Username, s.Email, hashedPassword, imageArray)
 	if err != nil {
 		log.Printf("Error inserting option into the database: %v", err)
+		return err
+	}
+	return nil
+}
+
+func UpdateInDBStudent(db *sql.DB, student models.Student) error {
+	imageArray := pq.ByteaArray([][]byte{student.Image})
+	_, err := db.Exec("UPDATE student SET Name=$1, Surname=$2, Username=$3, Email=$4, Image=$5 WHERE ID=$6",
+		student.Name, student.Surname, student.Username, student.Email, imageArray, student.ID)
+	if err != nil {
+		log.Printf("Error updating student in the database: %v", err)
 		return err
 	}
 	return nil
