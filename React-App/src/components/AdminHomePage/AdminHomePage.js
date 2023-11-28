@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext/AuthContext";
-import "./HomePage.css";
+import "./AdminHomePage.css";
 
-function HomePage() {
+function AdminHomePage() {
   const { isAuthenticated, LogOut } = useAuth();
   const [testData, setTestData] = useState([]);
   const navigate = useNavigate();
@@ -76,8 +76,25 @@ function HomePage() {
           </div>
         ))}
       </div>
+      <div>
+        <Link to={`/addtest`} style={{ textDecoration: "none" }}>
+          <button className="buttonStyleAdd">
+            <h2>Add Test</h2>
+          </button>
+        </Link>
+        <Link to={`/addquestion`} style={{ textDecoration: "none" }}>
+          <button className="buttonStyleAdd">
+            <h2>Add Question</h2>
+          </button>
+        </Link>
+        <Link to={`/addoption`} style={{ textDecoration: "none" }}>
+          <button className="buttonStyleAdd">
+            <h2>Add Option</h2>
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
 
-export default HomePage;
+export default AdminHomePage;

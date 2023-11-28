@@ -29,12 +29,14 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 		}
 
 		user := models.User{
-			Name:     registrationRequest.Name,
-			Surname:  registrationRequest.Surname,
-			Username: registrationRequest.Username,
-			Email:    registrationRequest.Email,
-			Password: registrationRequest.Password,
-			Image:    nil,
+			Name:      registrationRequest.Name,
+			Surname:   registrationRequest.Surname,
+			Username:  registrationRequest.Username,
+			Email:     registrationRequest.Email,
+			Password:  registrationRequest.Password,
+			Image:     nil,
+			IsStudent: true,
+			IsAdmin:   false,
 		}
 
 		if err := dal.CreateInDBUser(db, user); err != nil {

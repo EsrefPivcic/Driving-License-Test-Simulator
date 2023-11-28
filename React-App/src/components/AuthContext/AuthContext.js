@@ -1,10 +1,42 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useCallback } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(localStorage.getItem('token'));
   const [login, setLogin] = useState(false);
+
+  const [userData, setUserData] = useState({
+    Name: '',
+    Surname: '',
+    Username: '',
+    Email: '',
+    Password: '',
+    ImageBase64: '',
+    IsStudent: false,
+    IsAdmin: false
+  });
+
+  const fetchUserData = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:8080/user/getbytoken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: authToken }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      setUserData(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }, [authToken, setUserData]);
 
   const setAuthStatus = (token) => {
     setAuthToken(token);
@@ -23,22 +55,22 @@ export const AuthProvider = ({ children }) => {
   const closeLogin = () => {
     setLogin(false);
   }
-
-  const ValidateToken = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/checktoken', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token: authToken }),
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Token validation failed:', error);
-    }
-  };
+  
+const ValidateToken = useCallback(async () => {
+  try {
+    const response = await fetch('http://localhost:8080/checktoken', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token: authToken }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Token validation failed:', error);
+  }
+}, [authToken]);
 
   const LogOut = async () => {
     try {
@@ -71,6 +103,8 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!authToken,
     ValidateToken,
     LogOut,
+    userData,
+    fetchUserData
   };
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

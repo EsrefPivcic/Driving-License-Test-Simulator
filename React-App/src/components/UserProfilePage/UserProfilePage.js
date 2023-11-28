@@ -340,7 +340,7 @@ function UserProfilePage() {
     reader.onload = (e) => {
       const base64Image = e.target.result.split(',')[1];
       setNewImage(base64Image);
-      setUserData({ ...userData, ImageBase64: base64Image});
+      setUserData({ ...userData, ImageBase64: base64Image });
     };
 
     reader.readAsDataURL(file);
@@ -372,7 +372,8 @@ function UserProfilePage() {
           {imageEmpty && (<p className="new-image-error">Please select a new image!</p>)}
         </div>
         <div className="user-info-container">
-          {Object.keys(userData).map((key) => key !== 'ID' && key !== 'Image' && key !== 'ImageBase64' && (
+          {Object.keys(userData).map((key) => key !== 'ID' && key !== 'IsStudent' && key !== 'IsAdmin' && 
+          key !== 'Image' && key !== 'ImageBase64' && (
             <div key={key} className="user-info-row">
               <span>{key.charAt(0).toUpperCase() + key.slice(1)}:</span>
               {isEditing[key] ? (

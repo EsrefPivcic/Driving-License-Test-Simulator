@@ -38,7 +38,7 @@ func DeleteToken(db *sql.DB, tokenValue string) error {
 func ValidateCredentials(db *sql.DB, username, passwordInput string) (bool, int, error) {
 	var id int
 	var password string
-	err := db.QueryRow("SELECT id, password FROM user WHERE username = $1", username).Scan(&id, &password)
+	err := db.QueryRow("SELECT id, password FROM \"user\" WHERE username = $1", username).Scan(&id, &password)
 	if err != nil {
 		log.Printf("Error validating credentials for username %s: %v", username, err)
 		return false, 0, err

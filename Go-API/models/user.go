@@ -9,4 +9,6 @@ type User struct {
 	Password    string
 	Image       []byte
 	ImageBase64 string
+	IsStudent   bool
+	IsAdmin     bool
 }

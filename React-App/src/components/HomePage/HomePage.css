@@ -120,3 +120,8 @@
   display: block;
   flex-direction: column;
 }
+
+.category-image {
+  width: 150px;
+  height: 150px;
+}
