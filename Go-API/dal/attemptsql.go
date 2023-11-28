@@ -10,8 +10,8 @@ import (
 )
 
 func CreateInDBAttempt(db *sql.DB, a models.Attempt) error {
-	_, err := db.Exec("INSERT INTO Attempt (StudentID, TestID, Score, Passed, MaxScore, Percentage) VALUES ($1, $2, $3, $4, $5, $6)",
-		a.StudentID, a.TestID, a.Score, a.Passed, a.MaxScore, a.Percentage)
+	_, err := db.Exec("INSERT INTO Attempt (UserID, TestID, Score, Passed, MaxScore, Percentage) VALUES ($1, $2, $3, $4, $5, $6)",
+		a.UserID, a.TestID, a.Score, a.Passed, a.MaxScore, a.Percentage)
 	if err != nil {
 		log.Printf("Error inserting attempt into the database: %v", err)
 		return err
@@ -21,8 +21,8 @@ func CreateInDBAttempt(db *sql.DB, a models.Attempt) error {
 
 func CreateInDBAttemptGetId(db *sql.DB, a models.Attempt) (int, error) {
 	var id int
-	err := db.QueryRow("INSERT INTO Attempt (StudentID, TestID, Score, Passed, MaxScore, Percentage) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ID",
-		a.StudentID, a.TestID, a.Score, a.Passed, a.MaxScore, a.Percentage).Scan(&id)
+	err := db.QueryRow("INSERT INTO Attempt (UserID, TestID, Score, Passed, MaxScore, Percentage) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ID",
+		a.UserID, a.TestID, a.Score, a.Passed, a.MaxScore, a.Percentage).Scan(&id)
 	if err != nil {
 		log.Printf("Error inserting attempt into the database: %v", err)
 		return 0, err
@@ -34,13 +34,13 @@ func RetrieveFromDBAttempt(db *sql.DB) ([]models.Attempt, error) {
 	rows, err := db.Query(`
 	SELECT
 	a.ID AS AttemptID,
-	a.StudentID AS AttemptStudentID,
+	a.UserID AS AttemptUserID,
 	a.TestID AS AttemptTestID,
 	a.Score AS Score,
 	a.Passed AS Passed,
 	a.MaxScore AS MaxScore,
 	a.Percentage AS Percentage,
-	s.ID AS StudentID,
+	s.ID AS UserID,
 	s.Name AS Name,
 	s.Surname AS Surname,
 	s.Username AS Username,
@@ -54,7 +54,7 @@ func RetrieveFromDBAttempt(db *sql.DB) ([]models.Attempt, error) {
 	t.Image AS Image,
 	t.Duration AS Duration
 FROM Attempt AS a
-INNER JOIN Student AS s ON a.StudentID = s.ID
+INNER JOIN User AS s ON a.UserID = s.ID
 INNER JOIN Test AS t ON a.TestID = t.ID
     `)
 	if err != nil {
@@ -67,25 +67,25 @@ INNER JOIN Test AS t ON a.TestID = t.ID
 
 	for rows.Next() {
 		var attempt models.Attempt
-		var student models.Student
+		var user models.User
 		var test models.Test
 
 		var questionArray pq.Int64Array
 
 		err := rows.Scan(
 			&attempt.ID,
-			&attempt.StudentID,
+			&attempt.UserID,
 			&attempt.TestID,
 			&attempt.Score,
 			&attempt.Passed,
 			&attempt.MaxScore,
 			&attempt.Percentage,
-			&student.ID,
-			&student.Name,
-			&student.Surname,
-			&student.Username,
-			&student.Email,
-			&student.Password,
+			&user.ID,
+			&user.Name,
+			&user.Surname,
+			&user.Username,
+			&user.Email,
+			&user.Password,
 			&test.ID,
 			&test.Title,
 			&test.Description,
@@ -104,7 +104,7 @@ INNER JOIN Test AS t ON a.TestID = t.ID
 			test.Questions[i] = int(val)
 		}
 
-		attempt.Student = student
+		attempt.User = user
 		attempt.Test = test
 
 		attempts = append(attempts, attempt)
@@ -113,10 +113,10 @@ INNER JOIN Test AS t ON a.TestID = t.ID
 	return attempts, nil
 }
 
-func RetrieveAttemptsByStudentIdFromDB(db *sql.DB, studentId int) ([]models.Attempt, error) {
+func RetrieveAttemptsByUserIdFromDB(db *sql.DB, userId int) ([]models.Attempt, error) {
 	query := `SELECT 
 	a.ID AS AttemptID,
-	a.StudentID AS AttemptStudentID,
+	a.UserID AS AttemptUserID,
 	a.TestID AS AttemptTestID,
 	a.Score AS Score,
 	a.Passed AS Passed,
@@ -131,8 +131,8 @@ func RetrieveAttemptsByStudentIdFromDB(db *sql.DB, studentId int) ([]models.Atte
 	t.Duration AS Duration
 FROM Attempt AS a
 INNER JOIN Test AS t ON a.TestID = t.ID
-WHERE a.StudentID = $1`
-	rows, err := db.Query(query, studentId)
+WHERE a.UserID = $1`
+	rows, err := db.Query(query, userId)
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
 		return []models.Attempt{}, err
@@ -150,7 +150,7 @@ WHERE a.StudentID = $1`
 
 		err := rows.Scan(
 			&attempt.ID,
-			&attempt.StudentID,
+			&attempt.UserID,
 			&attempt.TestID,
 			&attempt.Score,
 			&attempt.Passed,

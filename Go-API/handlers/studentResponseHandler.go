@@ -9,15 +9,15 @@ import (
 	"project/models"
 )
 
-func RetrieveStudentResponsesHandler(db *sql.DB) http.HandlerFunc {
+func RetrieveUserResponsesHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		studentresponses, err := dal.RetrieveFromDBStudentResponse(db)
+		userresponses, err := dal.RetrieveFromDBUserResponse(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		response, err := json.Marshal(studentresponses)
+		response, err := json.Marshal(userresponses)
 		if err != nil {
 			log.Fatal(err)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -30,7 +30,7 @@ func RetrieveStudentResponsesHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func RetrieveStudentResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
+func RetrieveUserResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
 			AttemptID int `json:"attemptid"`
@@ -42,13 +42,13 @@ func RetrieveStudentResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		studentresponses, err := dal.RetrieveStudentResponsesByAttemptIdFromDB(db, request.AttemptID)
+		userresponses, err := dal.RetrieveUserResponsesByAttemptIdFromDB(db, request.AttemptID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		response, err := json.Marshal(studentresponses)
+		response, err := json.Marshal(userresponses)
 		if err != nil {
 			log.Fatal(err)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -61,21 +61,21 @@ func RetrieveStudentResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func CreateStudentResponseHandler(db *sql.DB) http.HandlerFunc {
+func CreateUserResponseHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var studentresponse models.StudentResponse
+		var userresponse models.UserResponse
 		decoder := json.NewDecoder(r.Body)
-		if err := decoder.Decode(&studentresponse); err != nil {
+		if err := decoder.Decode(&userresponse); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		defer r.Body.Close()
 
-		if err := dal.CreateInDBStudentResponse(db, studentresponse); err != nil {
+		if err := dal.CreateInDBUserResponse(db, userresponse); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		respondJSON(w, studentresponse)
+		respondJSON(w, userresponse)
 	}
 }

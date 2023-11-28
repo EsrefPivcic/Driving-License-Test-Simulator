@@ -31,7 +31,7 @@ func RetrieveAttemptsHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func RetrieveAttemptsByStudentIdHandler(db *sql.DB) http.HandlerFunc {
+func RetrieveAttemptsByUserIdHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
 			Token string `json:"token"`
@@ -43,12 +43,12 @@ func RetrieveAttemptsByStudentIdHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
 		if err != nil {
-			log.Printf("Error retrieving a StudentID: %v", err)
+			log.Printf("Error retrieving a UserID: %v", err)
 		}
 
-		attempts, err := dal.RetrieveAttemptsByStudentIdFromDB(db, studentID)
+		attempts, err := dal.RetrieveAttemptsByUserIdFromDB(db, userID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -70,11 +70,11 @@ func RetrieveAttemptsByStudentIdHandler(db *sql.DB) http.HandlerFunc {
 func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var attempt models.Attempt
-		var responses []models.StudentResponse
+		var responses []models.UserResponse
 		var request struct {
-			Token            string                   `json:"token"`
-			TestID           int                      `json:"testid"`
-			StudentResponses []models.StudentResponse `json:"studentresponses"`
+			Token         string                `json:"token"`
+			TestID        int                   `json:"testid"`
+			UserResponses []models.UserResponse `json:"userresponses"`
 		}
 
 		err := json.NewDecoder(r.Body).Decode(&request)
@@ -83,7 +83,7 @@ func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		attempt, responses = services.CalculateTestPass(db, request.StudentResponses, request.TestID, request.Token)
+		attempt, responses = services.CalculateTestPass(db, request.UserResponses, request.TestID, request.Token)
 
 		attemptID, err := dal.CreateInDBAttemptGetId(db, attempt)
 		if err != nil {
@@ -91,7 +91,7 @@ func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		if err := dal.CreateInDBStudentResponses(db, responses, attemptID); err != nil {
+		if err := dal.CreateInDBUserResponses(db, responses, attemptID); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -116,11 +116,11 @@ func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
 		if err != nil {
-			log.Printf("Error retrieving a StudentID: %v", err)
+			log.Printf("Error retrieving a UserID: %v", err)
 		}
-		attempt.StudentID = studentID
+		attempt.UserID = userID
 		attempt.TestID = request.TestID
 		attempt.Score = 0
 		attempt.MaxScore = 0
