@@ -23,19 +23,19 @@ func ChangePasswordHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		student, err := dal.RetrieveStudentPasswordByIdFromDB(db, studentID)
+		user, err := dal.RetrieveUserPasswordByIdFromDB(db, userID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		if !utils.ComparePasswords(student.Password, request.OldPassword) {
+		if !utils.ComparePasswords(user.Password, request.OldPassword) {
 			http.Error(w, "Incorrect old password", http.StatusUnauthorized)
 			return
 		}
@@ -51,7 +51,7 @@ func ChangePasswordHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		err = dal.UpdatePasswordInDB(db, studentID, hashedPassword)
+		err = dal.UpdatePasswordInDB(db, userID, hashedPassword)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -74,14 +74,14 @@ func ChangeNameHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
 
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		err = dal.UpdateNameInDB(db, studentID, request.NewName)
+		err = dal.UpdateNameInDB(db, userID, request.NewName)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -104,14 +104,14 @@ func ChangeSurnameHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
 
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		err = dal.UpdateSurnameInDB(db, studentID, request.NewSurname)
+		err = dal.UpdateSurnameInDB(db, userID, request.NewSurname)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -134,14 +134,14 @@ func ChangeUsernameHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
 
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		err = dal.UpdateUsernameInDB(db, studentID, request.NewUsername)
+		err = dal.UpdateUsernameInDB(db, userID, request.NewUsername)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -164,14 +164,14 @@ func ChangeEmailHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		studentID, err := dal.RetrieveStudentIDByTokenFromDB(db, request.Token)
+		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
 
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		err = dal.UpdateEmailInDB(db, studentID, request.NewEmail)
+		err = dal.UpdateEmailInDB(db, userID, request.NewEmail)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return

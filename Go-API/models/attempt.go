@@ -2,8 +2,8 @@ package models
 
 type Attempt struct {
 	ID         int
-	StudentID  int
-	Student    Student
+	UserID     int
+	User       User
 	TestID     int
 	Test       Test
 	Score      int

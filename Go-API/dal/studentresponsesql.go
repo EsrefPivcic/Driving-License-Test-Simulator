@@ -8,9 +8,9 @@ import (
 	"github.com/lib/pq"
 )
 
-func CreateInDBStudentResponse(db *sql.DB, s models.StudentResponse) error {
+func CreateInDBUserResponse(db *sql.DB, s models.UserResponse) error {
 	optionsArray := pq.Array(s.SelectedOptions)
-	_, err := db.Exec("INSERT INTO StudentResponse (AttemptID, QuestionID, SelectedOptions, IsCorrect) VALUES ($1, $2, $3, $4)",
+	_, err := db.Exec("INSERT INTO UserResponse (AttemptID, QuestionID, SelectedOptions, IsCorrect) VALUES ($1, $2, $3, $4)",
 		s.AttemptID, s.QuestionID, optionsArray, s.IsCorrect)
 	if err != nil {
 		log.Printf("Error inserting test into the database: %v", err)
@@ -19,11 +19,11 @@ func CreateInDBStudentResponse(db *sql.DB, s models.StudentResponse) error {
 	return nil
 }
 
-func CreateInDBStudentResponses(db *sql.DB, responses []models.StudentResponse, attemptid int) error {
+func CreateInDBUserResponses(db *sql.DB, responses []models.UserResponse, attemptid int) error {
 	for i := 0; i < len(responses); i++ {
 		s := responses[i]
 		optionsArray := pq.Array(s.SelectedOptions)
-		_, err := db.Exec("INSERT INTO StudentResponse (AttemptID, QuestionID, SelectedOptions, IsCorrect) VALUES ($1, $2, $3, $4)",
+		_, err := db.Exec("INSERT INTO UserResponse (AttemptID, QuestionID, SelectedOptions, IsCorrect) VALUES ($1, $2, $3, $4)",
 			attemptid, s.QuestionID, optionsArray, s.IsCorrect)
 		if err != nil {
 			log.Printf("Error inserting test into the database: %v", err)
@@ -33,10 +33,10 @@ func CreateInDBStudentResponses(db *sql.DB, responses []models.StudentResponse, 
 	return nil
 }
 
-func RetrieveStudentResponsesByAttemptIdFromDB(db *sql.DB, attemptID int) ([]models.StudentResponse, error) {
+func RetrieveUserResponsesByAttemptIdFromDB(db *sql.DB, attemptID int) ([]models.UserResponse, error) {
 	id := attemptID
 
-	query := "SELECT * FROM \"studentresponse\" WHERE attemptid = $1"
+	query := "SELECT * FROM \"userresponse\" WHERE attemptid = $1"
 	rows, err := db.Query(query, id)
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
@@ -44,18 +44,18 @@ func RetrieveStudentResponsesByAttemptIdFromDB(db *sql.DB, attemptID int) ([]mod
 	}
 	defer rows.Close()
 
-	var studentresponses []models.StudentResponse
+	var userresponses []models.UserResponse
 
 	for rows.Next() {
-		var studentresponse models.StudentResponse
+		var userresponse models.UserResponse
 		var optionsArray pq.Int64Array
 
 		err := rows.Scan(
-			&studentresponse.ID,
-			&studentresponse.AttemptID,
-			&studentresponse.QuestionID,
+			&userresponse.ID,
+			&userresponse.AttemptID,
+			&userresponse.QuestionID,
 			&optionsArray,
-			&studentresponse.IsCorrect,
+			&userresponse.IsCorrect,
 		)
 
 		if err != nil {
@@ -63,26 +63,26 @@ func RetrieveStudentResponsesByAttemptIdFromDB(db *sql.DB, attemptID int) ([]mod
 			return nil, err
 		}
 
-		studentresponse.SelectedOptions = make([]int, len(optionsArray))
+		userresponse.SelectedOptions = make([]int, len(optionsArray))
 		for i, val := range optionsArray {
-			studentresponse.SelectedOptions[i] = int(val)
+			userresponse.SelectedOptions[i] = int(val)
 		}
-		studentresponses = append(studentresponses, studentresponse)
+		userresponses = append(userresponses, userresponse)
 	}
 
-	return studentresponses, nil
+	return userresponses, nil
 }
 
-func RetrieveFromDBStudentResponse(db *sql.DB) ([]models.StudentResponse, error) {
+func RetrieveFromDBUserResponse(db *sql.DB) ([]models.UserResponse, error) {
 	rows, err := db.Query(`
 	SELECT
-	sr.ID AS StudentResponseID,
-	sr.AttemptID AS StudentResponseAttemptID,
-	sr.QuestionID AS StudentResponseQuestionID,
+	sr.ID AS UserResponseID,
+	sr.AttemptID AS UserResponseAttemptID,
+	sr.QuestionID AS UserResponseQuestionID,
 	sr.SelectedOptions AS SelectedOptions,
 	sr.IsCorrect AS IsCorrect,
 	a.ID AS AttemptID,
-	a.StudentID AS AttemptStudentID,
+	a.UserID AS AttemptUserID,
 	a.TestID AS AttemptTestID,
 	a.Score as AttemptScore,
 	a.Passed as AttemptPassed,
@@ -91,7 +91,7 @@ func RetrieveFromDBStudentResponse(db *sql.DB) ([]models.StudentResponse, error)
 	q.Image AS Image,
 	q.Points AS Points,
 	q.MultipleSelect AS MultipleSelect
-FROM StudentResponse AS sr
+FROM UserResponse AS sr
 INNER JOIN Attempt AS a ON sr.AttemptID = a.ID
 INNER JOIN Question AS q ON sr.QuestionID = q.ID
     `)
@@ -101,21 +101,21 @@ INNER JOIN Question AS q ON sr.QuestionID = q.ID
 	}
 	defer rows.Close()
 
-	var studentresponses []models.StudentResponse
+	var userresponses []models.UserResponse
 
 	for rows.Next() {
-		var studentresponse models.StudentResponse
+		var userresponse models.UserResponse
 		var attempt models.Attempt
 		var question models.Question
 		var optionsArray pq.Int64Array
 		err := rows.Scan(
-			&studentresponse.ID,
-			&studentresponse.AttemptID,
-			&studentresponse.QuestionID,
+			&userresponse.ID,
+			&userresponse.AttemptID,
+			&userresponse.QuestionID,
 			&optionsArray,
-			&studentresponse.IsCorrect,
+			&userresponse.IsCorrect,
 			&attempt.ID,
-			&attempt.StudentID,
+			&attempt.UserID,
 			&attempt.TestID,
 			&attempt.Score,
 			&attempt.Passed,
@@ -130,15 +130,15 @@ INNER JOIN Question AS q ON sr.QuestionID = q.ID
 			return nil, err
 		}
 
-		studentresponse.SelectedOptions = make([]int, len(optionsArray))
+		userresponse.SelectedOptions = make([]int, len(optionsArray))
 		for i, val := range optionsArray {
-			studentresponse.SelectedOptions[i] = int(val)
+			userresponse.SelectedOptions[i] = int(val)
 		}
 
-		studentresponse.Attempt = attempt
-		studentresponse.Question = question
-		studentresponses = append(studentresponses, studentresponse)
+		userresponse.Attempt = attempt
+		userresponse.Question = question
+		userresponses = append(userresponses, userresponse)
 	}
 
-	return studentresponses, nil
+	return userresponses, nil
 }

@@ -28,7 +28,7 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		student := models.Student{
+		user := models.User{
 			Name:     registrationRequest.Name,
 			Surname:  registrationRequest.Surname,
 			Username: registrationRequest.Username,
@@ -37,11 +37,11 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			Image:    nil,
 		}
 
-		if err := dal.CreateInDBStudent(db, student); err != nil {
+		if err := dal.CreateInDBUser(db, user); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		respondJSON(w, student)
+		respondJSON(w, user)
 	}
 }

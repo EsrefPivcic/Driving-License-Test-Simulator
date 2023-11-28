@@ -6,7 +6,7 @@ import (
 	"project/models"
 )
 
-func CheckStudentResponseCorrect(db *sql.DB, response models.StudentResponse) (bool, error) {
+func CheckUserResponseCorrect(db *sql.DB, response models.UserResponse) (bool, error) {
 	selectedOptions, err := dal.RetrieveOptionsByIdsFromDB(db, response.SelectedOptions)
 	if err != nil {
 		return false, err

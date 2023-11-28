@@ -16,9 +16,9 @@ func CheckTokenDB(db *sql.DB, token string) (bool, error) {
 	return count > 0, nil
 }
 
-func CreateInDBAuthentication(db *sql.DB, studentid int, token string) error {
-	_, err := db.Exec("INSERT INTO AuthenticationToken (Value, StudentID) VALUES ($1, $2)",
-		token, studentid)
+func CreateInDBAuthentication(db *sql.DB, userid int, token string) error {
+	_, err := db.Exec("INSERT INTO AuthenticationToken (Value, UserID) VALUES ($1, $2)",
+		token, userid)
 	if err != nil {
 		log.Printf("Error inserting token into the database: %v", err)
 		return err
@@ -38,7 +38,7 @@ func DeleteToken(db *sql.DB, tokenValue string) error {
 func ValidateCredentials(db *sql.DB, username, passwordInput string) (bool, int, error) {
 	var id int
 	var password string
-	err := db.QueryRow("SELECT id, password FROM student WHERE username = $1", username).Scan(&id, &password)
+	err := db.QueryRow("SELECT id, password FROM user WHERE username = $1", username).Scan(&id, &password)
 	if err != nil {
 		log.Printf("Error validating credentials for username %s: %v", username, err)
 		return false, 0, err
@@ -48,17 +48,17 @@ func ValidateCredentials(db *sql.DB, username, passwordInput string) (bool, int,
 	return valid, id, nil
 }
 
-func RetrieveStudentIDByTokenFromDB(db *sql.DB, token string) (int, error) {
-	var studentID int
+func RetrieveUserIDByTokenFromDB(db *sql.DB, token string) (int, error) {
+	var userID int
 
-	query := "SELECT StudentID FROM AuthenticationToken WHERE Value = $1"
+	query := "SELECT UserID FROM AuthenticationToken WHERE Value = $1"
 	row := db.QueryRow(query, token)
 
-	err := row.Scan(&studentID)
+	err := row.Scan(&userID)
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
 		return 0, err
 	}
 
-	return studentID, nil
+	return userID, nil
 }
