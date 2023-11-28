@@ -48,10 +48,10 @@ function UserProfilePage() {
     password: false,
   });
 
-  const fetchStudentData = async () => {
+  const fetchUserData = async () => {
     const token = storedToken;
     try {
-      const response = await fetch('http://localhost:8080/student/getbytoken', {
+      const response = await fetch('http://localhost:8080/user/getbytoken', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ function UserProfilePage() {
   };
 
   useEffect(() => {
-    fetchStudentData();
+    fetchUserData();
     setComponentVisible(true);
   }, []);
 
