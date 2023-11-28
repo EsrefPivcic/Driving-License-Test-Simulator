@@ -11,7 +11,7 @@ function TestResultsPage() {
     const [isComponentVisible, setComponentVisible] = useState(false);
     const [questionData, setQuestionData] = useState([]);
     const [testData, setTestData] = useState({});
-    const [studentResponsesData, setStudentResponsesData] = useState([]);
+    const [userResponsesData, setUserResponsesData] = useState([]);
     const [optionData, setOptionData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -89,10 +89,10 @@ function TestResultsPage() {
         }
     };
 
-    const fetchStudentResponsesData = async () => {
+    const fetchUserResponsesData = async () => {
         try {
             const response = await fetch(
-                "http://localhost:8080/studentresponses/getbyattemptid",
+                "http://localhost:8080/userresponses/getbyattemptid",
                 {
                     method: "POST",
                     headers: {
@@ -107,7 +107,7 @@ function TestResultsPage() {
             }
 
             const data = await response.json();
-            setStudentResponsesData(data);
+            setUserResponsesData(data);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -124,7 +124,7 @@ function TestResultsPage() {
     useEffect(() => {
         const fetchData = async () => {
             await fetchTestData();
-            await fetchStudentResponsesData();
+            await fetchUserResponsesData();
             setIsLoading(false);
         };
 
@@ -146,8 +146,8 @@ function TestResultsPage() {
 
     const renderQuestions = () => {
         return questionData.map((question) => {
-            const response = studentResponsesData
-                ? studentResponsesData.find((r) => r.QuestionID === question.ID)
+            const response = userResponsesData
+                ? userResponsesData.find((r) => r.QuestionID === question.ID)
                 : null;
     
             const selectedOptions = response ? response.SelectedOptions : [];

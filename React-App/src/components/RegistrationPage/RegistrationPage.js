@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './RegistrationPage.css';
 
 function RegistrationPage() {
-  const [student, setStudent] = useState({
+  const [user, setUser] = useState({
     Name: '',
     Surname: '',
     Username: '',
@@ -27,7 +27,7 @@ function RegistrationPage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setStudent({ ...student, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
   const validateName = (name) => {
@@ -47,7 +47,7 @@ function RegistrationPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { Name, Surname, Username, Email, Password } = student;
+    const { Name, Surname, Username, Email, Password } = user;
 
     if (!validateName(Name)) {
       setError('Name must start with a capital letter and should not have spaces.');
@@ -75,11 +75,11 @@ function RegistrationPage() {
     }
 
     try {
-      const updatedStudent = { ...student };
+      const updatedUser = { ...user };
 
       const response = await fetch('http://localhost:8080/register', {
         method: 'POST',
-        body: JSON.stringify(updatedStudent),
+        body: JSON.stringify(updatedUser),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -108,23 +108,23 @@ function RegistrationPage() {
         <h2 className="add-registration-headline">Create an Account</h2>
         <label className="add-registration-label">
           Name:
-          <input type="text" name="Name" value={student.Name} onChange={handleInputChange} className="add-registration-input" required />
+          <input type="text" name="Name" value={user.Name} onChange={handleInputChange} className="add-registration-input" required />
         </label>
         <label className="add-registration-label">
           Surname:
-          <input type="text" name="Surname" value={student.Surname} onChange={handleInputChange} className="add-registration-input" required />
+          <input type="text" name="Surname" value={user.Surname} onChange={handleInputChange} className="add-registration-input" required />
         </label>
         <label className="add-registration-label">
           Username:
-          <input type="text" name="Username" value={student.Username} onChange={handleInputChange} className="add-registration-input" required />
+          <input type="text" name="Username" value={user.Username} onChange={handleInputChange} className="add-registration-input" required />
         </label>
         <label className="add-registration-label">
           Email:
-          <input type="text" name="Email" value={student.Email} onChange={handleInputChange} className="add-registration-input" required />
+          <input type="text" name="Email" value={user.Email} onChange={handleInputChange} className="add-registration-input" required />
         </label>
         <label className="add-registration-label">
           Password:
-          <input type="password" name="Password" value={student.Password} onChange={handleInputChange} className="add-registration-input" required />
+          <input type="password" name="Password" value={user.Password} onChange={handleInputChange} className="add-registration-input" required />
         </label>
         <button type="submit" className="add-registration-button">Register</button>
         {error && <p className="error-message">{error}</p>}

@@ -11,7 +11,7 @@ function ExamHistoryPage() {
     const fetchAttemptsData = async () => {
         const token = authToken;
         try {
-            const response = await fetch('http://localhost:8080/attempts/getbystudentid', {
+            const response = await fetch('http://localhost:8080/attempts/getbyuserid', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

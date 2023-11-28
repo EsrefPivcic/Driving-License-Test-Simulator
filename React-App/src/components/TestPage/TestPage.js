@@ -57,9 +57,9 @@ function TestPage() {
     }
   };
 
-  const submitAttempt = async (studentresponses) => {
+  const submitAttempt = async (userresponses) => {
     var testid = ID;
-    const formattedStudentResponses = studentresponses.map(([questionId, selectedOptionIds]) => ({
+    const formattedUserResponses = userresponses.map(([questionId, selectedOptionIds]) => ({
       questionid: questionId,
       selectedoptions: selectedOptionIds,
     }));
@@ -70,7 +70,7 @@ function TestPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token: authToken, testid, studentresponses: formattedStudentResponses }),
+        body: JSON.stringify({ token: authToken, testid, userresponses: formattedUserResponses }),
       });
 
       if (!response.ok) {
@@ -203,7 +203,7 @@ function TestPage() {
   };
 
   const handleSubmission = () => {
-    const studentresponses = Object.entries(selectedOptions).map(
+    const userresponses = Object.entries(selectedOptions).map(
       ([questionId, selectedOptionIds]) => [+questionId, selectedOptionIds]
     );
     const hasEmptySelection = Object.values(selectedOptions).some(
@@ -212,12 +212,12 @@ function TestPage() {
     if (hasEmptySelection) {
       setShowWarning(true);
     } else {
-      if (studentresponses.length < Questions.length) {
+      if (userresponses.length < Questions.length) {
         setShowWarning(true);
       }
       else {
         setShowWarning(false);
-        submitAttempt(studentresponses);
+        submitAttempt(userresponses);
       }
     }
   };
@@ -232,10 +232,10 @@ function TestPage() {
   };
 
   const handleSubmissionAutomatically = () => {
-    const studentresponses = Object.entries(selectedOptions).map(
+    const userresponses = Object.entries(selectedOptions).map(
       ([questionId, selectedOptionIds]) => [+questionId, selectedOptionIds]
     );
-      submitAttempt(studentresponses);
+      submitAttempt(userresponses);
     };
 
     const handleSubmissionEmpty = async () => {
