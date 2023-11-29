@@ -145,11 +145,11 @@ function AddTestPage() {
                   value={q.ID}
                   onClick={() => toggleQuestionSelection(q.ID)}
                 >
-                  <input
+                  <div><input
                     type="checkbox"
                     checked={test.Questions.includes(q.ID)}
                     readOnly
-                  />
+                  /></div>
                   {q.QuestionText}
                 </option>
               ))}

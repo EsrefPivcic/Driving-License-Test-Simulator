@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 function HomePage() {
-  const { isAuthenticated, LogOut } = useAuth();
   const [testData, setTestData] = useState([]);
   const navigate = useNavigate();
 
@@ -25,39 +23,9 @@ function HomePage() {
     fetchTestData();
   }, []);
 
-  const HandleLogOut = async () => {
-    LogOut();
-  };
-
   return (
     <div>
       <div className="categories">
-        <div className="login">
-          {isAuthenticated ? (
-            <div className="profile-dropdown">
-              <img
-                src="images/userimage.jpg"
-                alt="User Profile"
-                className="profile-image"
-              />
-              <div className="dropdown-content">
-                <Link to={`/userprofile`} style={{ textDecoration: "none" }}>
-                  <p>User Profile</p>
-                </Link>
-                <Link to={`/examhistory`} style={{ textDecoration: "none" }}>
-                  <p>Exam History</p>
-                </Link>
-                <p onClick={HandleLogOut}>Logout</p>
-              </div>
-            </div>
-          ) : (
-            <Link to={`/login`} style={{ textDecoration: "none" }}>
-              <button className="login-button">
-                Login
-              </button>
-            </Link>
-          )}
-        </div>
         {testData.map((test) => (
           <div className="testButton"
             key={test.ID}
