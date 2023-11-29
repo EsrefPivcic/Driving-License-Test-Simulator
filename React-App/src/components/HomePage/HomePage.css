@@ -75,7 +75,7 @@
 
 .profile-dropdown {
   position: absolute;
-  top: 20px;
+  top: 0px;
   right: 20px;
   display: inline-block;
   align-items: center;
