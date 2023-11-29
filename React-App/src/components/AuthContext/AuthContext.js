@@ -104,7 +104,8 @@ const ValidateToken = useCallback(async () => {
     ValidateToken,
     LogOut,
     userData,
-    fetchUserData
+    fetchUserData,
+    setUserData
   };
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
