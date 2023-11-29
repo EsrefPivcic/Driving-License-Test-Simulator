@@ -1,21 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { useSpring, animated } from 'react-spring';
+import { useAuth } from '../AuthContext/AuthContext';
 import './UserProfilePage.css';
 
 function UserProfilePage() {
   const storedToken = localStorage.getItem('token');
+  const { fetchUserData, userData, setUserData } = useAuth();
   const [isComponentVisible, setComponentVisible] = useState(false);
   const [imageEmpty, setImageEmpty] = useState(false);
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [repeatNewPassword, setRepeatNewPassword] = useState('');
-  const [passwordChangeError, setPasswordChangeError] = useState('');
-  const [passwordChangeSuccess, setPasswordChangeSuccess] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessageImage, setSuccessMessageImage] = useState('');
   const [newName, setNewName] = useState('');
   const [newSurname, setNewSurname] = useState('');
   const [newUsername, setNewUsername] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newImage, setNewImage] = useState('');
+
+  const [isEditing, setEditing] = useState({
+    name: false,
+    surname: false,
+    username: false,
+    email: false,
+    password: false,
+  });
+
+  const startEditing = (field) => {
+    setEditing((prevEditing) => ({
+      ...prevEditing,
+      [field]: true,
+    }));
+  };
+
+  const stopEditing = (field) => {
+    setEditing((prevEditing) => ({
+      ...prevEditing,
+      [field]: false,
+    }));
+  };
 
   const validateName = (name) => {
     const nameRegex = /^[A-Z][a-zA-Z]*$/;
@@ -31,45 +56,6 @@ function UserProfilePage() {
     return emailRegex.test(email);
   };
 
-  const [userData, setUserData] = useState({
-    Name: '',
-    Surname: '',
-    Username: '',
-    Email: '',
-    Password: '',
-    ImageBase64: '',
-  });
-
-  const [isEditing, setEditing] = useState({
-    name: false,
-    surname: false,
-    username: false,
-    email: false,
-    password: false,
-  });
-
-  const fetchUserData = async () => {
-    const token = storedToken;
-    try {
-      const response = await fetch('http://localhost:8080/user/getbytoken', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setUserData(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
   useEffect(() => {
     fetchUserData();
     setComponentVisible(true);
@@ -80,21 +66,14 @@ function UserProfilePage() {
     from: { opacity: 0 },
   });
 
-  const handleEditClick = (field) => {
-    setEditing((prevState) => ({
-      ...prevState,
-      [field]: !prevState[field],
-    }));
-  };
-
   const changePassword = async () => {
     if (!oldPassword || !newPassword || !repeatNewPassword) {
-      setPasswordChangeError('Please fill in all password fields.');
+      setErrorMessage('Please fill in all password fields.');
       return;
     }
 
     if (oldPassword === newPassword || oldPassword === repeatNewPassword) {
-      setPasswordChangeError('New passwords must be different from the old password.');
+      setErrorMessage('New passwords must be different from the old password.');
       return;
     }
 
@@ -118,30 +97,32 @@ function UserProfilePage() {
       }
 
       console.log('Password changed successfully');
-      setPasswordChangeSuccess('Password changed successfully');
-      setPasswordChangeError('');
+      setSuccessMessage('Password changed successfully');
+      setErrorMessage('');
 
       setOldPassword('');
       setNewPassword('');
       setRepeatNewPassword('');
 
+      stopEditing('password');
       setTimeout(() => {
-        setEditing((prevState) => ({
-          ...prevState,
-          Password: false,
-        }));
-        setPasswordChangeSuccess('');
+        setSuccessMessage('');
       }, 2000);
     } catch (error) {
       console.error('Error changing password:', error);
-      setPasswordChangeError(error.message || 'An error occurred while changing the password');
-      setPasswordChangeSuccess('');
+      setErrorMessage(error.message || 'An error occurred while changing the password');
+      setSuccessMessage('');
     }
   };
 
   const changeName = async () => {
+    if (!newName) {
+      setErrorMessage('Please fill in the name field.');
+      return;
+    }
+
     if (!validateName(newName)) {
-      console.error('Invalid name format');
+      setErrorMessage('Name must start with a capital letter and should not have spaces.');
       return;
     }
 
@@ -163,20 +144,29 @@ function UserProfilePage() {
       }
 
       console.log('Name changed successfully');
+      setSuccessMessage('Name changed successfully');
+      setErrorMessage('');
       setUserData((prevData) => ({ ...prevData, Name: newName }));
 
-      setEditing((prevState) => ({
-        ...prevState,
-        Name: false,
-      }));
+      stopEditing('name');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 2000);
     } catch (error) {
       console.error('Error changing name:', error);
+      setErrorMessage(error.message || 'An error occurred while changing the name');
+      setSuccessMessage('');
     }
   };
 
   const changeSurname = async () => {
+    if (!newSurname) {
+      setErrorMessage('Please fill in the surname field.');
+      return;
+    }
+
     if (!validateName(newSurname)) {
-      console.error('Invalid surname format');
+      setErrorMessage('Surname must start with a capital letter and should not have spaces.');
       return;
     }
 
@@ -198,20 +188,29 @@ function UserProfilePage() {
       }
 
       console.log('Surname changed successfully');
+      setSuccessMessage('Surname changed successfully');
+      setErrorMessage('');
       setUserData((prevData) => ({ ...prevData, Surname: newSurname }));
 
-      setEditing((prevState) => ({
-        ...prevState,
-        Surname: false,
-      }));
+      stopEditing('surname');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 2000);
     } catch (error) {
       console.error('Error changing surname:', error);
+      setErrorMessage(error.message || 'An error occurred while changing the surname');
+      setSuccessMessage('');
     }
   };
 
   const changeUsername = async () => {
+    if (!newUsername) {
+      setErrorMessage('Please fill in the username field.');
+      return;
+    }
+
     if (!validateUsername(newUsername)) {
-      console.error('Invalid username format');
+      setErrorMessage('Username should not have spaces.');
       return;
     }
 
@@ -233,20 +232,29 @@ function UserProfilePage() {
       }
 
       console.log('Username changed successfully');
+      setSuccessMessage('Username changed successfully');
+      setErrorMessage('');
       setUserData((prevData) => ({ ...prevData, Username: newUsername }));
 
-      setEditing((prevState) => ({
-        ...prevState,
-        Username: false,
-      }));
+      stopEditing('username');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 2000);
     } catch (error) {
       console.error('Error changing username:', error);
+      setErrorMessage(error.message || 'An error occurred while changing the username');
+      setSuccessMessage('');
     }
   };
 
   const changeEmail = async () => {
+    if (!newEmail) {
+      setErrorMessage('Please fill in the email field.');
+      return;
+    }
+
     if (!validateEmail(newEmail)) {
-      console.error('Invalid email format');
+      setErrorMessage('Invalid email format. Please enter a valid email address.');
       return;
     }
 
@@ -268,39 +276,18 @@ function UserProfilePage() {
       }
 
       console.log('Email changed successfully');
+      setSuccessMessage('Email changed successfully');
+      setErrorMessage('');
       setUserData((prevData) => ({ ...prevData, Email: newEmail }));
 
-      setEditing((prevState) => ({
-        ...prevState,
-        Email: false,
-      }));
+      stopEditing('email');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 2000);
     } catch (error) {
       console.error('Error changing email:', error);
-    }
-  };
-
-  const handleSaveClick = async (field) => {
-    switch (field) {
-      case 'Password':
-        changePassword();
-        break;
-      case 'Name':
-        changeName();
-        break;
-      case 'Surname':
-        changeSurname();
-        break;
-      case 'Username':
-        changeUsername();
-        break;
-      case 'Email':
-        changeEmail();
-        break;
-      default:
-        setEditing((prevState) => ({
-          ...prevState,
-          [field]: false,
-        }));
+      setErrorMessage(error.message || 'An error occurred while changing the email');
+      setSuccessMessage('');
     }
   };
 
@@ -327,7 +314,11 @@ function UserProfilePage() {
         throw new Error(errorMessage);
       }
       console.log('Image added successfully');
+      setSuccessMessageImage('Image added successfully');
       setUserData((prevData) => ({ ...prevData, ImageBase64: newImage }));
+      setTimeout(() => {
+        setSuccessMessageImage('');
+      }, 2000);
     } catch (error) {
       console.error('Error adding a profile image:', error);
     }
@@ -340,6 +331,7 @@ function UserProfilePage() {
     reader.onload = (e) => {
       const base64Image = e.target.result.split(',')[1];
       setNewImage(base64Image);
+      setImageEmpty(false);
       setUserData({ ...userData, ImageBase64: base64Image });
     };
 
@@ -361,89 +353,192 @@ function UserProfilePage() {
           )}
           {!userData.ImageBase64 && (<img src="images/userimage.jpg" alt="Profile" />)}
           <div className="file-input-container">
+          {imageEmpty && (<p className="error-message-profile">Please select a new image!</p>)}
+          {successMessageImage && <p className="success-message-profile">{successMessageImage}</p>}
             <input
               className="choose-file-btn"
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
             />
-            <button className="save-image-button" onClick={addProfileImage}>Save image</button>
+            <button className="save-image-button" onClick={addProfileImage}>Save Image</button>
           </div>
-          {imageEmpty && (<p className="new-image-error">Please select a new image!</p>)}
         </div>
         <div className="user-info-container">
-          {Object.keys(userData).map((key) => key !== 'ID' && key !== 'IsStudent' && key !== 'IsAdmin' && 
-          key !== 'Image' && key !== 'ImageBase64' && (
-            <div key={key} className="user-info-row">
-              <span>{key.charAt(0).toUpperCase() + key.slice(1)}:</span>
-              {isEditing[key] ? (
-                key === 'Password' ? (
-                  <div className="password-editing">
-                    <input
-                      className={`edit-input password-input`}
-                      type="password"
-                      placeholder="Old Password"
-                      value={oldPassword}
-                      onChange={(e) => setOldPassword(e.target.value)}
-                      required
-                    />
-                    <input
-                      className={`edit-input password-input`}
-                      type="password"
-                      placeholder="New Password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      required
-                    />
-                    <input
-                      className={`edit-input password-input`}
-                      type="password"
-                      placeholder="Repeat New Password"
-                      value={repeatNewPassword}
-                      onChange={(e) => setRepeatNewPassword(e.target.value)}
-                      required
-                    />
-                    {passwordChangeError && <p className="error-message-profile">{passwordChangeError}</p>}
-                    {passwordChangeSuccess && <p className="success-message-profile">{passwordChangeSuccess}</p>}
-                  </div>
-                ) : (
-                  <input
-                    className="edit-input"
-                    type="text"
-                    value={
-                      key === 'Name' ? newName :
-                        key === 'Surname' ? newSurname :
-                          key === 'Username' ? newUsername :
-                            key === 'Email' ? newEmail :
-                              userData[key]
-                    }
-                    onChange={(e) => {
-                      if (key === 'Name') setNewName(e.target.value);
-                      if (key === 'Surname') setNewSurname(e.target.value);
-                      if (key === 'Username') setNewUsername(e.target.value);
-                      if (key === 'Email') setNewEmail(e.target.value);
-                    }}
-                  />
-                )
-              ) : (
-                <span className="data-span">{key === 'Password' ? '********' : userData[key]}</span>
-              )}
+          <div className="user-info-row">
+            <span>Name:</span>
+            {isEditing.name ? (
+              <input
+                className="edit-input"
+                type="text"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            ) : (
+              <span className="data-span">{userData.Name}</span>
+            )}
+            {!isEditing.name && (
               <button
-                className={`edit-button ${isEditing[key] && key === 'Password' ? 'save-button' : ''}`}
-                onClick={() => {
-                  if (isEditing[key]) {
-                    handleSaveClick(key);
-                  } else {
-                    handleEditClick(key);
-                  }
-                }}
+                className="edit-button"
+                onClick={() => startEditing('name')}
               >
-                {isEditing[key] ? 'Save' : 'Edit'}
+                Edit
               </button>
-
-            </div>
-          ))}
+            )}
+            {isEditing.name && (
+              <>
+                <button
+                  className="edit-button"
+                  onClick={() => changeName()}
+                >
+                  Save
+                </button>
+              </>
+            )}
+          </div>
+          <div className="user-info-row">
+            <span>Surname:</span>
+            {isEditing.surname ? (
+              <input
+                className="edit-input"
+                type="text"
+                value={newSurname}
+                onChange={(e) => setNewSurname(e.target.value)}
+              />
+            ) : (
+              <span className="data-span">{userData.Surname}</span>
+            )}
+            {!isEditing.surname && (
+              <button
+                className="edit-button"
+                onClick={() => startEditing('surname')
+                }
+              >
+                Edit
+              </button>
+            )}
+            {isEditing.surname && (
+              <button
+                className="edit-button"
+                onClick={() => changeSurname()}
+              >
+                Save
+              </button>
+            )}
+          </div>
+          <div className="user-info-row">
+            <span>Username:</span>
+            {isEditing.username ? (
+              <input
+                className="edit-input"
+                type="text"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+              />
+            ) : (
+              <span className="data-span">{userData.Username}</span>
+            )}
+            {!isEditing.username && (
+              <button
+                className="edit-button"
+                onClick={() => startEditing('username')
+                }
+              >
+                Edit
+              </button>
+            )}
+            {isEditing.username && (
+              <button
+                className="edit-button"
+                onClick={() => changeUsername()}
+              >
+                Save
+              </button>
+            )}
+          </div>
+          <div className="user-info-row">
+            <span>Email:</span>
+            {isEditing.email ? (
+              <input
+                className="edit-input"
+                type="text"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+              />
+            ) : (
+              <span className="data-span">{userData.Email}</span>
+            )}
+            {!isEditing.email && (
+              <button
+                className="edit-button"
+                onClick={() => startEditing('email')
+                }
+              >
+                Edit
+              </button>
+            )}
+            {isEditing.email && (
+              <button
+                className="edit-button"
+                onClick={() => changeEmail()}
+              >
+                Save
+              </button>
+            )}
+          </div>
+          <div className="user-info-row">
+            <span>Password:</span>
+            {isEditing.password ? (
+              <div className="password-editing">
+                <input
+                  className="edit-input password-input"
+                  type="password"
+                  placeholder="Old Password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  required
+                />
+                <input
+                  className="edit-input password-input"
+                  type="password"
+                  placeholder="New Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                />
+                <input
+                  className="edit-input password-input"
+                  type="password"
+                  placeholder="Repeat New Password"
+                  value={repeatNewPassword}
+                  onChange={(e) => setRepeatNewPassword(e.target.value)}
+                  required
+                />
+              </div>
+            ) : (
+              <span className="data-span">********</span>
+            )}
+            {!isEditing.password && (
+              <button
+                className="edit-button"
+                onClick={() => startEditing('password')
+                }
+              >
+                Edit
+              </button>
+            )}
+            {isEditing.password && (
+              <button
+                className="edit-button save-button"
+                onClick={() => changePassword()}
+              >
+                Save
+              </button>
+            )}
+          </div>
         </div>
+      {errorMessage && <p className="error-message-profile">{errorMessage}</p>}
+      {successMessage && <p className="success-message-profile">{successMessage}</p>}
       </div>
     </animated.div>
   );
