@@ -5,7 +5,7 @@ VALUES (
     'admin',
     'admin@mail.com',
     'admin',
-    ARRAY[pg_read_binary_file('/path/in/container/images/admin.png')],
+    ARRAY[pg_read_binary_file('/path/in/container/images/empty.png')],
     false,
     true
 );
