@@ -2,142 +2,103 @@ INSERT INTO "option" (questionid, optiontext, iscorrect) VALUES
 (1, 'no, they are only required to wear protective goggles', false),
 (1, 'yes', true),
 (1, 'no', false),
-
 (2, 'not time-limited', true),
 (2, 'one year', false),
 (2, 'two years', false),
-
 (3, 'is not longer than 35 m nor shorter than 10 m', false),
 (3, 'is not longer than 50 m nor shorter than 10 m', true),
-
 (4, '1.00 m', true),
 (4, '0.80 m', false),
-
 (5, 'no', false),
 (5, 'yes', true),
-
 (6, '1.60 m', false),
 (6, '2.00 m', true),
 (6, '2.50 m', false),
-
 (7, '60 km/h', false),
 (7, '90 km/h', true),
 (7, '80 km/h', false),
-
 (8, 'yes', false),
 (8, 'no', true),
-
 (9, 'a motor vehicle with three wheels symmetrically arranged about the median longitudinal axis, with a heat engine whose displacement is greater than 50 cm³ or whose maximum design speed is greater than 45 km/h', true),
 (9, 'a motor vehicle with three wheels symmetrically arranged about the median longitudinal axis, with a heat engine whose displacement is not greater than 50 cm³ or whose maximum design speed is not greater than 45 km/h', false),
-
 (10, 'they must move one behind the other', true),
 (10, 'they are not required to move one behind the other', false),
-
 (11, 'is not required to move on the right bicycle lane in relation to the direction of traffic', false),
 (11, 'must move on the right bicycle lane in relation to the direction of traffic', true),
-
 (12, 'vehicles must move on the right side in the direction of vehicle movement', true),
 (12, 'vehicles are not required to move on the right side in the direction of vehicle movement', false),
-
 (13, 'release the handlebars, except when signaling a change of direction', true),
 (13, 'move as close as possible to the right edge of the roadway', false),
 (13, 'remove feet from the pedals', true),
 (13, 'move on traffic surfaces where the movement of such vehicles is allowed', false),
 (13, 'use headphones for audio devices in both ears', true),
-
 (14, 'any person in traffic on the road who is in a vehicle', false),
 (14, 'a person who is driving a vehicle on the road', true),
-
 (15, 'roadway lane', true),
 (15, 'roadway', false),
 (15, 'traffic lane', false),
-
 (16, 'the space that a participant in road traffic can see from their position', true),
 (16, 'the place at an intersection from which the driver can see to the left-right at least 25 m', false),
 (16, 'the place at an intersection from which the driver can see to the left at least 25 m', false),
-
 (17, 'proof of a completed technical inspection', false),
 (17, 'proof of paid toll', false),
 (17, 'proof of vehicle registration', true),
-
 (18, '4.5 m from the highest point of the roadway', true),
 (18, '4 m from the highest point of the roadway', false),
 (18, '6 m from the highest point of the roadway', false),
-
 (19, 'wet and muddy road', true),
 (19, 'dry road', false),
 (19, 'vehicle load', true),
-
 (20, 'during the month in which the deadline of 24 months from the day of the first vehicle registration expires, and during the month in which the deadline of 36 months from the day of the first vehicle registration expires', false),
 (20, 'during the month in which the deadline of 12 months from the day of the first vehicle registration expires, and during the month in which the deadline of 36 months from the day of the first vehicle registration expires', false),
 (20, 'during the month in which the deadline of 24 months from the day of the first vehicle registration expires, and during the month in which the deadline of 48 months from the day of the first vehicle registration expires', true),
-
 (21, 'Adjusting driving to the road conditions', false),
 (21, 'Sudden movements of the steering wheel', true),
 (21, 'Sudden braking and stopping', true),
-
 (22, 'Prepare to navigate through multiple consecutive curves, with the first one turning right', true),
 (22, 'Warn traffic participants behind you with the right turn indicator', false),
-
 (23, 'Proximity to a road section where the roadside is undefined', true),
 (23, 'Proximity to a road section where the road is frozen', false),
-
 (24, 'Continue moving with the vehicle because I have the right of way', false),
 (24, 'Reduce the speed of the vehicle and, if necessary, stop the vehicle', true),
 (24, 'Give way to vehicles from the opposite direction', true),
-
 (25, 'Prohibition of traffic for all motor vehicles towing a trailer', true),
 (25, 'Prohibition of traffic for all motor vehicles towing a light trailer', false),
-
 (26, 'Electronic toll collection', true),
 (26, 'Prohibition of using radio devices in the vehicle', false),
-
 (27, 'Niche for stopping vehicles in case of danger', true),
 (27, 'Area reserved for stopping public transport vehicles', false),
-
 (28, 'Tire repair workshop', true),
 (28, 'Place where you can check tire pressure', false),
-
 (29, 'Increase attention', true),
 (29, 'Provide assistance to those injured in a traffic accident', true),
 (29, 'Increase the speed of the vehicle', false),
-
 (30, 'Entering an area where there is an increased risk of uncontrolled fire outbreak', true),
 (30, 'Entering an area where campfires are allowed for picnickers', false),
-
 (31, 'Path number 1', true),
 (31, 'Path number 2', false),
-
 (32, '1 – 3 – 2', true),
 (32, '2 – 3 – 1', false),
 (32, '2 – 1 – 3', false),
-
 (33, '2 – 1', true),
 (33, '1 – 2', false),
-
 (34, 'Give way to vehicle number 3 and then pass before vehicle number 2', true),
 (34, 'Give way to vehicle number 3, then give way to vehicle number 2, and finally pass through the intersection', false),
-
 (35, '2 – 3 – 4 – 1', false),
 (35, '1 – 2 – 3 – 4', false),
 (35, '2 – 3 – 1 – 4', true),
-
 (36, 'Pass through the intersection before vehicle number 2 and give way to vehicle number 3', false),
 (36, 'Give way to vehicle number 2 and then pass through the intersection before vehicle number 3', true),
-
 (37, '3 – 4 – 2 – 1', true),
 (37, '3 – 1 – 2 – 4', false),
 (37, '4 – 2 – 1 – 3', false),
-
 (38, '2 – 1 – 3', true),
 (38, '3 – 1 – 2', false),
 (38, '2 – 3 – 1', false),
-
 (39, 'Yes', true),
 (39, 'No', false),
-
 (40, 'Number 1', true),
-(40, 'Number 2', false)
+(40, 'Number 2', false),
 (41, 'Yes', false),
   (41, 'No', true),
 
@@ -226,4 +187,86 @@ INSERT INTO "option" (questionid, optiontext, iscorrect) VALUES
   -- Options for question 20
   (60, 'In accordance with the light traffic sign, provided that the meaning of that sign does not differ from the meaning of other traffic signs or traffic rules', false),
   (60, 'In accordance with traffic signals, provided that this does not deviate from the rules of traffic', false),
-  (60, 'According to signs or orders given by authorized persons even if it deviates from the light traffic sign or other traffic sign or traffic rule', true);
+  (60, 'According to signs or orders given by authorized persons even if it deviates from the light traffic sign or other traffic sign or traffic rule', true),
+(81, '2.55 m', false),
+(81, '2.60 m', true),
+(81, '2.50 m', false),
+(82, '12%', false),
+(82, '18%', true),
+(83, '6%', false),
+(83, '12%', true),
+(84, 'Have reached 21 years of age', true),
+(84, 'Have reached 23 years of age', false),
+(84, 'Have completed professional training for handling and transporting hazardous materials', true),
+(85, 'More than 3,500 kg', false),
+(85, 'More than 7,500 kg', true),
+(86, 'More than 3,500 kg but less than 7,500 kg', true),
+(86, 'More than 7,500 kg but less than 12,000 kg', false),
+(87, 'Minimum 1,000 kg', false),
+(87, 'Minimum 2,500 kg', true),
+(88, 'At least 25 minutes', false),
+(88, 'At least 35 minutes', true),
+(89, '10,500 kg', false),
+(89, '12,000 kg', true),
+(90, 'If the maximum permissible mass exceeds 12,000 kg', true),
+(90, 'If the maximum permissible mass exceeds 7,500 kg', false),
+(90, 'If the maximum permissible mass exceeds 3,500 kg', false),
+(91, 'When the length, including the drawbar, exceeds 8 m, and the maximum permissible mass is less than or equal to 10,000 kg', true),
+(91, 'When the maximum permissible mass, regardless of the length of the trailer, exceeds 10,000 kg', true),
+(91, 'All trailers must carry a sign for long vehicles', false),
+(92, '3,500 kg', false),
+(92, '5,000 kg', false),
+(92, '7,000 kg', false),
+(92, '7,500 kg', true),
+(93, 'The furthest point at the rear of the vehicle is less than 2 m', false),
+(93, 'The furthest point at the rear of the vehicle is less than 1.5 m', true),
+(93, 'The furthest point of the load is marked with a square-shaped sign, dimensions 50 x 50 cm, alternating slanting stripes of reflective orange and white colors, positioned vertically on the longitudinal axis of the vehicle', true),
+(94, 'A motor vehicle intended and equipped for towing semi-trailers', true),
+(94, 'A motor vehicle intended and equipped for towing light trailers', false),
+(95, 'Yes', true),
+(95, 'No', false),
+(96, 'Motor vehicles and trailers that, for design reasons, cannot travel at speeds greater than 30 km/h on a flat road', true),
+(96, 'Motor vehicles and trailers that, for design reasons, cannot travel at speeds greater than 40 km/h on a flat road', false),
+(96, 'Motor vehicles and trailers that, for design reasons, cannot travel at speeds greater than 50 km/h on a flat road', false),
+(97, 'Combinations of vehicles where the towing vehicles fall into the C1 subcategory, and the trailers have a maximum permissible mass greater than 750 kg, with the condition that the maximum permissible mass of the combination does not exceed 12,000 kg and the maximum permissible mass of the trailer does not exceed the unladen mass of the towing vehicle', true),
+(97, 'Combinations of vehicles where the towing vehicles fall into category C, and the trailers have a maximum permissible mass greater than 750 kg', false),
+(97, 'Motor vehicles for transporting cargo with a maximum permissible mass greater than 7,500 kg', false),
+(98, '80 dB(A)', true),
+(98, '76 dB(A)', false),
+(98, '64 dB(A)', false),
+(99, 'The length of the towing vehicle', false),
+(99, 'The length of the single-axle trailer', false),
+(99, 'The total length of the towing vehicle and the single-axle trailer', true),
+(100, '70 km/h', false),
+(100, '50 km/h', true),
+(100, '60 km/h', false),
+(101, '18 years of age', false),
+(101, '20 years of age', false),
+(101, '21 years of age', true),
+(102, 'Traffic lane', false),
+(102, 'Roadway', true),
+(102, 'Traffic lane', false),
+(103, 'Low or daytime running lights', true),
+(103, 'High beams', false),
+(103, 'Special fog lights', false),
+(104, 'Obligation for all traffic participants to move particularly cautiously', false),
+(104, 'Prohibition of passage for all vehicles', false),
+(104, 'Prohibition of passage, except for vehicles that, at the moment the yellow light appears, are at such a distance from the traffic light that they cannot safely stop before passing it, and for other participants, a prohibition of passage', true),
+(105, 'Not regulated by the regulations', false),
+(105, 'No', true),
+(105, 'Yes', false),
+(106, 'Driving while fatigued', true),
+(106, 'Driving under the influence of alcohol and drugs', true),
+(106, 'Driving along the right edge of the road', false),
+(107, '2.55 m', false),
+(107, '2.60 m', true),
+(107, '2.50 m', false),
+(108, '10 t', false),
+(108, '11.5 t', true),
+(108, '11 t', false),
+(109, 'Stop the vehicle while children are getting on and off', true),
+(109, 'Reduce the speed of the vehicle and continue with particular caution', false),
+(109, 'Reduce the speed of the vehicle and, if necessary, stop the vehicle', false),
+(110, '7.5 m, measured from the light source', false),
+(110, '10 m, measured from the light source', true),
+(110, '8 m, measured from the light source', false);
