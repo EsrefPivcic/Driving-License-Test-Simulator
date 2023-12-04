@@ -137,4 +137,93 @@ INSERT INTO "option" (questionid, optiontext, iscorrect) VALUES
 (39, 'No', false),
 
 (40, 'Number 1', true),
-(40, 'Number 2', false);
+(40, 'Number 2', false)
+(41, 'Yes', false),
+  (41, 'No', true),
+
+  -- Options for question 2
+  (42, 'On a public road in the city', true),
+  (42, 'On a test track and on a public road in the city', false),
+  (42, 'Only on a test track', false),
+
+  -- Options for question 3
+  (43, '2.30 m', false),
+  (43, '2.50 m', true),
+  (43, '2.70 m', false),
+
+  -- Options for question 4
+  (44, 'Reasonably and calmly', false),
+  (44, 'In accordance with regulations', false),
+  (44, 'Spontaneously and unpredictably', true),
+
+  -- Options for question 5
+  (45, 'Aggressive driving', false),
+  (45, 'Adhering to traffic rules and regulations', true),
+  (45, 'Defensive driving', true),
+  (45, 'Nervous driving', false),
+
+  -- Options for question 6
+  (46, 'A motor vehicle with malfunctioning lighting devices', false),
+  (46, 'A motor vehicle with malfunctioning signaling devices', false),
+  (46, 'A motor vehicle with malfunctioning braking devices', true),
+  (46, 'A motor vehicle with malfunctioning steering devices', true),
+  (46, 'A cargo motor vehicle and a bus', true),
+
+  -- Options for question 7
+  (47, '12 months from the date of issue', true),
+  (47, '6 months from the date of issue', false),
+
+  -- Options for question 8
+  (48, 'That has a functioning steering device', false),
+  (48, 'Heavier than the towing vehicle if its auxiliary brake is malfunctioning', true),
+
+  -- Options for question 9
+  (49, 'Any interruption of the vehicle''s movement on the road lasting up to 15 minutes, except for interruptions made to comply with a sign or rule regulating traffic', false),
+  (49, 'Any interruption of the vehicle''s movement on the road lasting up to 5 minutes, except for interruptions made to comply with a sign or rule regulating traffic', true),
+
+  -- Options for question 10
+  (50, 'A person participating in traffic who does not operate a vehicle, nor is transported in a vehicle or on a vehicle', true),
+  (50, 'A person operating a vehicle or being transported in a vehicle or on a vehicle', false),
+
+  -- Options for question 11
+  (51, 'Two traffic lanes', false),
+  (51, 'One traffic lane', true),
+  (51, 'More than two traffic lanes', false),
+
+  -- Options for question 12
+  (52, 'No later than one hour after consumption', true),
+  (52, 'No later than 24 hours after consumption', false),
+
+  -- Options for question 13
+  (53, 'At least 100 meters outside urban areas, or at least 50 meters in urban areas', false),
+  (53, 'At least 200 meters on a road outside urban areas, or at least 100 meters in urban areas', true),
+
+  -- Options for question 14
+  (54, '40 km/h', true),
+  (54, '60 km/h, are not allowed on the highway', false),
+
+  -- Options for question 15
+  (55, '7%', false),
+  (55, '4%', true),
+
+  -- Options for question 16
+  (56, 'No, if there are two traffic lanes in one direction', false),
+  (56, 'No, if pedestrians are letting him pass', false),
+  (56, 'It is prohibited', true),
+
+  -- Options for question 17
+  (57, 'No', true),
+  (57, 'Yes', false),
+
+  -- Options for question 18
+  (58, 'Equipment on the road placed to reduce the speed of vehicle movement in places where the safety of traffic participants is particularly endangered', true),
+  (58, 'Protective barriers and toll booths', false),
+
+  -- Options for question 19
+  (59, 'Any means of transportation intended for movement on the road, except for motorless wheelchairs for disabled individuals and children''s transportation devices', true),
+  (59, 'Any motor vehicle intended for the transportation of people', false),
+
+  -- Options for question 20
+  (60, 'In accordance with the light traffic sign, provided that the meaning of that sign does not differ from the meaning of other traffic signs or traffic rules', false),
+  (60, 'In accordance with traffic signals, provided that this does not deviate from the rules of traffic', false),
+  (60, 'According to signs or orders given by authorized persons even if it deviates from the light traffic sign or other traffic sign or traffic rule', true);
