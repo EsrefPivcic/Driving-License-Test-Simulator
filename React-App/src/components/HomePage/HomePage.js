@@ -26,7 +26,7 @@ function HomePage() {
   return (
     <div>
       <div className="categories">
-        {testData.map((test) => (
+        {testData ? (testData.map((test) => (
           <div className="testButton"
             key={test.ID}
             onClick={() => navigate(`/test`, { state: { test } })}
@@ -42,7 +42,10 @@ function HomePage() {
               <p>{test.Description}</p>
             </button>
           </div>
-        ))}
+        ))) : 
+        <div>
+        No tests available.
+      </div>}       
       </div>
     </div>
   );

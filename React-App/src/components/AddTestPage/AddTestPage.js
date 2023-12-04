@@ -16,7 +16,6 @@ function AddTestPage() {
   const [isComponentVisible, setComponentVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -112,7 +111,7 @@ function AddTestPage() {
 
   return (
     <animated.div style={fadeIn}>
-      <form className="add-test-form" onSubmit={handleSubmit}>
+      {questions ? (<form className="add-test-form" onSubmit={handleSubmit}>
         <h2 className="add-test-headline">Add a Test</h2>
         <label className="add-test-label">
           Title:
@@ -161,7 +160,9 @@ function AddTestPage() {
           <input type="file" name="ImageBase64" onChange={handleImageUpload} className="add-test-input" />
         </label>
         <button type="submit" className="add-test-button">Upload Test</button>
-      </form>
+      </form>) : <div>
+        To add a test, add some questions first.
+        </div>}
       {errorMessage && (
         <div className="error-message-test">{errorMessage}</div>
       )}
