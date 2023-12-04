@@ -1,7 +1,7 @@
 version: '3'
 services:
   postgres:
-    container_name: praksa
+    container_name: praksa2
     image: postgres
     environment:
       POSTGRES_PASSWORD: 12345
@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - my_data:/var/lib/postgresql/data
-      - ./init-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - my_data2:/var/lib/postgresql/data
+      - ./images:/path/in/container/images
 volumes:
-  my_data:
+  my_data2:

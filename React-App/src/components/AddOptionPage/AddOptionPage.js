@@ -88,7 +88,7 @@ function AddOptionPage() {
 
   return (
     <animated.div style={fadeIn}>
-      <form className="add-option-form" onSubmit={handleSubmit}>
+      {questions ? <form className="add-option-form" onSubmit={handleSubmit}>
         <h2 className="add-option-headline">Add an Option</h2>
         <label className="add-option-label">
           Question:
@@ -110,7 +110,9 @@ function AddOptionPage() {
           <input type="checkbox" name="IsCorrect" value={option.IsCorrect} onChange={handleInputChange} className="add-option-input" />
         </label>
         <button type="submit" className="add-option-button">Upload Option</button>
-      </form>
+      </form> : <div>
+        To add options, add a question first.
+        </div>}
       {errorMessage && (
         <div className="error-message-option">{errorMessage}</div>
       )}

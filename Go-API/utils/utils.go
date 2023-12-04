@@ -3,13 +3,18 @@ package utils
 import (
 	"math/rand"
 
+	"strings"
+
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func ComparePasswords(storedPassword, providedPassword string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(providedPassword))
-	return err == nil
+	if strings.HasPrefix(storedPassword, "$2a$") || strings.HasPrefix(storedPassword, "$2y$") {
+		err := bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(providedPassword))
+		return err == nil
+	}
+	return storedPassword == providedPassword
 }
 
 func generateSessionID() string {
