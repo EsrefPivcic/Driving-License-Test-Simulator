@@ -1,16 +1,16 @@
 version: '3'
 services:
   postgres:
-    container_name: praksa2
+    container_name: eDrivingSchool
     image: postgres
     environment:
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
-      POSTGRES_DB: dlts
+      POSTGRES_DB: eDrivingSchoolDB
     ports:
       - "5432:5432"
     volumes:
-      - my_data2:/var/lib/postgresql/data
+      - my_data:/var/lib/postgresql/data
       - ./images:/path/in/container/images
 volumes:
-  my_data2:
+  my_data:

@@ -253,7 +253,6 @@ function TestPage() {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-  
         const data = await response.json();
         navigate(`/testresults`, { state: { attempt: data } });
       } catch (error) {
