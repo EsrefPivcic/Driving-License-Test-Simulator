@@ -100,94 +100,105 @@ INSERT INTO "option" (questionid, optiontext, iscorrect) VALUES
 (40, 'Number 1', true),
 (40, 'Number 2', false),
 (41, 'Yes', false),
-  (41, 'No', true),
-
-  -- Options for question 2
-  (42, 'On a public road in the city', true),
-  (42, 'On a test track and on a public road in the city', false),
-  (42, 'Only on a test track', false),
-
-  -- Options for question 3
-  (43, '2.30 m', false),
-  (43, '2.50 m', true),
-  (43, '2.70 m', false),
-
-  -- Options for question 4
-  (44, 'Reasonably and calmly', false),
-  (44, 'In accordance with regulations', false),
-  (44, 'Spontaneously and unpredictably', true),
-
-  -- Options for question 5
-  (45, 'Aggressive driving', false),
-  (45, 'Adhering to traffic rules and regulations', true),
-  (45, 'Defensive driving', true),
-  (45, 'Nervous driving', false),
-
-  -- Options for question 6
-  (46, 'A motor vehicle with malfunctioning lighting devices', false),
-  (46, 'A motor vehicle with malfunctioning signaling devices', false),
-  (46, 'A motor vehicle with malfunctioning braking devices', true),
-  (46, 'A motor vehicle with malfunctioning steering devices', true),
-  (46, 'A cargo motor vehicle and a bus', true),
-
-  -- Options for question 7
-  (47, '12 months from the date of issue', true),
-  (47, '6 months from the date of issue', false),
-
-  -- Options for question 8
-  (48, 'That has a functioning steering device', false),
-  (48, 'Heavier than the towing vehicle if its auxiliary brake is malfunctioning', true),
-
-  -- Options for question 9
-  (49, 'Any interruption of the vehicle''s movement on the road lasting up to 15 minutes, except for interruptions made to comply with a sign or rule regulating traffic', false),
-  (49, 'Any interruption of the vehicle''s movement on the road lasting up to 5 minutes, except for interruptions made to comply with a sign or rule regulating traffic', true),
-
-  -- Options for question 10
-  (50, 'A person participating in traffic who does not operate a vehicle, nor is transported in a vehicle or on a vehicle', true),
-  (50, 'A person operating a vehicle or being transported in a vehicle or on a vehicle', false),
-
-  -- Options for question 11
-  (51, 'Two traffic lanes', false),
-  (51, 'One traffic lane', true),
-  (51, 'More than two traffic lanes', false),
-
-  -- Options for question 12
-  (52, 'No later than one hour after consumption', true),
-  (52, 'No later than 24 hours after consumption', false),
-
-  -- Options for question 13
-  (53, 'At least 100 meters outside urban areas, or at least 50 meters in urban areas', false),
-  (53, 'At least 200 meters on a road outside urban areas, or at least 100 meters in urban areas', true),
-
-  -- Options for question 14
-  (54, '40 km/h', true),
-  (54, '60 km/h, are not allowed on the highway', false),
-
-  -- Options for question 15
-  (55, '7%', false),
-  (55, '4%', true),
-
-  -- Options for question 16
-  (56, 'No, if there are two traffic lanes in one direction', false),
-  (56, 'No, if pedestrians are letting him pass', false),
-  (56, 'It is prohibited', true),
-
-  -- Options for question 17
-  (57, 'No', true),
-  (57, 'Yes', false),
-
-  -- Options for question 18
-  (58, 'Equipment on the road placed to reduce the speed of vehicle movement in places where the safety of traffic participants is particularly endangered', true),
-  (58, 'Protective barriers and toll booths', false),
-
-  -- Options for question 19
-  (59, 'Any means of transportation intended for movement on the road, except for motorless wheelchairs for disabled individuals and children''s transportation devices', true),
-  (59, 'Any motor vehicle intended for the transportation of people', false),
-
-  -- Options for question 20
-  (60, 'In accordance with the light traffic sign, provided that the meaning of that sign does not differ from the meaning of other traffic signs or traffic rules', false),
-  (60, 'In accordance with traffic signals, provided that this does not deviate from the rules of traffic', false),
-  (60, 'According to signs or orders given by authorized persons even if it deviates from the light traffic sign or other traffic sign or traffic rule', true),
+(41, 'No', true),
+(42, 'On a public road in the city', true),
+(42, 'On a test track and on a public road in the city', false),
+(42, 'Only on a test track', false),
+(43, '2.30 m', false),
+(43, '2.50 m', true),
+(43, '2.70 m', false),
+(44, 'Reasonably and calmly', false),
+(44, 'In accordance with regulations', false),
+(44, 'Spontaneously and unpredictably', true),
+(45, 'Aggressive driving', false),
+(45, 'Adhering to traffic rules and regulations', true),
+(45, 'Defensive driving', true),
+(45, 'Nervous driving', false),
+(46, 'A motor vehicle with malfunctioning lighting devices', false),
+(46, 'A motor vehicle with malfunctioning signaling devices', false),
+(46, 'A motor vehicle with malfunctioning braking devices', true),
+(46, 'A motor vehicle with malfunctioning steering devices', true),
+(46, 'A cargo motor vehicle and a bus', true),
+(47, '12 months from the date of issue', true),
+(47, '6 months from the date of issue', false),
+(48, 'That has a functioning steering device', false),
+(48, 'Heavier than the towing vehicle if its auxiliary brake is malfunctioning', true),
+(49, 'Any interruption of the vehicle''s movement on the road lasting up to 15 minutes, except for interruptions made to comply with a sign or rule regulating traffic', false),
+(49, 'Any interruption of the vehicle''s movement on the road lasting up to 5 minutes, except for interruptions made to comply with a sign or rule regulating traffic', true),
+(50, 'A person participating in traffic who does not operate a vehicle, nor is transported in a vehicle or on a vehicle', true),
+(50, 'A person operating a vehicle or being transported in a vehicle or on a vehicle', false),
+(51, 'Two traffic lanes', false),
+(51, 'One traffic lane', true),
+(51, 'More than two traffic lanes', false),
+(52, 'No later than one hour after consumption', true),
+(52, 'No later than 24 hours after consumption', false),
+(53, 'At least 100 meters outside urban areas, or at least 50 meters in urban areas', false),
+(53, 'At least 200 meters on a road outside urban areas, or at least 100 meters in urban areas', true),
+(54, '40 km/h', true),
+(54, '60 km/h, are not allowed on the highway', false),
+(55, '7%', false),
+(55, '4%', true),
+(56, 'No, if there are two traffic lanes in one direction', false),
+(56, 'No, if pedestrians are letting him pass', false),
+(56, 'It is prohibited', true),
+(57, 'No', true),
+(57, 'Yes', false),
+(58, 'Equipment on the road placed to reduce the speed of vehicle movement in places where the safety of traffic participants is particularly endangered', true),
+(58, 'Protective barriers and toll booths', false),
+(59, 'Any means of transportation intended for movement on the road, except for motorless wheelchairs for disabled individuals and children''s transportation devices', true),
+(59, 'Any motor vehicle intended for the transportation of people', false),
+(60, 'In accordance with the light traffic sign, provided that the meaning of that sign does not differ from the meaning of other traffic signs or traffic rules', false),
+(60, 'In accordance with traffic signals, provided that this does not deviate from the rules of traffic', false),
+(60, 'According to signs or orders given by authorized persons even if it deviates from the light traffic sign or other traffic sign or traffic rule', true),
+(61, 'Reduce the speed of the vehicle and increase attention', true),
+(61, 'Anticipate the possibility of encountering icy road conditions', true),
+(61, 'Increase the speed of the vehicle', false),
+(62, 'Bicycles', false),
+(62, 'Buses and trucks', true),
+(63, 'Bicycles, mopeds, and light motorcycles', true),
+(63, 'Motorcycles', false),
+(64, 'Prohibition of traffic for vehicles transporting hazardous materials above a certain quantity', false),
+(64, 'Prohibition of traffic for vehicles transporting explosives or some easily flammable materials', true),
+(65, 'Area arranged for camping in vehicles', true),
+(65, 'Prohibited camping in vehicles', false),
+(66, 'Proximity to a location with a car wash', true),
+(66, 'Proximity to a location where washing vehicles is prohibited', false),
+(67, 'Permitted passage for vehicles coming from the sides of the authorized person', false),
+(67, 'Mandatory stop for all vehicles in front of the intersection', true),
+(68, 'Traffic lanes with reversible direction of movement regulated by devices giving light traffic signals', true),
+(68, 'Traffic lanes that can only be used by vehicles with the right of way', false),
+(69, 'When transporting at temperatures below 0 °C', false),
+(69, 'When transporting hazardous materials at an elevated temperature', true),
+(70, 'Mandatory turn left', true),
+(70, 'Continue straight ahead', false),
+(71, '5 – 4 – 3 – 2 – 1', true),
+(71, '1 – 2 – 3 – 4 – 5', false),
+(72, '2 – 3 – 1', false),
+(72, '1 – 2 – 3', true),
+(72, '3 – 1 – 2', false),
+(73, 'Vehicle number 4 and number 2', false),
+(73, 'Vehicle number 1 and number 3', true),
+(74, '4 – 3 – 1 – 2', true),
+(74, '3 – 4 – 1 – 2', false),
+(74, '4 – 3 – 2 – 1', false),
+(75, '1 – 2 – 3', false),
+(75, '2 – 3 – 1', false),
+(75, '3 – 1 – 2', true),
+(76, '3 – 1 – 2', true),
+(76, '2 – 3 – 1', false),
+(76, '1 – 3 – 2', false),
+(77, '3 – 2 – 1', true),
+(77, '1 – 2 – 3', false),
+(77, '2 – 1 – 3', false),
+(78, '1 – 3 – 2', false),
+(78, '2 – 3 – 1', false),
+(78, '2 – 1 – 3', true),
+(79, '1 – 3 – 2 – 4', false),
+(79, '3 – 1 – 2 – 4', false),
+(79, '3 – 2 – 1 – 4', true),
+(79, '1 – 4 – 2 – 3', false),
+(80, 'Pass before vehicle number 1', true),
+(80, 'Stop and yield to vehicle number 1', false),
 (81, '2.55 m', false),
 (81, '2.60 m', true),
 (81, '2.50 m', false),
