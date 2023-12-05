@@ -12,7 +12,7 @@ import (
 )
 
 func connectDB() (*sql.DB, error) {
-	connectionString := "user=admin password=12345 dbname=dlts host=localhost port=5432 sslmode=disable"
+	connectionString := "user=admin password=admin dbname=eDrivingSchoolDB host=localhost port=5432 sslmode=disable"
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		return nil, err

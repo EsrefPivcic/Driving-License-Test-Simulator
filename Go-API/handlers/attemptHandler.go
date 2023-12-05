@@ -109,21 +109,31 @@ func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
 			Token  string `json:"token"`
 			TestID int    `json:"testid"`
 		}
-
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
 			return
 		}
-
 		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
 		if err != nil {
 			log.Printf("Error retrieving a UserID: %v", err)
 		}
+		test, err := dal.RetrieveTestByIdFromDB(db, request.TestID)
+		if err != nil {
+			log.Printf("Error retrieving Test: %v", err)
+		}
+		questions, errq := dal.RetrieveQuestionsByIdsFromDB(db, test.Questions)
+		if errq != nil {
+			log.Printf("Error retrieving Questions: %v", errq)
+		}
+		var MaxScore int = 0
+		for i := 0; i < len(questions); i++ {
+			MaxScore += questions[i].Points
+		}
 		attempt.UserID = userID
 		attempt.TestID = request.TestID
 		attempt.Score = 0
-		attempt.MaxScore = 0
+		attempt.MaxScore = MaxScore
 		attempt.Percentage = 0
 		attempt.Passed = false
 
