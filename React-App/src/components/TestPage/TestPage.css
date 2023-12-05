@@ -64,6 +64,10 @@
       background-color: #d32f2f;
     }
   }
+
+  .question-image {
+    width: 200px;
+  }
   
   .next-button {
     background: #4285f4;

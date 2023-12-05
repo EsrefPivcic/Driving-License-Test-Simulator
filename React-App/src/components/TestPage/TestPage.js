@@ -281,7 +281,7 @@ function TestPage() {
               className="category-image"
             />
             <p><strong>{Description}</strong></p>
-            <p>The exam for Category {Category} consists of {Questions.length}{" "} questions.</p>
+            <p>The exam for category {Category} consists of {Questions.length}{" "} questions.</p>
             <p>You have {Duration} minutes to finish the exam.</p>
             <p>The required passing score is 90%.</p>
           </div>
@@ -306,7 +306,7 @@ function TestPage() {
                   <img
                     src={`data:image/png;base64,${questionData[currentQuestion].ImageBase64}`}
                     alt={`Test: ${questionData[currentQuestion].QuestionText}`}
-                    className="category-image"
+                    className="question-image"
                   />
                 )}
                 <div>
