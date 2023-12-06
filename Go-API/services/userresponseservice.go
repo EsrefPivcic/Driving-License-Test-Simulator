@@ -2,17 +2,17 @@ package services
 
 import (
 	"database/sql"
-	"project/dal"
+	"project/appsql"
 	"project/models"
 )
 
 func CheckUserResponseCorrect(db *sql.DB, response models.UserResponse) (bool, error) {
-	selectedOptions, err := dal.RetrieveOptionsByIdsFromDB(db, response.SelectedOptions)
+	selectedOptions, err := appsql.RetrieveOptionsByIdsFromDB(db, response.SelectedOptions)
 	if err != nil {
 		return false, err
 	}
 
-	correctOptions, err := dal.RetrieveCorrectOptionsByQuestionIdFromDB(db, response.QuestionID)
+	correctOptions, err := appsql.RetrieveCorrectOptionsByQuestionIdFromDB(db, response.QuestionID)
 	if err != nil {
 		return false, err
 	}

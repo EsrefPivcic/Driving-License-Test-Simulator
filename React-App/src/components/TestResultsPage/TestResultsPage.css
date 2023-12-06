@@ -1,117 +1,119 @@
 .result-container {
-    max-width: 750px;
-    margin: 20px auto;
-  }
-
-  .loadingresults {
-    max-width: 250px;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid #61dafb;
+  max-width: 750px;
+  margin: 20px auto;
 }
-      
-  .result-start-test-container {
-    border: 2px solid #61dafb;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .result-category-page {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .result-category-image {
-    border-radius: 5px;
-  }
-  
-  .result-score-container {
-    background-color: #232323;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .result-passed {
-    color: #4caf50;
-  }
-  
-  .result-failed {
-    color: #d44a40;
-  }
-  
-  .result-question-container {
-    background-color: #232323;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
 
-  .result-points {
-    margin-top: 10px;
-  }
-  
-  .result-question-text {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .result-options-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-  }
-  
-  .result-option {
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #393939;
-    transition: background-color 0.3s;
-  }
-  
-  .result-selected-correct {
-    background-color: #58a058;
-  }
+.loadingresults {
+  max-width: 250px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid #61dafb;
+}
 
-  .result-not-selected-correct {
-    border: 2px solid #58a058;
-  }
+.result-start-test-container {
+  border: 2px solid #61dafb;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-  .result-not-selected-incorrect {
-    border: 2px solid #9c4c4c;
-  }
-  
-  .result-selected-incorrect {
-    background-color: #9c4c4c;
-  }
-  
-  .home-history-button {
-    background-color: #2196f3;
-    color: #fff;  
-    border: none;
-    border-radius: 5px;
-    padding: 10px 10px;
-    font-size: 15px;
-    cursor: pointer;
-  }
+.result-category-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
 
-  .home-button{
-    margin-top: 5px;
-  }
+.result-category-image {
+  border-radius: 5px;
+}
 
-  .history-button{
-    margin-bottom: 5px;
-  }
-  
-  .home-history-button:hover {
-    background-color: #0d75ca;
-    color: #d8d8d8;  
-  }
-  
+.result-score-container {
+  background-color: #232323;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-passed {
+  color: #4caf50;
+}
+
+.result-failed {
+  color: #d44a40;
+}
+
+.result-question-container {
+  background-color: #232323;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-points {
+  margin-top: 10px;
+}
+
+.result-question-text {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.result-options-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.result-option {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #393939;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.result-selected-correct {
+  background-color: #58a058;
+}
+
+.result-not-selected-correct {
+  border: 2px solid #58a058;
+}
+
+.result-not-selected-incorrect {
+  border: 2px solid #9c4c4c;
+}
+
+.result-selected-incorrect {
+  background-color: #9c4c4c;
+}
+
+.home-history-button {
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.home-button {
+  margin-top: 5px;
+}
+
+.history-button {
+  margin-bottom: 5px;
+}
+
+.home-history-button:hover {
+  background-color: #0d75ca;
+  color: #d8d8d8;
+}

@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS public.test
     questions integer[] NOT NULL,
     category text COLLATE pg_catalog."default" NOT NULL,
     duration integer NOT NULL,
+    maxscore integer NOT NULL,
     image bytea[],
     CONSTRAINT test_pkey PRIMARY KEY (id)
 )

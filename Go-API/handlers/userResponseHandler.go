@@ -5,13 +5,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"project/dal"
+	"project/appsql"
 	"project/models"
 )
 
 func RetrieveUserResponsesHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		userresponses, err := dal.RetrieveFromDBUserResponse(db)
+		userresponses, err := appsql.RetrieveFromDBUserResponse(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -42,7 +42,7 @@ func RetrieveUserResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userresponses, err := dal.RetrieveUserResponsesByAttemptIdFromDB(db, request.AttemptID)
+		userresponses, err := appsql.RetrieveUserResponsesByAttemptIdFromDB(db, request.AttemptID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -71,7 +71,7 @@ func CreateUserResponseHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		if err := dal.CreateInDBUserResponse(db, userresponse); err != nil {
+		if err := appsql.CreateInDBUserResponse(db, userresponse); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

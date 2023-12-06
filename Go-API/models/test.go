@@ -7,6 +7,7 @@ type Test struct {
 	Questions   []int
 	Category    string
 	Duration    int
+	MaxScore    int
 	Image       []byte
 	ImageBase64 string
 }

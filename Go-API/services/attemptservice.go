@@ -4,30 +4,28 @@ import (
 	"database/sql"
 	"log"
 	"math"
-	"project/dal"
+	"project/appsql"
 	"project/models"
 )
 
 func CalculateTestPass(db *sql.DB, responses []models.UserResponse, testID int, token string) (models.Attempt, []models.UserResponse) {
-	var MaxScore int = 0
 	var Score int = 0
 	var attempt models.Attempt
-	test, err := dal.RetrieveTestByIdFromDB(db, testID)
+	test, err := appsql.RetrieveTestByIdFromDB(db, testID)
 	if err != nil {
 		log.Printf("Error retrieving Test: %v", err)
 	}
-	questions, errq := dal.RetrieveQuestionsByIdsFromDB(db, test.Questions)
-	if errq != nil {
-		log.Printf("Error retrieving Questions: %v", errq)
+	var responsesquestionids []int
+	for i := 0; i < len(responses); i++ {
+		responsesquestionids = append(responsesquestionids, responses[i].QuestionID)
 	}
-	for i := 0; i < len(questions); i++ {
-		MaxScore += questions[i].Points
+	var responsesquestions []models.Question
+	responsesquestions, err = appsql.RetrieveQuestionsByIdsFromDB(db, responsesquestionids)
+	if err != nil {
+		log.Printf("Error retrieving questions for responses: %v", err)
 	}
 	for i := 0; i < len(responses); i++ {
-		var question, err1 = dal.RetrieveQuestionByIdFromDB(db, responses[i].QuestionID)
-		if err1 != nil {
-			log.Printf("Error retrieving QuestionID: %v", err1)
-		}
+		var question = responsesquestions[i]
 		result, err2 := CheckUserResponseCorrect(db, responses[i])
 		if err2 != nil {
 			log.Printf("Error checking userResponses: %v", err2)
@@ -38,7 +36,7 @@ func CalculateTestPass(db *sql.DB, responses []models.UserResponse, testID int, 
 			Score += question.Points
 		}
 	}
-	var percentage = float64(Score) / float64(MaxScore) * float64(100)
+	var percentage = float64(Score) / float64(test.MaxScore) * float64(100)
 	if percentage < float64(90) {
 		attempt.Passed = false
 	}
@@ -46,14 +44,14 @@ func CalculateTestPass(db *sql.DB, responses []models.UserResponse, testID int, 
 		attempt.Passed = true
 	}
 	percentageFloat := float64(percentage)
-	userID, err := dal.RetrieveUserIDByTokenFromDB(db, token)
+	userID, err := appsql.RetrieveUserIDByTokenFromDB(db, token)
 	if err != nil {
 		log.Printf("Error retrieving a UserID: %v", err)
 	}
 	attempt.UserID = userID
 	attempt.TestID = testID
 	attempt.Score = Score
-	attempt.MaxScore = MaxScore
+	attempt.MaxScore = test.MaxScore
 	attempt.Percentage = math.Round(percentageFloat)
 	return attempt, responses
 }

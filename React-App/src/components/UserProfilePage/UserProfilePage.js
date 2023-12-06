@@ -57,7 +57,9 @@ function UserProfilePage() {
 
   useEffect(() => {
     fetchUserData();
-    setComponentVisible(true);
+    setTimeout(() => {
+      setComponentVisible(true);
+    }, 100);
   }, []);
 
   const fadeIn = useSpring({
@@ -361,8 +363,8 @@ function UserProfilePage() {
             </div>
           </div>
         </div>
-        {imageEmpty && (<p className="error-message-profile">Please select a new image!</p>)}
-        {successMessageImage && <p className="success-message-profile">{successMessageImage}</p>}
+        {imageEmpty && (<p className="errormessageprofile">Please select a new image!</p>)}
+        {successMessageImage && <p className="successmessageprofile">{successMessageImage}</p>}
         <div className="user-info-container">
           <div className="user-info-row">
             <span>Name:</span>
@@ -536,8 +538,8 @@ function UserProfilePage() {
             )}
           </div>
         </div>
-        {errorMessage && <p className="error-message-profile">{errorMessage}</p>}
-        {successMessage && <p className="success-message-profile">{successMessage}</p>}
+        {errorMessage && <p className="errormessageprofile">{errorMessage}</p>}
+        {successMessage && <p className="successmessageprofile">{successMessage}</p>}
       </div>
     </animated.div>
   );

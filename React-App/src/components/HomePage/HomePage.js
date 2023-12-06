@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSpring, animated } from "react-spring";
 import "./HomePage.css";
 
 function HomePage() {
   const [testData, setTestData] = useState([]);
   const navigate = useNavigate();
+  const [isComponentVisible, setComponentVisible] = useState(false);
+
+  const fadeIn = useSpring({
+    opacity: isComponentVisible ? 1 : 0,
+    from: { opacity: 0 },
+});
 
   const fetchTestData = async () => {
     try {
@@ -21,11 +28,13 @@ function HomePage() {
 
   useEffect(() => {
     fetchTestData();
+    setTimeout(() => {
+      setComponentVisible(true);
+    }, 100);
   }, []);
 
   return (
-    <div>
-      <div className="categories">
+      <animated.div className="categories" style={fadeIn}>
         {testData ? (testData.map((test) => (
           <div className="testButton"
             key={test.ID}
@@ -46,8 +55,7 @@ function HomePage() {
         <div>
         No tests available.
       </div>}       
-      </div>
-    </div>
+      </animated.div>
   );
 }
 

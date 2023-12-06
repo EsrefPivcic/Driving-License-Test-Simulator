@@ -135,7 +135,9 @@ function TestResultsPage() {
         if (testData.Questions) {
             fetchQuestionData();
             fetchOptionData();
-            setComponentVisible(true);
+            setTimeout(() => {
+                setComponentVisible(true);
+              }, 100);
         }
     }, [testData]);
 
@@ -185,7 +187,7 @@ function TestResultsPage() {
     
 
     if (isLoading) {
-        return <div className="loadingresults">Loading...</div>
+        return <animated.div className="loadingresults" style={fadeIn}>Loading...</animated.div>
     }
     else {
         return (

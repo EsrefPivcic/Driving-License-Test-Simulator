@@ -13,7 +13,9 @@ function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setComponentVisible(true);
+    setTimeout(() => {
+      setComponentVisible(true);
+    }, 100);
   }, []);
 
   const fadeIn = useSpring({

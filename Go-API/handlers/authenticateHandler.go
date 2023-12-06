@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
-	"project/dal"
+	"project/appsql"
 	"project/models"
 	"project/utils"
 )
@@ -19,7 +19,7 @@ func AuthenticateHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		valid, userid, err := dal.ValidateCredentials(db, loginRequest.Username, loginRequest.Password)
+		valid, userid, err := appsql.ValidateCredentials(db, loginRequest.Username, loginRequest.Password)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -36,7 +36,7 @@ func AuthenticateHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		if err := dal.CreateInDBAuthentication(db, userid, token); err != nil {
+		if err := appsql.CreateInDBAuthentication(db, userid, token); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -57,7 +57,7 @@ func CheckToken(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		exists, err := dal.CheckTokenDB(db, request.Token)
+		exists, err := appsql.CheckTokenDB(db, request.Token)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return

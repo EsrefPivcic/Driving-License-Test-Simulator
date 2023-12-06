@@ -6,14 +6,14 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"project/dal"
+	"project/appsql"
 	"project/models"
 	"project/utils"
 )
 
 func RetrieveUsersHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		users, err := dal.RetrieveFromDBUser(db)
+		users, err := appsql.RetrieveFromDBUser(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -50,7 +50,7 @@ func CreateUserHandler(db *sql.DB) http.HandlerFunc {
 		}
 		user.Image = imageBytes
 
-		if err := dal.CreateInDBUser(db, user); err != nil {
+		if err := appsql.CreateInDBUser(db, user); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -72,13 +72,13 @@ func AddProfileImageHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		user, err := dal.RetrieveUserByIdFromDB(db, userID)
+		user, err := appsql.RetrieveUserByIdFromDB(db, userID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -92,7 +92,7 @@ func AddProfileImageHandler(db *sql.DB) http.HandlerFunc {
 		}
 		user.Image = imageBytes
 
-		err = dal.UpdateInDBUser(db, user)
+		err = appsql.UpdateInDBUser(db, user)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -114,13 +114,13 @@ func RetrieveUserByTokenHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		user, err := dal.RetrieveUserByIdFromDB(db, userID)
+		user, err := appsql.RetrieveUserByIdFromDB(db, userID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -154,13 +154,13 @@ func ChangePasswordHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		user, err := dal.RetrieveUserPasswordByIdFromDB(db, userID)
+		user, err := appsql.RetrieveUserPasswordByIdFromDB(db, userID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -176,13 +176,13 @@ func ChangePasswordHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		hashedPassword, err := dal.HashPassword(request.NewPassword)
+		hashedPassword, err := appsql.HashPassword(request.NewPassword)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		err = dal.UpdatePasswordInDB(db, userID, hashedPassword)
+		err = appsql.UpdatePasswordInDB(db, userID, hashedPassword)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -205,14 +205,14 @@ func ChangeNameHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
 
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		err = dal.UpdateNameInDB(db, userID, request.NewName)
+		err = appsql.UpdateNameInDB(db, userID, request.NewName)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -235,14 +235,14 @@ func ChangeSurnameHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
 
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		err = dal.UpdateSurnameInDB(db, userID, request.NewSurname)
+		err = appsql.UpdateSurnameInDB(db, userID, request.NewSurname)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -265,14 +265,14 @@ func ChangeUsernameHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
 
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		err = dal.UpdateUsernameInDB(db, userID, request.NewUsername)
+		err = appsql.UpdateUsernameInDB(db, userID, request.NewUsername)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -295,14 +295,14 @@ func ChangeEmailHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
 
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		err = dal.UpdateEmailInDB(db, userID, request.NewEmail)
+		err = appsql.UpdateEmailInDB(db, userID, request.NewEmail)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
