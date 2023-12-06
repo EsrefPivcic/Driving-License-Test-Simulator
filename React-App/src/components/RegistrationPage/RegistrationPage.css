@@ -1,43 +1,51 @@
 .add-registration-form {
-    margin: 0 auto;
-    padding: 20px;
-    border: 2px solid #61dafb;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    max-width: 350px;
-    margin-top: 30px;
-  }
-  
-  .add-registration-label {
-      margin-bottom: 10px;
-    }
-    
-    .add-registration-input {
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 10px;
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #444;
-      border-radius: 4px;
-      background-color: #333;
-      color: #fff;
-    }
-    
-    .add-registration-button {
-      background-color: #4caf50;
-      color: white;
-      padding: 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    
-    .add-registration-button:hover {
-      background-color: #45a049;
-    }
-  
-    .add-registration-headline {
-      margin-top: 0;
-    }
+  margin: 0 auto;
+  padding: 20px;
+  border: 2px solid #61dafb;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+  margin-top: 30px;
+}
+
+.add-registration-label {
+  margin-bottom: 10px;
+}
+
+.add-registration-input {
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #333;
+  color: #fff;
+}
+
+.add-registration-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-registration-button:hover {
+  background-color: #45a049;
+}
+
+.add-registration-headline {
+  margin-top: 0;
+}
+
+
+.login-btn {
+  color: #4da1ff;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline-block;
+}
