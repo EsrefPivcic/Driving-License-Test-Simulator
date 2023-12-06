@@ -12,26 +12,44 @@ To get started with the project, follow these steps in your terminal:
     git clone https://github.com/NedzmijaMuminovic/eDrivingSchool
     ```
 
-2. Open the Go API directory:
+2. Navigate to the Docker Compose directory:
 
     ```bash
-    cd eDrivingSchool/Go-API
+    cd eDrivingSchool/Docker-compose
     ```
 
-3. Install dependencies and run the backend:
+3. Run Docker Compose to set up the database:
+
+    ```bash
+    docker-compose up
+    ```
+
+4. After the database is set up, navigate to the Go API directory:
+
+    ```bash
+    cd ../Go-API
+    ```
+
+5. Perform migrations to populate the database with data:
+
+   ```bash
+    migrate -database "postgres://admin:admin@localhost:5432/eDrivingSchoolDB?sslmode=disable" -path migrations up
+    ```
+
+6. Install dependencies and run the backend:
 
     ```bash
     go get
     go run main.go
     ```
 
-4. Open the React App directory in a new terminal window:
+7. Open the React App directory in a new terminal window:
 
     ```bash
     cd eDrivingSchool/React-App
     ```
 
-5. Install dependencies and start the frontend:
+8. Install dependencies and start the frontend:
 
     ```bash
     npm install
