@@ -7,6 +7,13 @@
     border: 2px solid #61dafb;
 }
 
+.emptyhistorycontainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 75vh;
+}
+
 .examhistoryempty {
     max-width: 250px;
     margin: 0 auto;

@@ -4,8 +4,7 @@ import { useAuth } from '../AuthContext/AuthContext';
 import './UserProfilePage.css';
 
 function UserProfilePage() {
-  const storedToken = localStorage.getItem('token');
-  const { fetchUserData, userData, setUserData } = useAuth();
+  const { fetchUserData, userData, setUserData, authToken } = useAuth();
   const [isComponentVisible, setComponentVisible] = useState(false);
   const [imageEmpty, setImageEmpty] = useState(false);
   const [oldPassword, setOldPassword] = useState('');
@@ -84,7 +83,7 @@ function UserProfilePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          token: storedToken,
+          token: authToken,
           oldpassword: oldPassword,
           newpassword: newPassword,
           repeatnewpassword: repeatNewPassword,
@@ -133,7 +132,7 @@ function UserProfilePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          token: storedToken,
+          token: authToken,
           newname: newName,
         }),
       });
@@ -177,7 +176,7 @@ function UserProfilePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          token: storedToken,
+          token: authToken,
           newsurname: newSurname,
         }),
       });
@@ -221,7 +220,7 @@ function UserProfilePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          token: storedToken,
+          token: authToken,
           newusername: newUsername,
         }),
       });
@@ -265,7 +264,7 @@ function UserProfilePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          token: storedToken,
+          token: authToken,
           newEmail: newEmail,
         }),
       });
@@ -304,7 +303,7 @@ function UserProfilePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          token: storedToken,
+          token: authToken,
           imagebase64: newImage,
         }),
       });
@@ -318,6 +317,7 @@ function UserProfilePage() {
       setUserData((prevData) => ({ ...prevData, ImageBase64: newImage }));
       setTimeout(() => {
         setSuccessMessageImage('');
+        setNewImage(null);
       }, 2000);
     } catch (error) {
       console.error('Error adding a profile image:', error);
@@ -332,11 +332,9 @@ function UserProfilePage() {
       const base64Image = e.target.result.split(',')[1];
       setNewImage(base64Image);
       setImageEmpty(false);
-      setUserData({ ...userData, ImageBase64: base64Image });
     };
 
     reader.readAsDataURL(file);
-    setUserData({ ...userData, ImageName: file.name });
   };
 
   return (
@@ -344,14 +342,15 @@ function UserProfilePage() {
       <div className="user-profile-container">
         <h2 className="add-question-headline">Your Profile</h2>
         <div className="profile-image-container">
-          {userData.ImageBase64 && (
+          {!newImage ? (<div>{userData.ImageBase64 && (
             <img
               src={`data:image/png;base64,${userData.ImageBase64}`}
               alt={`User: ${userData.Username}`}
               className="category-image"
             />
           )}
-          {!userData.ImageBase64 && (<img src="images/userimage.png" alt="Profile" />)}
+          {!userData.ImageBase64 && (<img src="images/userimage.png" alt="Profile" />)}</div>) : 
+          (<div><img src={`data:image/png;base64,${newImage}`} alt="Profile" /></div>)}
           <div className="file-input-container">
             <div className="button-container">
               <label className="custom-file-input-btn">
