@@ -19,7 +19,7 @@ function TestPage() {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [questionCount, setQuestionCount] = useState(0);
-  const { ID, Title, Description, Questions, ImageBase64, Category, Duration } = test;
+  const { ID, Title, Description, Questions, ImageBase64, Category, Duration, MaxScore } = test;
   const [questionData, setQuestionData] = useState([]);
   const [optionData, setOptionData] = useState([]);
   const [timer, setTimer] = useState(Duration * 60);
@@ -282,7 +282,7 @@ function TestPage() {
             <p><strong>{Description}</strong></p>
             <p>The exam for category {Category} consists of {Questions.length}{" "} questions.</p>
             <p>You have {Duration} minutes to finish the exam.</p>
-            <p>The required passing score is 90%.</p>
+            <p>The required passing score is {MaxScore*0.9}/{MaxScore} (90%).</p>
           </div>
           <button type="button" className={`button back-to-home-button`} onClick={handleBackToHome}>Quit</button>
           <button type="button" className={`button start-test-button`} onClick={handleStartTest}>Start</button>

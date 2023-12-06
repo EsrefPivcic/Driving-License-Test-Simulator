@@ -6,13 +6,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"project/dal"
+	"project/appsql"
 	"project/models"
 )
 
 func RetrieveTestsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		tests, err := dal.RetrieveFromDBTest(db)
+		tests, err := appsql.RetrieveFromDBTest(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -43,7 +43,7 @@ func RetrieveTestByIdHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		test, err := dal.RetrieveTestByIdFromDB(db, request.TestID)
+		test, err := appsql.RetrieveTestByIdFromDB(db, request.TestID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -80,7 +80,20 @@ func CreateTestHandler(db *sql.DB) http.HandlerFunc {
 		}
 		test.Image = imageBytes
 
-		if err := dal.CreateInDBTest(db, test); err != nil {
+		questions, err := appsql.RetrieveQuestionsByIdsFromDB(db, test.Questions)
+		if err != nil {
+			http.Error(w, "Error retrieving questions from database", http.StatusBadRequest)
+			return
+		}
+
+		var MaxScore int = 0
+		for i := 0; i < len(questions); i++ {
+			MaxScore += questions[i].Points
+		}
+
+		test.MaxScore = MaxScore
+
+		if err := appsql.CreateInDBTest(db, test); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

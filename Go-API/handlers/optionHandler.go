@@ -5,13 +5,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"project/dal"
+	"project/appsql"
 	"project/models"
 )
 
 func RetrieveOptionsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		options, err := dal.RetrieveFromDB(db)
+		options, err := appsql.RetrieveFromDB(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -42,7 +42,7 @@ func RetrieveOptionsByQuestionIdsHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		options, err := dal.RetrieveOptionsByQuestionIdsFromDB(db, request.QuestionIDs)
+		options, err := appsql.RetrieveOptionsByQuestionIdsFromDB(db, request.QuestionIDs)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -73,7 +73,7 @@ func RetrieveCorrectOptionsByQuestionIdHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		options, err := dal.RetrieveCorrectOptionsByQuestionIdFromDB(db, request.QuestionID)
+		options, err := appsql.RetrieveCorrectOptionsByQuestionIdFromDB(db, request.QuestionID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -104,7 +104,7 @@ func RetrieveOptionsByIdsHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		options, err := dal.RetrieveOptionsByIdsFromDB(db, request.IDs)
+		options, err := appsql.RetrieveOptionsByIdsFromDB(db, request.IDs)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -133,7 +133,7 @@ func CreateOptionsHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		if err := dal.CreateInDBOption(db, option); err != nil {
+		if err := appsql.CreateInDBOption(db, option); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

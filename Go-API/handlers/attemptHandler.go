@@ -5,14 +5,14 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"project/dal"
+	"project/appsql"
 	"project/models"
 	"project/services"
 )
 
 func RetrieveAttemptsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		attempts, err := dal.RetrieveFromDBAttempt(db)
+		attempts, err := appsql.RetrieveFromDBAttempt(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -43,12 +43,12 @@ func RetrieveAttemptsByUserIdHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
 		if err != nil {
 			log.Printf("Error retrieving a UserID: %v", err)
 		}
 
-		attempts, err := dal.RetrieveAttemptsByUserIdFromDB(db, userID)
+		attempts, err := appsql.RetrieveAttemptsByUserIdFromDB(db, userID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -85,13 +85,13 @@ func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 
 		attempt, responses = services.CalculateTestPass(db, request.UserResponses, request.TestID, request.Token)
 
-		attemptID, err := dal.CreateInDBAttemptGetId(db, attempt)
+		attemptID, err := appsql.CreateInDBAttemptGetId(db, attempt)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		if err := dal.CreateInDBUserResponses(db, responses, attemptID); err != nil {
+		if err := appsql.CreateInDBUserResponses(db, responses, attemptID); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -114,15 +114,15 @@ func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
 			return
 		}
-		userID, err := dal.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
 		if err != nil {
 			log.Printf("Error retrieving a UserID: %v", err)
 		}
-		test, err := dal.RetrieveTestByIdFromDB(db, request.TestID)
+		test, err := appsql.RetrieveTestByIdFromDB(db, request.TestID)
 		if err != nil {
 			log.Printf("Error retrieving Test: %v", err)
 		}
-		questions, errq := dal.RetrieveQuestionsByIdsFromDB(db, test.Questions)
+		questions, errq := appsql.RetrieveQuestionsByIdsFromDB(db, test.Questions)
 		if errq != nil {
 			log.Printf("Error retrieving Questions: %v", errq)
 		}
@@ -137,7 +137,7 @@ func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
 		attempt.Percentage = 0
 		attempt.Passed = false
 
-		attemptID, err := dal.CreateInDBAttemptGetId(db, attempt)
+		attemptID, err := appsql.CreateInDBAttemptGetId(db, attempt)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -159,7 +159,7 @@ func CreateAttemptHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		if err := dal.CreateInDBAttempt(db, attempt); err != nil {
+		if err := appsql.CreateInDBAttempt(db, attempt); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

@@ -1,4 +1,4 @@
-package dal
+package appsql
 
 import (
 	"database/sql"
@@ -12,8 +12,8 @@ import (
 func CreateInDBTest(db *sql.DB, t models.Test) error {
 	questionArray := pq.Array(t.Questions)
 	imageArray := pq.ByteaArray([][]byte{t.Image})
-	_, err := db.Exec("INSERT INTO Test (Title, Description, Questions, Category, Duration, Image) VALUES ($1, $2, $3, $4, $5, $6)",
-		t.Title, t.Description, questionArray, t.Category, t.Duration, imageArray)
+	_, err := db.Exec("INSERT INTO Test (Title, Description, Questions, Category, Duration, MaxScore, Image) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+		t.Title, t.Description, questionArray, t.Category, t.Duration, t.MaxScore, imageArray)
 
 	if err != nil {
 		log.Printf("Error inserting test into the database: %v", err)
@@ -44,6 +44,7 @@ func RetrieveFromDBTest(db *sql.DB) ([]models.Test, error) {
 			&questionArray,
 			&test.Category,
 			&test.Duration,
+			&test.MaxScore,
 			&imageArray,
 		)
 		if err != nil {
@@ -92,6 +93,7 @@ func RetrieveTestByIdFromDB(db *sql.DB, testID int) (models.Test, error) {
 			&questionArray,
 			&test.Category,
 			&test.Duration,
+			&test.MaxScore,
 			&imageArray,
 		)
 		if err != nil {

@@ -15,7 +15,9 @@ function AddQuestionPage() {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    setComponentVisible(true);
+    setTimeout(() => {
+      setComponentVisible(true);
+    }, 100);
   }, []);
 
   const fadeIn = useSpring({

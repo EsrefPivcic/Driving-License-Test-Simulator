@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext/AuthContext";
+import { useSpring, animated } from "react-spring";
 import "./ExamHistoryPage.css";
 
 function ExamHistoryPage() {
     const { authToken } = useAuth();
     const [attemptsData, setAttemptsData] = useState([]);
     const navigate = useNavigate();
+    const [isComponentVisible, setComponentVisible] = useState(false);
+
+    const fadeIn = useSpring({
+        opacity: isComponentVisible ? 1 : 0,
+        from: { opacity: 0 },
+    });
 
     const fetchAttemptsData = async () => {
         const token = authToken;
@@ -32,18 +39,21 @@ function ExamHistoryPage() {
 
     useEffect(() => {
         fetchAttemptsData();
+        setTimeout(() => {
+            setComponentVisible(true);
+          }, 100);
     }, []);
 
     if (!attemptsData) {
         return (
-            <div className="emptyhistorycontainer">
-                <div className="examhistoryempty">Exam history is empty.</div>
-            </div>
+            <animated.div className="emptyhistorycontainer" style={fadeIn}>
+                    <div className="examhistoryempty">Exam history is empty.</div>
+            </animated.div>
         );
     }
     else {
         return (
-            <div className="examhistory">
+            <animated.div className="examhistory" style={fadeIn}>
                 <h2>Exam History</h2>
                 {attemptsData.map((attempt, index) => (
                     <div key={index} className="attemptbutton"
@@ -65,7 +75,7 @@ function ExamHistoryPage() {
                         </div>
                     </div>
                 ))}
-            </div>
+            </animated.div>
         );
     }
 }

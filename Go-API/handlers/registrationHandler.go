@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
-	"project/dal"
+	"project/appsql"
 	"project/models"
 )
 
@@ -18,7 +18,7 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		exists, err := dal.CheckUserExists(db, registrationRequest.Username, registrationRequest.Email)
+		exists, err := appsql.CheckUserExists(db, registrationRequest.Username, registrationRequest.Email)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -39,7 +39,7 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			IsAdmin:   false,
 		}
 
-		if err := dal.CreateInDBUser(db, user); err != nil {
+		if err := appsql.CreateInDBUser(db, user); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

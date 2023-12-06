@@ -30,7 +30,9 @@ function AddOptionPage() {
     };
 
     fetchQuestions();
-    setComponentVisible(true);
+    setTimeout(() => {
+      setComponentVisible(true);
+    }, 100);
   }, []);
 
   const fadeIn = useSpring({

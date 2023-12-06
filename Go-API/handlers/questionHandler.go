@@ -6,13 +6,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"project/dal"
+	"project/appsql"
 	"project/models"
 )
 
 func RetrieveQuestionsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		questions, err := dal.RetrieveFromDBQuestion(db)
+		questions, err := appsql.RetrieveFromDBQuestion(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -43,7 +43,7 @@ func RetrieveQuestionsByIdsHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		questions, err := dal.RetrieveQuestionsByIdsFromDB(db, request.QuestionIDs)
+		questions, err := appsql.RetrieveQuestionsByIdsFromDB(db, request.QuestionIDs)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -80,7 +80,7 @@ func CreateQuestionHandler(db *sql.DB) http.HandlerFunc {
 		}
 		question.Image = imageBytes
 
-		if err := dal.CreateInDBQuestion(db, question); err != nil {
+		if err := appsql.CreateInDBQuestion(db, question); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
