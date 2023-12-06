@@ -81,10 +81,6 @@
     background-color: #007bb5;
 }
 
-.edit-button.save-button {
-    height: 32px;
-  }
-
 .file-input-container {
     position: relative;
     width: 300px;
@@ -178,4 +174,23 @@
 .custom-file-input-btn,
 .save-image-button {
   font-family: sans-serif;
+}
+
+.save-button-password, .cancel-button-password {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    height: 32px;
+}
+
+.save-button-password {
+  width: 71.5px;
+}
+
+.save-button-password:hover, .cancel-button-password:hover {
+  background-color: #007bb5;
 }

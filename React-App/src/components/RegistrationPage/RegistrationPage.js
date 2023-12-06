@@ -32,6 +32,10 @@ function RegistrationPage() {
     setUser({ ...user, [name]: value });
   };
 
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
   const validateName = (name) => {
     const nameRegex = /^[A-Z][a-zA-Z]*$/;
     return nameRegex.test(name);
@@ -130,6 +134,12 @@ function RegistrationPage() {
         </label>
         <button type="submit" className="add-registration-button">Register</button>
         {error && <p className="error-message">{error}</p>}
+        <p>
+        Already have an account?{' '}
+        <span className="login-btn" onClick={handleLoginClick}>
+          Login
+        </span>
+      </p>
       </form>
       </animated.div>
   );

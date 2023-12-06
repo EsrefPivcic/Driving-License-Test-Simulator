@@ -18,6 +18,13 @@ function UserProfilePage() {
   const [newUsername, setNewUsername] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newImage, setNewImage] = useState('');
+  const [isNameEmpty, setNameEmpty] = useState(true);
+  const [isSurnameEmpty, setSurnameEmpty] = useState(true);
+  const [isUsernameEmpty, setUsernameEmpty] = useState(true);
+  const [isEmailEmpty, setEmailEmpty] = useState(true);
+  const [isPasswordEmpty, setPasswordEmpty] = useState(true);
+  const [isNewPasswordEmpty, setNewPasswordEmpty] = useState(true);
+  const [isRepeatNewPasswordEmpty, setRepeatNewPasswordEmpty] = useState(true);
 
   const [isEditing, setEditing] = useState({
     name: false,
@@ -326,6 +333,41 @@ function UserProfilePage() {
     }
   };
 
+  const handleNameChange = (value) => {
+    setNewName(value);
+    setNameEmpty(value.trim() === '');
+  };
+
+  const handleSurnameChange = (value) => {
+    setNewSurname(value);
+    setSurnameEmpty(value.trim() === '');
+  };
+
+  const handleUsernameChange = (value) => {
+    setNewUsername(value);
+    setUsernameEmpty(value.trim() === '');
+  };
+
+  const handleEmailChange = (value) => {
+    setNewEmail(value);
+    setEmailEmpty(value.trim() === '');
+  };
+
+  const handlePasswordChange = (value) => {
+    setOldPassword(value);
+    setPasswordEmpty(value.trim() === '');
+  };
+
+  const handleNewPasswordChange = (value) => {
+    setNewPassword(value);
+    setNewPasswordEmpty(value.trim() === '');
+  };
+
+  const handleRepeatNewPasswordChange = (value) => {
+    setRepeatNewPassword(value);
+    setRepeatNewPasswordEmpty(value.trim() === '');
+  };
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -351,8 +393,8 @@ function UserProfilePage() {
               className="category-image"
             />
           )}
-          {!userData.ImageBase64 && (<img src="images/userimage.png" alt="Profile" />)}</div>) : 
-          (<div><img src={`data:image/png;base64,${newImage}`} alt="Profile" /></div>)}
+            {!userData.ImageBase64 && (<img src="images/userimage.png" alt="Profile" />)}</div>) :
+            (<div><img src={`data:image/png;base64,${newImage}`} alt="Profile" /></div>)}
           <div className="file-input-container">
             <div className="button-container">
               <label className="custom-file-input-btn">
@@ -373,7 +415,7 @@ function UserProfilePage() {
                 className="edit-input"
                 type="text"
                 value={newName}
-                onChange={(e) => setNewName(e.target.value)}
+                onChange={(e) => { handleNameChange(e.target.value); }}
               />
             ) : (
               <span className="data-span">{userData.Name}</span>
@@ -388,12 +430,25 @@ function UserProfilePage() {
             )}
             {isEditing.name && (
               <>
-                <button
-                  className="edit-button"
-                  onClick={() => changeName()}
-                >
-                  Save
-                </button>
+                {isNameEmpty ? (
+                  <button
+                    className="edit-button cancel-button"
+                    onClick={() => {
+                      stopEditing('name');
+                      setNewName(userData.Name);
+                      setNameEmpty(true);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                ) : (
+                  <button
+                    className="edit-button save-button"
+                    onClick={() => changeName()}
+                  >
+                    Save
+                  </button>
+                )}
               </>
             )}
           </div>
@@ -404,7 +459,9 @@ function UserProfilePage() {
                 className="edit-input"
                 type="text"
                 value={newSurname}
-                onChange={(e) => setNewSurname(e.target.value)}
+                onChange={(e) => {
+                  handleSurnameChange(e.target.value);
+                }}
               />
             ) : (
               <span className="data-span">{userData.Surname}</span>
@@ -412,19 +469,33 @@ function UserProfilePage() {
             {!isEditing.surname && (
               <button
                 className="edit-button"
-                onClick={() => startEditing('surname')
-                }
+                onClick={() => startEditing('surname')}
               >
                 Edit
               </button>
             )}
             {isEditing.surname && (
-              <button
-                className="edit-button"
-                onClick={() => changeSurname()}
-              >
-                Save
-              </button>
+              <>
+                {isSurnameEmpty ? (
+                  <button
+                    className="edit-button cancel-button"
+                    onClick={() => {
+                      stopEditing('surname');
+                      setNewSurname(userData.Surname);
+                      setSurnameEmpty(true);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                ) : (
+                  <button
+                    className="edit-button save-button"
+                    onClick={() => changeSurname()}
+                  >
+                    Save
+                  </button>
+                )}
+              </>
             )}
           </div>
           <div className="user-info-row">
@@ -434,7 +505,9 @@ function UserProfilePage() {
                 className="edit-input"
                 type="text"
                 value={newUsername}
-                onChange={(e) => setNewUsername(e.target.value)}
+                onChange={(e) => {
+                  handleUsernameChange(e.target.value);
+                }}
               />
             ) : (
               <span className="data-span">{userData.Username}</span>
@@ -442,19 +515,33 @@ function UserProfilePage() {
             {!isEditing.username && (
               <button
                 className="edit-button"
-                onClick={() => startEditing('username')
-                }
+                onClick={() => startEditing('username')}
               >
                 Edit
               </button>
             )}
             {isEditing.username && (
-              <button
-                className="edit-button"
-                onClick={() => changeUsername()}
-              >
-                Save
-              </button>
+              <>
+                {isUsernameEmpty ? (
+                  <button
+                    className="edit-button cancel-button"
+                    onClick={() => {
+                      stopEditing('username');
+                      setNewUsername(userData.Username);
+                      setUsernameEmpty(true);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                ) : (
+                  <button
+                    className="edit-button save-button"
+                    onClick={() => changeUsername()}
+                  >
+                    Save
+                  </button>
+                )}
+              </>
             )}
           </div>
           <div className="user-info-row">
@@ -464,7 +551,9 @@ function UserProfilePage() {
                 className="edit-input"
                 type="text"
                 value={newEmail}
-                onChange={(e) => setNewEmail(e.target.value)}
+                onChange={(e) => {
+                  handleEmailChange(e.target.value);
+                }}
               />
             ) : (
               <span className="data-span">{userData.Email}</span>
@@ -472,19 +561,33 @@ function UserProfilePage() {
             {!isEditing.email && (
               <button
                 className="edit-button"
-                onClick={() => startEditing('email')
-                }
+                onClick={() => startEditing('email')}
               >
                 Edit
               </button>
             )}
             {isEditing.email && (
-              <button
-                className="edit-button"
-                onClick={() => changeEmail()}
-              >
-                Save
-              </button>
+              <>
+                {isEmailEmpty ? (
+                  <button
+                    className="edit-button cancel-button"
+                    onClick={() => {
+                      stopEditing('email');
+                      setNewEmail(userData.Email);
+                      setEmailEmpty(true);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                ) : (
+                  <button
+                    className="edit-button save-button"
+                    onClick={() => changeEmail()}
+                  >
+                    Save
+                  </button>
+                )}
+              </>
             )}
           </div>
           <div className="user-info-row">
@@ -496,7 +599,7 @@ function UserProfilePage() {
                   type="password"
                   placeholder="Old Password"
                   value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
+                  onChange={(e) => handlePasswordChange(e.target.value)}
                   required
                 />
                 <input
@@ -504,7 +607,7 @@ function UserProfilePage() {
                   type="password"
                   placeholder="New Password"
                   value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  onChange={(e) => handleNewPasswordChange(e.target.value)}
                   required
                 />
                 <input
@@ -512,7 +615,7 @@ function UserProfilePage() {
                   type="password"
                   placeholder="Repeat New Password"
                   value={repeatNewPassword}
-                  onChange={(e) => setRepeatNewPassword(e.target.value)}
+                  onChange={(e) => handleRepeatNewPasswordChange(e.target.value)}
                   required
                 />
               </div>
@@ -522,19 +625,37 @@ function UserProfilePage() {
             {!isEditing.password && (
               <button
                 className="edit-button"
-                onClick={() => startEditing('password')
-                }
+                onClick={() => startEditing('password')}
               >
                 Edit
               </button>
             )}
             {isEditing.password && (
-              <button
-                className="edit-button save-button"
-                onClick={() => changePassword()}
-              >
-                Save
-              </button>
+              <>
+                {isPasswordEmpty || isNewPasswordEmpty || isRepeatNewPasswordEmpty ? (
+                  <button
+                    className="cancel-button-password"
+                    onClick={() => {
+                      stopEditing('password');
+                      setOldPassword('');
+                      setNewPassword('');
+                      setRepeatNewPassword('');
+                      setPasswordEmpty(true);
+                      setNewPasswordEmpty(true);
+                      setRepeatNewPasswordEmpty(true);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                ) : (
+                  <button
+                    className="save-button-password"
+                    onClick={() => changePassword()}
+                  >
+                    Save
+                  </button>
+                )}
+              </>
             )}
           </div>
         </div>
