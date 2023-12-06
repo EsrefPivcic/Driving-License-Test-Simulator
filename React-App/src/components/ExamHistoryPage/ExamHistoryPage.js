@@ -36,7 +36,9 @@ function ExamHistoryPage() {
 
     if (!attemptsData) {
         return (
-            <div className="examhistoryempty">Exam history is empty.</div>
+            <div className="emptyhistorycontainer">
+                <div className="examhistoryempty">Exam history is empty.</div>
+            </div>
         );
     }
     else {
@@ -45,22 +47,22 @@ function ExamHistoryPage() {
                 <h2>Exam History</h2>
                 {attemptsData.map((attempt, index) => (
                     <div key={index} className="attemptbutton"
-                    onClick={() => navigate(`/testresults`, { state: { attempt } })}
-                    style={{ textDecoration: "none", color: "white" }}
+                        onClick={() => navigate(`/testresults`, { state: { attempt } })}
+                        style={{ textDecoration: "none", color: "white" }}
                     >
-                    <div className="attempt-container"> 
-                        <img src={`data:image/png;base64, ${attempt.Test.ImageBase64}`} alt="Test Image" />
-                        <div className="attempt-details">
-                            <p><strong>Exam:</strong> {attempt.Test.Title}</p>
-                            <p><strong>Category:</strong> {attempt.Test.Category}</p>
-                            <p><strong>Score:</strong> {attempt.Score}/{attempt.MaxScore} ({attempt.Percentage}%)</p>
-                            <p>{attempt.Passed ? (
+                        <div className="attempt-container">
+                            <img src={`data:image/png;base64, ${attempt.Test.ImageBase64}`} alt="Test Image" />
+                            <div className="attempt-details">
+                                <p><strong>Exam:</strong> {attempt.Test.Title}</p>
+                                <p><strong>Category:</strong> {attempt.Test.Category}</p>
+                                <p><strong>Score:</strong> {attempt.Score}/{attempt.MaxScore} ({attempt.Percentage}%)</p>
+                                <p>{attempt.Passed ? (
                                     <strong className="result-passed">Passed!</strong>
-                            ) : (
+                                ) : (
                                     <strong className="result-failed">Failed!</strong>
-                            )}</p>
+                                )}</p>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 ))}
             </div>
