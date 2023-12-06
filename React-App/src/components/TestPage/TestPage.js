@@ -141,7 +141,9 @@ function TestPage() {
   };
 
   useEffect(() => {
-    setComponentVisible(true);
+    setTimeout(() => {
+      setComponentVisible(true);
+    }, 100);
     fetchQuestionData();
     fetchOptionData();
   }, []);
