@@ -1,5 +1,6 @@
 INSERT INTO "user" ("name", surname, username, email, "password", "image", isstudent, isadmin)
-VALUES (
+VALUES 
+(
     'admin',
     'admin',
     'admin',
@@ -8,4 +9,14 @@ VALUES (
     ARRAY[pg_read_binary_file('/path/in/container/images/empty.png')],
     false,
     true
+),
+(
+    'user',
+    'user',
+    'user',
+    'user@mail.com',
+    'user',
+    ARRAY[pg_read_binary_file('/path/in/container/images/empty.png')],
+    true,
+    false
 );

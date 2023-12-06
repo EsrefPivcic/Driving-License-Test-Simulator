@@ -69,7 +69,7 @@ function App() {
                     className="profile-image"
                   />
                 )}
-                {!userData.ImageBase64 && (<img src="images/userimage.jpg" alt={`User: ${userData.Username}`} className="profile-image" />)}
+                {!userData.ImageBase64 && (<img src="images/userimage.png" alt={`User: ${userData.Username}`} className="profile-image" />)}
                 <div className="dropdown-content">
                   <Link to={`/userprofile`} style={{ textDecoration: "none" }}>
                     <p>User Profile</p>

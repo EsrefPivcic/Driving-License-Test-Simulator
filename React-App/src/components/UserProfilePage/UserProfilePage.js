@@ -351,19 +351,19 @@ function UserProfilePage() {
               className="category-image"
             />
           )}
-          {!userData.ImageBase64 && (<img src="images/userimage.jpg" alt="Profile" />)}
+          {!userData.ImageBase64 && (<img src="images/userimage.png" alt="Profile" />)}
           <div className="file-input-container">
-          {imageEmpty && (<p className="error-message-profile">Please select a new image!</p>)}
-          {successMessageImage && <p className="success-message-profile">{successMessageImage}</p>}
-            <input
-              className="choose-file-btn"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-            />
-            <button className="save-image-button" onClick={addProfileImage}>Save Image</button>
+            <div className="button-container">
+              <label className="custom-file-input-btn">
+                Choose File
+                <input type="file" accept="image/*" onChange={handleImageUpload} />
+              </label>
+              <button className="save-image-button" onClick={addProfileImage}>Save Image</button>
+            </div>
           </div>
         </div>
+        {imageEmpty && (<p className="error-message-profile">Please select a new image!</p>)}
+        {successMessageImage && <p className="success-message-profile">{successMessageImage}</p>}
         <div className="user-info-container">
           <div className="user-info-row">
             <span>Name:</span>
@@ -537,8 +537,8 @@ function UserProfilePage() {
             )}
           </div>
         </div>
-      {errorMessage && <p className="error-message-profile">{errorMessage}</p>}
-      {successMessage && <p className="success-message-profile">{successMessage}</p>}
+        {errorMessage && <p className="error-message-profile">{errorMessage}</p>}
+        {successMessage && <p className="success-message-profile">{successMessage}</p>}
       </div>
     </animated.div>
   );
