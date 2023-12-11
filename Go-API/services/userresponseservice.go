@@ -7,18 +7,18 @@ import (
 )
 
 func CheckUserResponseCorrect(db *sql.DB, response models.UserResponse) (bool, error) {
-	selectedOptions, err := appsql.RetrieveOptionsByIdsFromDB(db, response.SelectedOptions)
+	selectedOptions, err := appsql.SelectOptionsByIds(db, response.SelectedOptions)
 	if err != nil {
 		return false, err
 	}
 
-	correctOptions, err := appsql.RetrieveCorrectOptionsByQuestionIdFromDB(db, response.QuestionID)
+	correctOptions, err := appsql.SelectCorrectOptionsByQuestionId(db, response.QuestionID)
 	if err != nil {
 		return false, err
 	}
 
 	for _, selectedOption := range selectedOptions {
-		if !containsOption(correctOptions, selectedOption) {
+		if !ContainsOption(correctOptions, selectedOption) {
 			return false, nil
 		}
 	}
@@ -29,7 +29,7 @@ func CheckUserResponseCorrect(db *sql.DB, response models.UserResponse) (bool, e
 	return true, nil
 }
 
-func containsOption(options []models.Option, target models.Option) bool {
+func ContainsOption(options []models.Option, target models.Option) bool {
 	for _, option := range options {
 		if option.ID == target.ID {
 			return true

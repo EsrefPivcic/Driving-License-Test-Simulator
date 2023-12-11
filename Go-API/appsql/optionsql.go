@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func CreateInDBOption(db *sql.DB, o models.Option) error {
+func InsertOption(db *sql.DB, o models.Option) error {
 	_, err := db.Exec("INSERT INTO Option (QuestionID, OptionText, IsCorrect) VALUES ($1, $2, $3)",
 		o.QuestionID, o.OptionText, o.IsCorrect)
 	if err != nil {
@@ -17,7 +17,7 @@ func CreateInDBOption(db *sql.DB, o models.Option) error {
 	return nil
 }
 
-func RetrieveFromDB(db *sql.DB) ([]models.Option, error) {
+func SelectOptionsAll(db *sql.DB) ([]models.Option, error) {
 	rows, err := db.Query(`
         SELECT
             o.ID AS OptionID,
@@ -66,7 +66,7 @@ func RetrieveFromDB(db *sql.DB) ([]models.Option, error) {
 	return options, nil
 }
 
-func RetrieveOptionsByQuestionIdsFromDB(db *sql.DB, questionIDs []int) ([]models.Option, error) {
+func SelectOptionsByQuestionIds(db *sql.DB, questionIDs []int) ([]models.Option, error) {
 	ids := ""
 	for i, id := range questionIDs {
 		if i > 0 {
@@ -104,7 +104,7 @@ func RetrieveOptionsByQuestionIdsFromDB(db *sql.DB, questionIDs []int) ([]models
 	return options, nil
 }
 
-func RetrieveOptionsByIdsFromDB(db *sql.DB, IDs []int) ([]models.Option, error) {
+func SelectOptionsByIds(db *sql.DB, IDs []int) ([]models.Option, error) {
 	ids := ""
 	for i, id := range IDs {
 		if i > 0 {
@@ -142,7 +142,7 @@ func RetrieveOptionsByIdsFromDB(db *sql.DB, IDs []int) ([]models.Option, error) 
 	return options, nil
 }
 
-func RetrieveCorrectOptionsByQuestionIdFromDB(db *sql.DB, questionID int) ([]models.Option, error) {
+func SelectCorrectOptionsByQuestionId(db *sql.DB, questionID int) ([]models.Option, error) {
 	id := questionID
 
 	query := "SELECT * FROM \"option\" WHERE questionid = $1 AND iscorrect = TRUE"

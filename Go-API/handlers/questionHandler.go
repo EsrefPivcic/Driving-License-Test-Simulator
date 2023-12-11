@@ -10,9 +10,9 @@ import (
 	"project/models"
 )
 
-func RetrieveQuestionsHandler(db *sql.DB) http.HandlerFunc {
+func GetQuestionsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		questions, err := appsql.RetrieveFromDBQuestion(db)
+		questions, err := appsql.SelectQuestionsAll(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -31,7 +31,7 @@ func RetrieveQuestionsHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func RetrieveQuestionsByIdsHandler(db *sql.DB) http.HandlerFunc {
+func GetQuestionsByIdsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
 			QuestionIDs []int `json:"Questions"`
@@ -43,7 +43,7 @@ func RetrieveQuestionsByIdsHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		questions, err := appsql.RetrieveQuestionsByIdsFromDB(db, request.QuestionIDs)
+		questions, err := appsql.SelectQuestionsByIds(db, request.QuestionIDs)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -62,7 +62,7 @@ func RetrieveQuestionsByIdsHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func CreateQuestionHandler(db *sql.DB) http.HandlerFunc {
+func PostQuestionHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var question models.Question
 		decoder := json.NewDecoder(r.Body)
@@ -80,7 +80,7 @@ func CreateQuestionHandler(db *sql.DB) http.HandlerFunc {
 		}
 		question.Image = imageBytes
 
-		if err := appsql.CreateInDBQuestion(db, question); err != nil {
+		if err := appsql.InsertQuestion(db, question); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

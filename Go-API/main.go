@@ -11,7 +11,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func connectDB() (*sql.DB, error) {
+func ConnectDB() (*sql.DB, error) {
 	connectionString := "user=admin password=admin dbname=eDrivingSchoolDB host=localhost port=5432 sslmode=disable"
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
@@ -21,7 +21,7 @@ func connectDB() (*sql.DB, error) {
 }
 
 func main() {
-	db, err := connectDB()
+	db, err := ConnectDB()
 	if err != nil {
 		log.Fatal(err)
 	}

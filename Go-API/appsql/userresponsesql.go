@@ -8,7 +8,7 @@ import (
 	"github.com/lib/pq"
 )
 
-func CreateInDBUserResponse(db *sql.DB, s models.UserResponse) error {
+func InsertUserResponse(db *sql.DB, s models.UserResponse) error {
 	optionsArray := pq.Array(s.SelectedOptions)
 	_, err := db.Exec("INSERT INTO UserResponse (AttemptID, QuestionID, SelectedOptions, IsCorrect) VALUES ($1, $2, $3, $4)",
 		s.AttemptID, s.QuestionID, optionsArray, s.IsCorrect)
@@ -19,7 +19,7 @@ func CreateInDBUserResponse(db *sql.DB, s models.UserResponse) error {
 	return nil
 }
 
-func CreateInDBUserResponses(db *sql.DB, responses []models.UserResponse, attemptid int) error {
+func InsertUserResponses(db *sql.DB, responses []models.UserResponse, attemptid int) error {
 	for i := 0; i < len(responses); i++ {
 		s := responses[i]
 		optionsArray := pq.Array(s.SelectedOptions)
@@ -33,7 +33,7 @@ func CreateInDBUserResponses(db *sql.DB, responses []models.UserResponse, attemp
 	return nil
 }
 
-func RetrieveUserResponsesByAttemptIdFromDB(db *sql.DB, attemptID int) ([]models.UserResponse, error) {
+func SelectUserResponsesByAttemptId(db *sql.DB, attemptID int) ([]models.UserResponse, error) {
 	id := attemptID
 
 	query := "SELECT * FROM \"userresponse\" WHERE attemptid = $1"
@@ -73,7 +73,7 @@ func RetrieveUserResponsesByAttemptIdFromDB(db *sql.DB, attemptID int) ([]models
 	return userresponses, nil
 }
 
-func RetrieveFromDBUserResponse(db *sql.DB) ([]models.UserResponse, error) {
+func SelectUserResponsesAll(db *sql.DB) ([]models.UserResponse, error) {
 	rows, err := db.Query(`
 	SELECT
 	sr.ID AS UserResponseID,
