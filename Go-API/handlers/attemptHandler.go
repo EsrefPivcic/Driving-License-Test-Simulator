@@ -10,9 +10,9 @@ import (
 	"project/services"
 )
 
-func RetrieveAttemptsHandler(db *sql.DB) http.HandlerFunc {
+func GetAttemptsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		attempts, err := appsql.RetrieveFromDBAttempt(db)
+		attempts, err := appsql.SelectAttemptsAll(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -31,7 +31,7 @@ func RetrieveAttemptsHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func RetrieveAttemptsByUserIdHandler(db *sql.DB) http.HandlerFunc {
+func GetAttemptsByUserIdHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
 			Token string `json:"token"`
@@ -43,12 +43,12 @@ func RetrieveAttemptsByUserIdHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.SelectUserIdByToken(db, request.Token)
 		if err != nil {
 			log.Printf("Error retrieving a UserID: %v", err)
 		}
 
-		attempts, err := appsql.RetrieveAttemptsByUserIdFromDB(db, userID)
+		attempts, err := appsql.SelectAttemptsByUserId(db, userID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -85,13 +85,13 @@ func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 
 		attempt, responses = services.CalculateTestPass(db, request.UserResponses, request.TestID, request.Token)
 
-		attemptID, err := appsql.CreateInDBAttemptGetId(db, attempt)
+		attemptID, err := appsql.InsertAttemptReturnId(db, attempt)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		if err := appsql.CreateInDBUserResponses(db, responses, attemptID); err != nil {
+		if err := appsql.InsertUserResponses(db, responses, attemptID); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -114,15 +114,15 @@ func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
 			return
 		}
-		userID, err := appsql.RetrieveUserIDByTokenFromDB(db, request.Token)
+		userID, err := appsql.SelectUserIdByToken(db, request.Token)
 		if err != nil {
 			log.Printf("Error retrieving a UserID: %v", err)
 		}
-		test, err := appsql.RetrieveTestByIdFromDB(db, request.TestID)
+		test, err := appsql.SelectTestById(db, request.TestID)
 		if err != nil {
 			log.Printf("Error retrieving Test: %v", err)
 		}
-		questions, errq := appsql.RetrieveQuestionsByIdsFromDB(db, test.Questions)
+		questions, errq := appsql.SelectQuestionsByIds(db, test.Questions)
 		if errq != nil {
 			log.Printf("Error retrieving Questions: %v", errq)
 		}
@@ -137,7 +137,7 @@ func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
 		attempt.Percentage = 0
 		attempt.Passed = false
 
-		attemptID, err := appsql.CreateInDBAttemptGetId(db, attempt)
+		attemptID, err := appsql.InsertAttemptReturnId(db, attempt)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -149,7 +149,7 @@ func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func CreateAttemptHandler(db *sql.DB) http.HandlerFunc {
+func PostAttemptHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var attempt models.Attempt
 		decoder := json.NewDecoder(r.Body)
@@ -159,7 +159,7 @@ func CreateAttemptHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		if err := appsql.CreateInDBAttempt(db, attempt); err != nil {
+		if err := appsql.InsertAttempt(db, attempt); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

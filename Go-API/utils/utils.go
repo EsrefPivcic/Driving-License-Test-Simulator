@@ -17,7 +17,7 @@ func ComparePasswords(storedPassword, providedPassword string) bool {
 	return storedPassword == providedPassword
 }
 
-func generateSessionID() string {
+func GenerateSessionID() string {
 	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	b := make([]byte, 20)
 	for i := range b {
@@ -27,7 +27,7 @@ func generateSessionID() string {
 }
 
 func GenerateToken(username string) (string, error) {
-	sessionID := generateSessionID()
+	sessionID := GenerateSessionID()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username":  username,
@@ -40,4 +40,12 @@ func GenerateToken(username string) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+func HashPassword(password string) (string, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hashedPassword), nil
 }

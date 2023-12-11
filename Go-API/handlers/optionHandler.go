@@ -9,9 +9,9 @@ import (
 	"project/models"
 )
 
-func RetrieveOptionsHandler(db *sql.DB) http.HandlerFunc {
+func GetOptionsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		options, err := appsql.RetrieveFromDB(db)
+		options, err := appsql.SelectOptionsAll(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -30,7 +30,7 @@ func RetrieveOptionsHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func RetrieveOptionsByQuestionIdsHandler(db *sql.DB) http.HandlerFunc {
+func GetOptionsByQuestionIdsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
 			QuestionIDs []int `json:"Questions"`
@@ -42,7 +42,7 @@ func RetrieveOptionsByQuestionIdsHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		options, err := appsql.RetrieveOptionsByQuestionIdsFromDB(db, request.QuestionIDs)
+		options, err := appsql.SelectOptionsByQuestionIds(db, request.QuestionIDs)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -61,7 +61,7 @@ func RetrieveOptionsByQuestionIdsHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func RetrieveCorrectOptionsByQuestionIdHandler(db *sql.DB) http.HandlerFunc {
+func GetCorrectOptionsByQuestionIdHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
 			QuestionID int `json:"Question"`
@@ -73,7 +73,7 @@ func RetrieveCorrectOptionsByQuestionIdHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		options, err := appsql.RetrieveCorrectOptionsByQuestionIdFromDB(db, request.QuestionID)
+		options, err := appsql.SelectCorrectOptionsByQuestionId(db, request.QuestionID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -92,7 +92,7 @@ func RetrieveCorrectOptionsByQuestionIdHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func RetrieveOptionsByIdsHandler(db *sql.DB) http.HandlerFunc {
+func GetOptionsByIdsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
 			IDs []int `json:"IDs"`
@@ -104,7 +104,7 @@ func RetrieveOptionsByIdsHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		options, err := appsql.RetrieveOptionsByIdsFromDB(db, request.IDs)
+		options, err := appsql.SelectOptionsByIds(db, request.IDs)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -123,7 +123,7 @@ func RetrieveOptionsByIdsHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func CreateOptionsHandler(db *sql.DB) http.HandlerFunc {
+func PostOptionHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var option models.Option
 		decoder := json.NewDecoder(r.Body)
@@ -133,7 +133,7 @@ func CreateOptionsHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		if err := appsql.CreateInDBOption(db, option); err != nil {
+		if err := appsql.InsertOption(db, option); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

@@ -10,9 +10,9 @@ import (
 	"project/models"
 )
 
-func RetrieveTestsHandler(db *sql.DB) http.HandlerFunc {
+func GetTestsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		tests, err := appsql.RetrieveFromDBTest(db)
+		tests, err := appsql.SelectTestsAll(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -31,7 +31,7 @@ func RetrieveTestsHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func RetrieveTestByIdHandler(db *sql.DB) http.HandlerFunc {
+func GetTestByIdHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
 			TestID int `json:"testid"`
@@ -43,7 +43,7 @@ func RetrieveTestByIdHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		test, err := appsql.RetrieveTestByIdFromDB(db, request.TestID)
+		test, err := appsql.SelectTestById(db, request.TestID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -62,7 +62,7 @@ func RetrieveTestByIdHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func CreateTestHandler(db *sql.DB) http.HandlerFunc {
+func PostTestHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var test models.Test
 		decoder := json.NewDecoder(r.Body)
@@ -80,7 +80,7 @@ func CreateTestHandler(db *sql.DB) http.HandlerFunc {
 		}
 		test.Image = imageBytes
 
-		questions, err := appsql.RetrieveQuestionsByIdsFromDB(db, test.Questions)
+		questions, err := appsql.SelectQuestionsByIds(db, test.Questions)
 		if err != nil {
 			http.Error(w, "Error retrieving questions from database", http.StatusBadRequest)
 			return
@@ -93,7 +93,7 @@ func CreateTestHandler(db *sql.DB) http.HandlerFunc {
 
 		test.MaxScore = MaxScore
 
-		if err := appsql.CreateInDBTest(db, test); err != nil {
+		if err := appsql.InsertTest(db, test); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

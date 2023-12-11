@@ -11,7 +11,7 @@ import (
 	"github.com/lib/pq"
 )
 
-func CreateInDBQuestion(db *sql.DB, q models.Question) error {
+func InsertQuestion(db *sql.DB, q models.Question) error {
 	imageArray := pq.ByteaArray([][]byte{q.Image})
 	_, err := db.Exec("INSERT INTO Question (QuestionText, Points, MultipleSelect, Image) VALUES ($1, $2, $3, $4)",
 		q.QuestionText, q.Points, q.MultipleSelect, imageArray)
@@ -22,7 +22,7 @@ func CreateInDBQuestion(db *sql.DB, q models.Question) error {
 	return nil
 }
 
-func RetrieveFromDBQuestion(db *sql.DB) ([]models.Question, error) {
+func SelectQuestionsAll(db *sql.DB) ([]models.Question, error) {
 	rows, err := db.Query("SELECT * FROM Question")
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
@@ -61,7 +61,7 @@ func RetrieveFromDBQuestion(db *sql.DB) ([]models.Question, error) {
 	return questions, nil
 }
 
-func RetrieveQuestionsByIdsFromDB(db *sql.DB, questionIDs []int) ([]models.Question, error) {
+func SelectQuestionsByIds(db *sql.DB, questionIDs []int) ([]models.Question, error) {
 	ids := ""
 	for i, id := range questionIDs {
 		if i > 0 {
@@ -109,7 +109,7 @@ func RetrieveQuestionsByIdsFromDB(db *sql.DB, questionIDs []int) ([]models.Quest
 	return questions, nil
 }
 
-func RetrieveQuestionByIdFromDB(db *sql.DB, questionID int) (models.Question, error) {
+func SelectQuestionById(db *sql.DB, questionID int) (models.Question, error) {
 	id := questionID
 
 	query := "SELECT * FROM \"question\" WHERE id = $1"

@@ -9,7 +9,7 @@ import (
 	"project/utils"
 )
 
-func AuthenticateHandler(db *sql.DB) http.HandlerFunc {
+func LoginHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var loginRequest models.LoginRequest
 		decoder := json.NewDecoder(r.Body)
@@ -19,11 +19,13 @@ func AuthenticateHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		valid, userid, err := appsql.ValidateCredentials(db, loginRequest.Username, loginRequest.Password)
+		password, userid, err := appsql.SelectUserPasswordByUsername(db, loginRequest.Username)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
+
+		valid := utils.ComparePasswords(password, loginRequest.Password)
 
 		if !valid {
 			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
@@ -36,7 +38,7 @@ func AuthenticateHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		if err := appsql.CreateInDBAuthentication(db, userid, token); err != nil {
+		if err := appsql.InsertToken(db, userid, token); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -45,7 +47,7 @@ func AuthenticateHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func CheckToken(db *sql.DB) http.HandlerFunc {
+func CheckTokenHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
 			Token string `json:"token"`
@@ -57,7 +59,7 @@ func CheckToken(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		exists, err := appsql.CheckTokenDB(db, request.Token)
+		exists, err := appsql.CountToken(db, request.Token)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return

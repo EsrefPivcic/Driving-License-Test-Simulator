@@ -9,9 +9,9 @@ import (
 	"project/models"
 )
 
-func RetrieveUserResponsesHandler(db *sql.DB) http.HandlerFunc {
+func GetUserResponsesHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		userresponses, err := appsql.RetrieveFromDBUserResponse(db)
+		userresponses, err := appsql.SelectUserResponsesAll(db)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -30,7 +30,7 @@ func RetrieveUserResponsesHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func RetrieveUserResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
+func GetUserResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
 			AttemptID int `json:"attemptid"`
@@ -42,7 +42,7 @@ func RetrieveUserResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		userresponses, err := appsql.RetrieveUserResponsesByAttemptIdFromDB(db, request.AttemptID)
+		userresponses, err := appsql.SelectUserResponsesByAttemptId(db, request.AttemptID)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -61,7 +61,7 @@ func RetrieveUserResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-func CreateUserResponseHandler(db *sql.DB) http.HandlerFunc {
+func PostUserResponseHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var userresponse models.UserResponse
 		decoder := json.NewDecoder(r.Body)
@@ -71,7 +71,7 @@ func CreateUserResponseHandler(db *sql.DB) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		if err := appsql.CreateInDBUserResponse(db, userresponse); err != nil {
+		if err := appsql.InsertUserResponse(db, userresponse); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}

@@ -5,13 +5,23 @@ import (
 	"encoding/base64"
 	"log"
 	"project/models"
+	"project/utils"
 
 	"github.com/lib/pq"
-	"golang.org/x/crypto/bcrypt"
 )
 
-func CreateInDBUser(db *sql.DB, s models.User) error {
-	hashedPassword, err := HashPassword(s.Password)
+func CountUser(db *sql.DB, username, email string) (bool, error) {
+	var count int
+	err := db.QueryRow("SELECT COUNT(*) FROM \"user\" WHERE username = $1 OR email = $2", username, email).Scan(&count)
+	if err != nil {
+		log.Printf("Error checking user existence: %v", err)
+		return false, err
+	}
+	return count > 0, nil
+}
+
+func InsertUser(db *sql.DB, s models.User) error {
+	hashedPassword, err := utils.HashPassword(s.Password)
 	if err != nil {
 		log.Printf("Error hashing password: %v", err)
 		return err
@@ -26,7 +36,7 @@ func CreateInDBUser(db *sql.DB, s models.User) error {
 	return nil
 }
 
-func UpdateInDBUser(db *sql.DB, user models.User) error {
+func UpdateUser(db *sql.DB, user models.User) error {
 	imageArray := pq.ByteaArray([][]byte{user.Image})
 	_, err := db.Exec("UPDATE \"user\" SET Name=$1, Surname=$2, Username=$3, Email=$4, Image=$5 WHERE ID=$6",
 		user.Name, user.Surname, user.Username, user.Email, imageArray, user.ID)
@@ -37,15 +47,7 @@ func UpdateInDBUser(db *sql.DB, user models.User) error {
 	return nil
 }
 
-func HashPassword(password string) (string, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return "", err
-	}
-	return string(hashedPassword), nil
-}
-
-func RetrieveFromDBUser(db *sql.DB) ([]models.User, error) {
+func SelectUsersAll(db *sql.DB) ([]models.User, error) {
 	rows, err := db.Query("SELECT * FROM \"user\" AS s")
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
@@ -86,7 +88,7 @@ func RetrieveFromDBUser(db *sql.DB) ([]models.User, error) {
 	return users, nil
 }
 
-func RetrieveUserByIdFromDB(db *sql.DB, userID int) (models.User, error) {
+func SelectUserById(db *sql.DB, userID int) (models.User, error) {
 	id := userID
 
 	query := "SELECT ID, Name, Surname, Username, Email, Image, IsStudent, IsAdmin FROM \"user\" WHERE id = $1"
@@ -118,7 +120,19 @@ func RetrieveUserByIdFromDB(db *sql.DB, userID int) (models.User, error) {
 	return user, nil
 }
 
-func RetrieveUserPasswordByIdFromDB(db *sql.DB, userID int) (models.User, error) {
+func SelectUserPasswordByUsername(db *sql.DB, username string) (string, int, error) {
+	var id int
+	var password string
+	err := db.QueryRow("SELECT id, password FROM \"user\" WHERE username = $1", username).Scan(&id, &password)
+	if err != nil {
+		log.Printf("Error selecting user data for %s: %v", username, err)
+		return "", 0, err
+	}
+
+	return password, id, nil
+}
+
+func SelectUserPasswordById(db *sql.DB, userID int) (models.User, error) {
 	id := userID
 
 	query := "SELECT Password FROM \"user\" WHERE id = $1"
@@ -137,7 +151,7 @@ func RetrieveUserPasswordByIdFromDB(db *sql.DB, userID int) (models.User, error)
 	return user, nil
 }
 
-func UpdatePasswordInDB(db *sql.DB, userID int, newPassword string) error {
+func UpdateUserPassword(db *sql.DB, userID int, newPassword string) error {
 	_, err := db.Exec("UPDATE \"user\" SET Password = $1 WHERE ID = $2", newPassword, userID)
 	if err != nil {
 		log.Printf("Error updating password in the database: %v", err)
@@ -146,7 +160,7 @@ func UpdatePasswordInDB(db *sql.DB, userID int, newPassword string) error {
 	return nil
 }
 
-func UpdateNameInDB(db *sql.DB, userID int, newName string) error {
+func UpdateUserName(db *sql.DB, userID int, newName string) error {
 	_, err := db.Exec("UPDATE \"user\" SET Name = $1 WHERE ID = $2", newName, userID)
 	if err != nil {
 		log.Printf("Error updating name in the database: %v", err)
@@ -155,7 +169,7 @@ func UpdateNameInDB(db *sql.DB, userID int, newName string) error {
 	return nil
 }
 
-func UpdateSurnameInDB(db *sql.DB, userID int, newSurname string) error {
+func UpdateUserSurname(db *sql.DB, userID int, newSurname string) error {
 	_, err := db.Exec("UPDATE \"user\" SET Surname = $1 WHERE ID = $2", newSurname, userID)
 	if err != nil {
 		log.Printf("Error updating surname in the database: %v", err)
@@ -164,7 +178,7 @@ func UpdateSurnameInDB(db *sql.DB, userID int, newSurname string) error {
 	return nil
 }
 
-func UpdateUsernameInDB(db *sql.DB, userID int, newUsername string) error {
+func UpdateUserUsername(db *sql.DB, userID int, newUsername string) error {
 	_, err := db.Exec("UPDATE \"user\" SET Username = $1 WHERE ID = $2", newUsername, userID)
 	if err != nil {
 		log.Printf("Error updating username in the database: %v", err)
@@ -173,7 +187,7 @@ func UpdateUsernameInDB(db *sql.DB, userID int, newUsername string) error {
 	return nil
 }
 
-func UpdateEmailInDB(db *sql.DB, userID int, newEmail string) error {
+func UpdateUserEmail(db *sql.DB, userID int, newEmail string) error {
 	_, err := db.Exec("UPDATE \"user\" SET Email = $1 WHERE ID = $2", newEmail, userID)
 	if err != nil {
 		log.Printf("Error updating email in the database: %v", err)

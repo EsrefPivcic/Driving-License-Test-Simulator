@@ -9,7 +9,7 @@ import (
 	"github.com/lib/pq"
 )
 
-func CreateInDBTest(db *sql.DB, t models.Test) error {
+func InsertTest(db *sql.DB, t models.Test) error {
 	questionArray := pq.Array(t.Questions)
 	imageArray := pq.ByteaArray([][]byte{t.Image})
 	_, err := db.Exec("INSERT INTO Test (Title, Description, Questions, Category, Duration, MaxScore, Image) VALUES ($1, $2, $3, $4, $5, $6, $7)",
@@ -22,7 +22,7 @@ func CreateInDBTest(db *sql.DB, t models.Test) error {
 	return nil
 }
 
-func RetrieveFromDBTest(db *sql.DB) ([]models.Test, error) {
+func SelectTestsAll(db *sql.DB) ([]models.Test, error) {
 	rows, err := db.Query(`SELECT * FROM Test`)
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
@@ -70,7 +70,7 @@ func RetrieveFromDBTest(db *sql.DB) ([]models.Test, error) {
 	return tests, nil
 }
 
-func RetrieveTestByIdFromDB(db *sql.DB, testID int) (models.Test, error) {
+func SelectTestById(db *sql.DB, testID int) (models.Test, error) {
 	id := testID
 
 	query := "SELECT * FROM \"test\" WHERE id = $1"

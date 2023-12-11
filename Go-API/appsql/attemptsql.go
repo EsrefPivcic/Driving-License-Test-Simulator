@@ -9,7 +9,7 @@ import (
 	"github.com/lib/pq"
 )
 
-func CreateInDBAttempt(db *sql.DB, a models.Attempt) error {
+func InsertAttempt(db *sql.DB, a models.Attempt) error {
 	_, err := db.Exec("INSERT INTO Attempt (UserID, TestID, Score, Passed, MaxScore, Percentage) VALUES ($1, $2, $3, $4, $5, $6)",
 		a.UserID, a.TestID, a.Score, a.Passed, a.MaxScore, a.Percentage)
 	if err != nil {
@@ -19,7 +19,7 @@ func CreateInDBAttempt(db *sql.DB, a models.Attempt) error {
 	return nil
 }
 
-func CreateInDBAttemptGetId(db *sql.DB, a models.Attempt) (int, error) {
+func InsertAttemptReturnId(db *sql.DB, a models.Attempt) (int, error) {
 	var id int
 	err := db.QueryRow("INSERT INTO Attempt (UserID, TestID, Score, Passed, MaxScore, Percentage) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ID",
 		a.UserID, a.TestID, a.Score, a.Passed, a.MaxScore, a.Percentage).Scan(&id)
@@ -30,7 +30,7 @@ func CreateInDBAttemptGetId(db *sql.DB, a models.Attempt) (int, error) {
 	return id, nil
 }
 
-func RetrieveFromDBAttempt(db *sql.DB) ([]models.Attempt, error) {
+func SelectAttemptsAll(db *sql.DB) ([]models.Attempt, error) {
 	rows, err := db.Query(`
 	SELECT
 	a.ID AS AttemptID,
@@ -113,7 +113,7 @@ INNER JOIN Test AS t ON a.TestID = t.ID
 	return attempts, nil
 }
 
-func RetrieveAttemptsByUserIdFromDB(db *sql.DB, userId int) ([]models.Attempt, error) {
+func SelectAttemptsByUserId(db *sql.DB, userId int) ([]models.Attempt, error) {
 	query := `SELECT 
 	a.ID AS AttemptID,
 	a.UserID AS AttemptUserID,
