@@ -7,6 +7,8 @@
     flex-direction: column;
     max-width: 400px;
     margin-top: 30px;
+    background: #2b3944;
+    opacity: 0.80 !important;
   }
   
   .add-option-label {
@@ -19,9 +21,9 @@
     margin-bottom: 10px;
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid #444;
+    border: 0px;
     border-radius: 4px;
-    background-color: #333;
+    background-color: #171f25;
     color: #fff;
   }
   
@@ -60,8 +62,8 @@
     margin-bottom: 10px;
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid #444;
+    border: 0px;
     border-radius: 4px;
-    background-color: #333;
+    background-color: #171f25;
     color: #fff;
   }

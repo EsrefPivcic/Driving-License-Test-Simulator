@@ -6,6 +6,8 @@
     border: 2px solid #61dafb;
     border-radius: 10px;
     margin-top: 3%;
+    background: #2b3944;
+    opacity: 0.80 !important;
   }
 
   .submit-warning{
@@ -19,6 +21,8 @@
   }
 
   .start-test-container {
+    background: #2b3944;
+    opacity: 0.80 !important;
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;

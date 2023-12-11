@@ -5,20 +5,29 @@ body {
   padding: 0;
   position: relative;
   overflow-y: scroll;
-  background-image: url(../../public/images/background.png);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+}
+
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  object-fit: cover;
 }
 
 .app {
   text-align: center;
   margin: 0 auto;
+  position: relative;
 }
 
 .app-content {
   animation: fadeIn 1s ease-in-out;
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes fadeIn {
@@ -81,7 +90,8 @@ body {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #3f3f3f;
+  background: rgb(58, 76, 89);
+  opacity: 0.8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1;
   border-radius: 8px;
@@ -101,7 +111,7 @@ body {
 }
 
 .dropdown-content p:hover {
-  background-color: #555;
+  background: #445765;
 }
 
 .profile-dropdown:hover .dropdown-content {

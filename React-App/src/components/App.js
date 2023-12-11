@@ -51,6 +51,10 @@ function App() {
   return (
     <BrowserRouter>
       <div className="app">
+        <img
+          src={"/images/background.png"}
+          className="background-image"
+        />
         <div className="app-content">
           <h1 className="app-title">
             <Link to="/">eDrivingSchool</Link>
