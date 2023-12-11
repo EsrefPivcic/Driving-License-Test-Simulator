@@ -5,6 +5,10 @@ body {
   padding: 0;
   position: relative;
   overflow-y: scroll;
+  background-image: url(../../public/images/background.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .app {
@@ -55,4 +59,63 @@ body {
 
 .login-button:hover {
   background-color: #3069b1;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  display: inline-block;
+  align-items: center;
+}
+
+.profile-image {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 10px;
+  padding: 10px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #3f3f3f;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 8px;
+  width: 160px;
+  text-align: center;
+  top: 100%;
+  right: 20px;
+}
+
+.dropdown-content p {
+  border-radius: 8px;
+  color: #fff;
+  padding: 12px 0;
+  margin: 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dropdown-content p:hover {
+  background-color: #555;
+}
+
+.profile-dropdown:hover .dropdown-content {
+  display: block;
+  flex-direction: column;
+}
+
+@media (max-width: 600px) {
+  .app-title {
+    font-size: 30px;
+  }
+  .profile-dropdown {
+    width: 40px;
+    height: 40px;
+    padding-right: 10px;
+  }
 }

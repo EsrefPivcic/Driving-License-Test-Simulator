@@ -14,14 +14,14 @@ import AddOptionPage from "./AddOptionPage/AddOptionPage";
 import "./App.css";
 
 function App() {
-  const { isAuthenticated, clearAuthStatus, ValidateToken, login, closeLogin, fetchUserData, userData, LogOut } = useAuth();
+  const { isAuthenticated, clearAuthStatus, validateToken, login, closeLogin, fetchUserData, userData, handleLogout } = useAuth();
   const [message, setMessage] = useState('');
   const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     const checkToken = async () => {
       if (isAuthenticated) {
-        const isValid = await ValidateToken();
+        const isValid = await validateToken();
         if (!isValid) {
           clearAuthStatus();
         }
@@ -47,10 +47,6 @@ function App() {
   useEffect(() => {
     setAdmin(userData.IsAdmin);
   }, [userData]);
-
-  const HandleLogOut = async () => {
-    LogOut();
-  };
 
   return (
     <BrowserRouter>
@@ -86,7 +82,7 @@ function App() {
                     <Link to={`/addoption`} style={{ textDecoration: "none" }}>
                       <p>Add Option</p>
                     </Link></div>)}
-                  <p onClick={HandleLogOut}>Logout</p>
+                  <p onClick={handleLogout}>Logout</p>
                 </div>
               </div>
             )}

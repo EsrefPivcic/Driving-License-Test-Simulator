@@ -46,17 +46,17 @@ function ExamHistoryPage() {
 
     if (!attemptsData) {
         return (
-            <animated.div className="emptyhistorycontainer" style={fadeIn}>
-                    <div className="examhistoryempty">Exam history is empty.</div>
+            <animated.div className="empty-history-container" style={fadeIn}>
+                    <div className="exam-history-empty">Exam history is empty.</div>
             </animated.div>
         );
     }
     else {
         return (
-            <animated.div className="examhistory" style={fadeIn}>
+            <animated.div className="exam-history" style={fadeIn}>
                 <h2>Exam History</h2>
                 {attemptsData.map((attempt, index) => (
-                    <div key={index} className="attemptbutton"
+                    <div key={index} className="attempt-button"
                         onClick={() => navigate(`/testresults`, { state: { attempt } })}
                         style={{ textDecoration: "none", color: "white" }}
                     >

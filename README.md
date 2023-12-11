@@ -1,6 +1,6 @@
 # eDrivingSchool
 
-Welcome to the eDrivingSchool project! This application aims to provide a realistic simulation of tests for obtaining a driver's license, covering various vehicle categories such as cars, motorbikes, and more. Currently a work in progress, we are utilizing the Go language for the backend and React for the frontend.
+Welcome to the eDrivingSchool project! This application aims to provide a realistic simulation of tests for obtaining a driver's license, covering various vehicle categories such as cars, motorbikes, and more.
 
 ## Getting Started
 
@@ -24,10 +24,10 @@ To get started with the project, follow these steps in your terminal:
     docker-compose up
     ```
 
-4. After the database is set up, navigate to the Go API directory:
+4. After the database is set up, navigate to the Go API directory in a new terminal window:
 
     ```bash
-    cd ../Go-API
+    cd eDrivingSchool/Go-API
     ```
 
 5. Perform migrations to populate the database with data:
@@ -55,6 +55,19 @@ To get started with the project, follow these steps in your terminal:
     npm install
     npm start
     ```
+
+## User Authentication
+To access the app, you need to log in. Use the following credentials:
+
+Basic User: 
+- Username: "user"
+- Password: "user"
+
+Admin: 
+- Username: "admin" 
+- Password: "admin"
+
+Alternatively, create your own profile by clicking on the register option.
  
 ## Project Structure
 
@@ -72,4 +85,9 @@ The project is organized into two main components:
 
 - **Quiz-like Interface:** Users can go through the questions and select their answers, simulating a real driving test experience.
 
-Thank you for your interest in our eDrivingSchool project! Stay tuned for updates and happy coding!
+- **Test Taking:** Take timed tests and receive immediate feedback on whether you passed or failed, along with explanations.
+
+## Admin Functionalities
+- Admins can add new tests with new questions and options, enhancing the variety of simulated driving scenarios.
+
+Thank you for your interest in our eDrivingSchool project! Happy coding!

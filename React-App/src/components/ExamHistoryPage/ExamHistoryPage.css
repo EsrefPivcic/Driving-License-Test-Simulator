@@ -1,4 +1,4 @@
-.examhistory {
+.exam-history {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -7,14 +7,14 @@
     border: 2px solid #61dafb;
 }
 
-.emptyhistorycontainer {
+.empty-history-container {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 75vh;
 }
 
-.examhistoryempty {
+.exam-history-empty {
     max-width: 250px;
     margin: 0 auto;
     padding: 20px;
@@ -22,7 +22,7 @@
     border: 2px solid #61dafb;
 }
 
-.attemptbutton {
+.attempt-button {
     cursor: pointer;
 }
 

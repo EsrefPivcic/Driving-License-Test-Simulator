@@ -132,7 +132,7 @@
     margin-bottom: 10px;
   }
   
-.errormessageprofile {
+.error-message-profile {
   color: #ff4d4d;
   font-size: 12px;
   background-color: #ffe5e5;
@@ -141,7 +141,7 @@
   margin: 5px;
 }
 
-.successmessageprofile {
+.success-message-profile {
   background: #4CAF50;
   color: #fff;
   padding: 8px;
