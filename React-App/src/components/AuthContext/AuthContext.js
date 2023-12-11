@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     setLogin(false);
   }
   
-const ValidateToken = useCallback(async () => {
+const validateToken = useCallback(async () => {
   try {
     const response = await fetch('http://localhost:8080/checktoken', {
       method: 'POST',
@@ -72,7 +72,7 @@ const ValidateToken = useCallback(async () => {
   }
 }, [authToken]);
 
-  const LogOut = async () => {
+  const handleLogout = async () => {
     try {
       const response = await fetch('http://localhost:8080/logout', {
         method: 'POST',
@@ -101,8 +101,8 @@ const ValidateToken = useCallback(async () => {
     closeLogin,
     clearAuthStatus,
     isAuthenticated: !!authToken,
-    ValidateToken,
-    LogOut,
+    validateToken,
+    handleLogout,
     userData,
     fetchUserData,
     setUserData

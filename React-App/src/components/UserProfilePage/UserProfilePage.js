@@ -299,7 +299,7 @@ function UserProfilePage() {
     }
   };
 
-  const addProfileImage = async () => {
+  const handleImageUpload = async () => {
     if (!newImage) {
       setImageEmpty(true);
       return;
@@ -368,7 +368,7 @@ function UserProfilePage() {
     setRepeatNewPasswordEmpty(value.trim() === '');
   };
 
-  const handleImageUpload = (e) => {
+  const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
 
@@ -399,14 +399,14 @@ function UserProfilePage() {
             <div className="button-container">
               <label className="custom-file-input-btn">
                 Choose File
-                <input type="file" accept="image/*" onChange={handleImageUpload} />
+                <input type="file" accept="image/*" onChange={handleFileInputChange} />
               </label>
-              <button className="save-image-button" onClick={addProfileImage}>Save Image</button>
+              <button className="save-image-button" onClick={handleImageUpload}>Save Image</button>
             </div>
           </div>
         </div>
-        {imageEmpty && (<p className="errormessageprofile">Please select a new image!</p>)}
-        {successMessageImage && <p className="successmessageprofile">{successMessageImage}</p>}
+        {imageEmpty && (<p className="error-message-profile">Please select a new image!</p>)}
+        {successMessageImage && <p className="success-message-profile">{successMessageImage}</p>}
         <div className="user-info-container">
           <div className="user-info-row">
             <span>Name:</span>
@@ -659,8 +659,8 @@ function UserProfilePage() {
             )}
           </div>
         </div>
-        {errorMessage && <p className="errormessageprofile">{errorMessage}</p>}
-        {successMessage && <p className="successmessageprofile">{successMessage}</p>}
+        {errorMessage && <p className="error-message-profile">{errorMessage}</p>}
+        {successMessage && <p className="success-message-profile">{successMessage}</p>}
       </div>
     </animated.div>
   );

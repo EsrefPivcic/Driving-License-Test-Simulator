@@ -8,11 +8,7 @@
     margin-top: 3%;
   }
 
-  .submitsuccess {
-    color: #4CAF50;
-  }
-
-  .submitwarning{
+  .submit-warning{
     color: #f44336;
   }
 
@@ -131,4 +127,3 @@
   .time-left div {
     font-weight: bold;
   }
-  

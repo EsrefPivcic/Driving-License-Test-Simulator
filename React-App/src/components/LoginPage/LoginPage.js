@@ -23,7 +23,7 @@ function LoginPage() {
     from: { opacity: 0 },
   });
 
-  const handleFormSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
@@ -65,7 +65,7 @@ function LoginPage() {
     <animated.div style={fadeIn}>
     <div className="login-container">
       <h2 className="login-headline">Login</h2>
-      <form onSubmit={handleFormSubmit}>
+      <form onSubmit={handleLogin}>
         <label className="add-login-label">
           Username:
           <input

@@ -13,7 +13,7 @@ function HomePage() {
     from: { opacity: 0 },
 });
 
-  const fetchTestData = async () => {
+  const fetchTestsData = async () => {
     try {
       const response = await fetch("http://localhost:8080/tests/get");
       if (!response.ok) {
@@ -27,7 +27,7 @@ function HomePage() {
   };
 
   useEffect(() => {
-    fetchTestData();
+    fetchTestsData();
     setTimeout(() => {
       setComponentVisible(true);
     }, 100);
@@ -41,7 +41,7 @@ function HomePage() {
             onClick={() => navigate(`/test`, { state: { test } })}
             style={{ textDecoration: "none", color: "white" }}
           >
-            <button className="buttonStyle" key={test.ID}>
+            <button className="button-style" key={test.ID}>
               <img
                 src={`data:image/png;base64,${test.ImageBase64}`}
                 alt={`Test: ${test.Title}`}

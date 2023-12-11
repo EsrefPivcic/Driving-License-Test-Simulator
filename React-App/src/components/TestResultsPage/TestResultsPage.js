@@ -41,7 +41,7 @@ function TestResultsPage() {
         }
     };
 
-    const fetchQuestionData = async () => {
+    const fetchQuestionsData = async () => {
         try {
             const response = await fetch(
                 "http://localhost:8080/questions/getbyids",
@@ -65,7 +65,7 @@ function TestResultsPage() {
         }
     };
 
-    const fetchOptionData = async () => {
+    const fetchOptionsData = async () => {
         try {
             const response = await fetch(
                 "http://localhost:8080/options/getbyquestionids",
@@ -133,8 +133,8 @@ function TestResultsPage() {
 
     useEffect(() => {
         if (testData.Questions) {
-            fetchQuestionData();
-            fetchOptionData();
+            fetchQuestionsData();
+            fetchOptionsData();
             setTimeout(() => {
                 setComponentVisible(true);
               }, 100);
@@ -187,7 +187,7 @@ function TestResultsPage() {
     
 
     if (isLoading) {
-        return <animated.div className="loadingresults" style={fadeIn}>Loading...</animated.div>
+        return <animated.div className="loading-results" style={fadeIn}>Loading...</animated.div>
     }
     else {
         return (

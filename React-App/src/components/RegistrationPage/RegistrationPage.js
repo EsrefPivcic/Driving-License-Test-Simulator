@@ -50,7 +50,7 @@ function RegistrationPage() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = async (e) => {
+  const handleRegistration = async (e) => {
     e.preventDefault();
 
     const { Name, Surname, Username, Email, Password } = user;
@@ -110,7 +110,7 @@ function RegistrationPage() {
   return (
     <animated.div style={fadeIn}>
       {message && <p className="message">{message}</p>}
-      <form className="add-registration-form" onSubmit={handleSubmit}>
+      <form className="add-registration-form" onSubmit={handleRegistration}>
         <h2 className="add-registration-headline">Create an Account</h2>
         <label className="add-registration-label">
           Name:

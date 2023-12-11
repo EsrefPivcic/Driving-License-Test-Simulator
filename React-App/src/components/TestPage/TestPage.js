@@ -36,7 +36,7 @@ function TestPage() {
     from: { opacity: 0 },
   });
 
-  const fetchQuestionData = async () => {
+  const fetchQuestionsData = async () => {
     try {
       const response = await fetch("http://localhost:8080/questions/getbyids", {
         method: "POST",
@@ -57,7 +57,7 @@ function TestPage() {
     }
   };
 
-  const submitAttempt = async (userresponses) => {
+  const handleAttemptSubmission = async (userresponses) => {
     var testid = ID;
     const formattedUserResponses = userresponses.map(([questionId, selectedOptionIds]) => ({
       questionid: questionId,
@@ -84,7 +84,7 @@ function TestPage() {
     }
   };
 
-  const fetchOptionData = async () => {
+  const fetchOptionsData = async () => {
     try {
       const response = await fetch(
         "http://localhost:8080/options/getbyquestionids",
@@ -117,7 +117,7 @@ function TestPage() {
     }
   }, [timeUp, selectedOptions]);
 
-  const timerFunc = () => {
+  const timerCountdown = () => {
     const initialTimer = Duration * 60;
     setTimer(initialTimer);
 
@@ -144,8 +144,8 @@ function TestPage() {
     setTimeout(() => {
       setComponentVisible(true);
     }, 100);
-    fetchQuestionData();
-    fetchOptionData();
+    fetchQuestionsData();
+    fetchOptionsData();
   }, []);
 
   const handleOptionChange = (questionId, optionId) => {
@@ -193,7 +193,7 @@ function TestPage() {
   const handleStartTest = () => {
     setTestStarted(true);
     setQuestionCount(1);
-    timerFunc();
+    timerCountdown();
   };
 
   const handleBackToHome = () => {
@@ -219,7 +219,7 @@ function TestPage() {
       }
       else {
         setShowWarning(false);
-        submitAttempt(userresponses);
+        handleAttemptSubmission(userresponses);
       }
     }
   };
@@ -237,7 +237,7 @@ function TestPage() {
     const userresponses = Object.entries(selectedOptions).map(
       ([questionId, selectedOptionIds]) => [+questionId, selectedOptionIds]
     );
-      submitAttempt(userresponses);
+    handleAttemptSubmission(userresponses);
     };
 
     const handleSubmissionEmpty = async () => {
@@ -352,7 +352,7 @@ function TestPage() {
         </animated.div>
       )}
       {showWarning && (
-        <div className="submitwarning">
+        <div className="submit-warning">
           <h5>Are you sure? You haven't selected an answer for each question.</h5>
         </div>
       )}
