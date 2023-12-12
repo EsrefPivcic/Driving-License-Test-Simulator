@@ -1,6 +1,5 @@
 .user-profile-container {
-    background: #2b3944;
-    opacity: 0.80 ;
+    background: rgb(43, 57, 68, 0.8);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,7 +45,7 @@
     width: 100%;
     box-sizing: border-box;
     border-radius: 10px;
-    background-color: #171f25;
+    background-color: rgb(23, 31, 37, 0.6);
     color: #fff;
     transition: background-color 0.3s ease;
     text-align: center;

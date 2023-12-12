@@ -7,8 +7,7 @@
   flex-direction: column;
   max-width: 350px;
   margin-top: 30px;
-  background: #2b3944;
-  opacity: 0.80 !important;
+  background: rgb(43, 57, 68, 0.8);
 }
 
 .add-registration-label {
@@ -23,7 +22,7 @@
   box-sizing: border-box;
   border: 0px;
   border-radius: 4px;
-  background-color: #171f25;
+  background-color: rgb(23, 31, 37, 0.6);
   color: #fff;
 }
 

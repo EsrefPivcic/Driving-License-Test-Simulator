@@ -7,8 +7,7 @@
   flex-direction: column;
   max-width: 350px;
   margin-top: 30px;
-  background: #2b3944;
-  opacity: 0.80 !important;
+  background: rgba(43, 57, 68, 0.8);
 }
 
 .add-question-label {
@@ -21,9 +20,9 @@
     margin-bottom: 10px;
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid #444;
+    border: 0px;
     border-radius: 4px;
-    background-color: #171f25;
+    background-color: rgb(23, 31, 37, 0.6);
     color: #fff;
   }
   

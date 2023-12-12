@@ -6,8 +6,7 @@
     border: 2px solid #61dafb;
     border-radius: 10px;
     margin-top: 3%;
-    background: #2b3944;
-    opacity: 0.80 !important;
+    background: rgb(43, 57, 68, 0.8);
   }
 
   .submit-warning{
@@ -21,8 +20,7 @@
   }
 
   .start-test-container {
-    background: #2b3944;
-    opacity: 0.80 !important;
+    background: rgb(43, 57, 68, 0.8);
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
