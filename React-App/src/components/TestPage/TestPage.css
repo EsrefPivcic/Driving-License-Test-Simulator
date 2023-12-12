@@ -9,9 +9,28 @@
     background: rgb(43, 57, 68, 0.8);
   }
 
-  .submit-warning{
-    color: #f44336;
+  .submit-warning-container {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+  .submit-warning {
+    background: rgb(43, 57, 68, 0.9);
+    border: 2px solid #61dafb;
+    color: #ff4d4d;
+    padding: 5px 20px;
+    border-radius: 10px;
+    margin: 3px 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 600px;
+  }  
 
   .option-input {
     padding-top: 5px;

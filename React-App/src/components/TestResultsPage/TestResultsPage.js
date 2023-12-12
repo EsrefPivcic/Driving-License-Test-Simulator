@@ -223,20 +223,21 @@ function TestResultsPage() {
                         </div>
                     </div>
                     {renderQuestions()}
-                    <div><button
+                    <div className="button-container-results"><button
                         type="button"
                         className={`home-history-button history-button`}
                         onClick={handleToExamHistory}
                     >
                         Exam History
-                    </button></div>
-                    <div><button
+                    </button>
+                    <button
                         type="button"
                         className={`home-history-button home-button`}
                         onClick={handleBackToHome}
                     >
                         Home
-                    </button></div>
+                    </button>
+                    </div>
                 </div>
             </animated.div>
         );

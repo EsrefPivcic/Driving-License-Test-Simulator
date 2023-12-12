@@ -352,9 +352,12 @@ function TestPage() {
         </animated.div>
       )}
       {showWarning && (
+        <div className="submit-warning-container">
         <div className="submit-warning">
           <h5>Are you sure? You haven't selected an answer for each question.</h5>
         </div>
+      </div>
+      
       )}
     </animated.div>
   );

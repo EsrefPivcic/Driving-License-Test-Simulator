@@ -106,15 +106,18 @@
   cursor: pointer;
 }
 
-.home-button {
-  margin-top: 5px;
-}
-
-.history-button {
-  margin-bottom: 5px;
-}
-
 .home-history-button:hover {
   background-color: #0d75ca;
   color: #d8d8d8;
+}
+
+.button-container-results {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.home-button {
+  width: 109px;
 }
