@@ -15,7 +15,7 @@ To get started with the project, follow these steps in your terminal:
 2. Navigate to the Docker Compose directory:
 
     ```bash
-    cd eDrivingSchool/Docker-compose
+    cd eDrivingSchool/Docker-Compose
     ```
 
 3. Run Docker Compose to set up the database:
