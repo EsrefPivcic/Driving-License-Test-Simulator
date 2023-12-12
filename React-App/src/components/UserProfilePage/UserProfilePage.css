@@ -149,6 +149,28 @@
   font-size: 12px;
   opacity: 1;
   margin: 5px;
+  width: 80%;
+}
+
+.error-message-profile-pic {
+  color: #ff4d4d;
+  font-size: 12px;
+  background-color: #ffe5e5;
+  padding: 8px;
+  border-radius: 4px;
+  margin: 5px;
+  width: 50%;
+}
+
+.success-message-profile-pic {
+  background: #4CAF50;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 1;
+  margin: 5px;
+  width: 50%;
 }
 
 .custom-file-input-btn {

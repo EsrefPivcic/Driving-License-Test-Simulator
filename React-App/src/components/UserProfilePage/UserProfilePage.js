@@ -405,8 +405,8 @@ function UserProfilePage() {
             </div>
           </div>
         </div>
-        {imageEmpty && (<p className="error-message-profile">Please select a new image!</p>)}
-        {successMessageImage && <p className="success-message-profile">{successMessageImage}</p>}
+        {imageEmpty && (<p className="error-message-profile-pic">Please select a new image!</p>)}
+        {successMessageImage && <p className="success-message-profile-pic">{successMessageImage}</p>}
         <div className="user-info-container">
           <div className="user-info-row">
             <span>Name:</span>
