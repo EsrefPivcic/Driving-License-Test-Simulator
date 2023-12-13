@@ -3,6 +3,19 @@ import { useSpring, animated } from "react-spring";
 import './AddTestPage.css';
 
 function AddTestPage() {
+  const [question, setQuestion] = useState({
+    QuestionText: '',
+    Points: '',
+    MultipleSelect: false,
+    ImageBase64: '',
+  });
+
+  const [option, setOption] = useState({
+    QuestionID: '',
+    OptionText: '',
+    IsCorrect: false
+  });
+
   const [test, setTest] = useState({
     Title: '',
     Description: '',
@@ -14,24 +27,30 @@ function AddTestPage() {
 
   const [questions, setQuestions] = useState([]);
   const [isComponentVisible, setComponentVisible] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [questionErrorMessage, setQuestionErrorMessage] = useState('');
+  const [questionSuccessMessage, setQuestionSuccessMessage] = useState('');
+  
+  const [optionErrorMessage, setOptionErrorMessage] = useState('');
+  const [optionSuccessMessage, setOptionSuccessMessage] = useState('');
+  
+  const [testErrorMessage, setTestErrorMessage] = useState('');
+  const [testSuccessMessage, setTestSuccessMessage] = useState('');  
+
+  const fetchQuestions = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/questions/get');
+      if (response.ok) {
+        const questionsData = await response.json();
+        setQuestions(questionsData);
+      } else {
+        console.error('Failed to fetch questions');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/questions/get');
-        if (response.ok) {
-          const questionsData = await response.json();
-          setQuestions(questionsData);
-        } else {
-          console.error('Failed to fetch questions');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-
     fetchQuestions();
 
     setTimeout(() => {
@@ -55,6 +74,35 @@ function AddTestPage() {
     });
   };
 
+  const handleInputChangeQuestion = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    if (type === 'checkbox') {
+      setQuestion({ ...question, [name]: checked });
+    } else if (name === 'Points') {
+      const points = parseInt(value, 10);
+      setQuestion({ ...question, [name]: points });
+    } else {
+      setQuestion({ ...question, [name]: value });
+    }
+  };
+
+  const handleInputChangeOption = (e) => {
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setOption({ ...option, [name]: checked });
+    } else if (name === 'QuestionID') {
+      const questionID = parseInt(value, 10);
+      if (!isNaN(questionID)) {
+        setOption({ ...option, [name]: questionID });
+      } else {
+        setOption({ ...option, [name]: value });
+      }
+    } else {
+      setOption({ ...option, [name]: value });
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === 'Duration') {
@@ -63,6 +111,19 @@ function AddTestPage() {
     } else {
       setTest({ ...test, [name]: value });
     }
+  };
+
+  const handleImageUploadQuestion = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const base64Image = e.target.result.split(',')[1];
+      setQuestion({ ...question, ImageBase64: base64Image });
+    };
+
+    reader.readAsDataURL(file);
+    setQuestion({ ...question, ImageName: file.name });
   };
 
   const handleImageUpload = (e) => {
@@ -78,12 +139,79 @@ function AddTestPage() {
     setTest({ ...test, ImageName: file.name });
   };
 
+  const handleSubmitQuestion = async (e) => {
+    e.preventDefault();
+
+    if (!question.QuestionText || !(question.Points > 0)) {
+      setQuestionErrorMessage('Please fill in all the required fields.');
+      setQuestionSuccessMessage('');
+      return;
+    }
+
+    try {
+      const updatedQuestion = { ...question };
+
+      const response = await fetch('http://localhost:8080/question/post', {
+        method: 'POST',
+        body: JSON.stringify(updatedQuestion),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setQuestionSuccessMessage('Question added successfully!');
+        setQuestionErrorMessage('');
+        fetchQuestions();
+      } else {
+        setQuestionSuccessMessage('');
+        setQuestionErrorMessage('Failed to add question. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setQuestionSuccessMessage('');
+      setQuestionErrorMessage('An error occurred. Please try again.');
+    }
+  };
+
+  const handleSubmitOption = async (e) => {
+    e.preventDefault();
+
+    if (!option.QuestionID || !option.OptionText) {
+      setOptionErrorMessage('Please fill in all the required fields.');
+      setOptionSuccessMessage('');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8080/option/post', {
+        method: 'POST',
+        body: JSON.stringify(option),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setOptionSuccessMessage('Option added successfully!');
+        setOptionErrorMessage('');
+      } else {
+        setOptionSuccessMessage('');
+        setOptionErrorMessage('Failed to add option. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setOptionSuccessMessage('');
+      setOptionErrorMessage('An error occurred. Please try again.');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!test.Title || !test.Description || !test.Category || !(test.Duration > 0) || test.Questions.length === 0) {
-      setErrorMessage('Please fill in all the required fields.');
-      setSuccessMessage('');
+      setTestErrorMessage('Please fill in all the required fields.');
+      setTestSuccessMessage('');
       return;
     }
 
@@ -97,80 +225,149 @@ function AddTestPage() {
       });
 
       if (response.ok) {
-        setSuccessMessage('Test added successfully!');
-        setErrorMessage('');
+        setTestSuccessMessage('Test added successfully!');
+        setTestErrorMessage('');
       } else {
-        setSuccessMessage('');
-        setErrorMessage('Failed to add test. Please try again.');
+        setTestSuccessMessage('');
+        setTestErrorMessage('Failed to add test. Please try again.');
       }
     } catch (error) {
       console.error('Error:', error);
-      setSuccessMessage('');
-      setErrorMessage('An error occurred. Please try again.');
+      setTestSuccessMessage('');
+      setTestErrorMessage('An error occurred. Please try again.');
     }
   };
 
 
   return (
     <animated.div style={fadeIn}>
-      {questions ? (<form className="add-test-form" onSubmit={handleSubmit}>
-        <h2 className="add-test-headline">Add a Test</h2>
-        <label className="add-test-label">
-          Title:
-          <input type="text" name="Title" value={test.Title} onChange={handleInputChange} className="add-test-input" />
-        </label>
-        <label className="add-test-label">
-          Description:
-          <input type="text" name="Description" value={test.Description} onChange={handleInputChange} className="add-test-input" />
-        </label>
-        <label className="add-test-label">
-          Category:
-          <input type="text" name="Category" value={test.Category} onChange={handleInputChange} className="add-test-input" />
-        </label>
-        <label className="add-test-label">
-          Duration:
-          <input type="number" name="Duration" value={test.Duration} onChange={handleInputChange} className="add-test-input" />
-        </label>
-        <label className="add-test-label">
-          Questions:
-          <div className="questions-dropdown-container">
-            <select
-              multiple
-              value={test.Questions}
-              onChange={() => {}}
-              className="add-test-input"
-            >
-              {questions.map((q) => (
-                <option
-                  key={q.ID}
-                  value={q.ID}
-                  onClick={() => toggleQuestionSelection(q.ID)}
-                >
-                  <div><input
-                    type="checkbox"
-                    checked={test.Questions.includes(q.ID)}
-                    readOnly
-                  /></div>
-                  {q.QuestionText}
-                </option>
-              ))}
-            </select>
+      <div className="page-container">
+      <div className="left-container">
+        <div className="form-container-add">
+          <form className="add-form" onSubmit={handleSubmitQuestion}>
+            <h2 className="add-headline">Add a Question</h2>
+            <label className="add-label">
+              Question Text:
+              <input type="text" name="QuestionText" value={question.QuestionText} onChange={handleInputChangeQuestion} className="add-input" />
+            </label>
+            <label className="add-label">
+              Points:
+              <input type="number" name="Points" value={question.Points} onChange={handleInputChangeQuestion} className="add-input" />
+            </label>
+            <label className="add-label">
+              Multiple Select:
+              <input type="checkbox" name="MultipleSelect" value={question.MultipleSelect} onChange={handleInputChangeQuestion} className="add-input" />
+            </label>
+            <label className="add-label">
+              Image:
+              <input type="file" name="ImageBase64" onChange={handleImageUploadQuestion} className="add-input" />
+            </label>
+            <button type="submit" className="add-button">Upload Question</button>
+          </form>
+          {questionErrorMessage && (
+            <div className="error-message-add">{questionErrorMessage}</div>
+          )}
+          {questionSuccessMessage && (
+            <div className="success-message-add">{questionSuccessMessage}</div>
+          )}
+        </div>
+        <div className="form-container-add">
+          {questions ? <form className="add-form" onSubmit={handleSubmitOption}>
+            <h2 className="add-headline">Add an Option</h2>
+            <label className="add-label">
+              Question:
+              <select name="QuestionID" value={option.QuestionID} onChange={handleInputChangeOption} className="add-select">
+                <option value="">Select a Question</option>
+                {questions.map((q) => (
+                  <option key={q.ID} value={q.ID}>
+                    {q.QuestionText}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="add-label">
+              Option Text:
+              <input type="text" name="OptionText" value={option.OptionText} onChange={handleInputChangeOption} className="add-input" />
+            </label>
+            <label className="add-label">
+              Is Correct:
+              <input type="checkbox" name="IsCorrect" value={option.IsCorrect} onChange={handleInputChangeOption} className="add-input" />
+            </label>
+            <button type="submit" className="add-button">Upload Option</button>
+          </form> : <div>
+            To add options, add a question first.
+          </div>}
+          {optionErrorMessage && (
+            <div className="error-message-add">{optionErrorMessage}</div>
+          )}
+          {optionSuccessMessage && (
+            <div className="success-message-add">{optionSuccessMessage}</div>
+          )}
           </div>
-        </label>
-        <label className="add-test-label">
-          Image:
-          <input type="file" name="ImageBase64" onChange={handleImageUpload} className="add-test-input" />
-        </label>
-        <button type="submit" className="add-test-button">Upload Test</button>
-      </form>) : <div>
-        To add a test, add some questions first.
-        </div>}
-      {errorMessage && (
-        <div className="error-message-test">{errorMessage}</div>
-      )}
-      {successMessage && (
-        <div className="success-message-test">{successMessage}</div>
-      )}
+        </div>
+        <div className="right-container">
+        <div className="form-container-add">
+          {questions ? (<form className="add-form" onSubmit={handleSubmit}>
+            <h2 className="add-headline">Add a Test</h2>
+            <label className="add-label">
+              Title:
+              <input type="text" name="Title" value={test.Title} onChange={handleInputChange} className="add-input" />
+            </label>
+            <label className="add-label">
+              Description:
+              <input type="text" name="Description" value={test.Description} onChange={handleInputChange} className="add-input" />
+            </label>
+            <label className="add-label">
+              Category:
+              <input type="text" name="Category" value={test.Category} onChange={handleInputChange} className="add-input" />
+            </label>
+            <label className="add-label">
+              Duration:
+              <input type="number" name="Duration" value={test.Duration} onChange={handleInputChange} className="add-input" />
+            </label>
+            <label className="add-label">
+              Questions:
+              <div className="questions-dropdown-container">
+                <select
+                  multiple
+                  value={test.Questions}
+                  onChange={() => { }}
+                  className="add-input"
+                >
+                  {questions.map((q) => (
+                    <option
+                      key={q.ID}
+                      value={q.ID}
+                      onClick={() => toggleQuestionSelection(q.ID)}
+                    >
+                      <div><input
+                        type="checkbox"
+                        checked={test.Questions.includes(q.ID)}
+                        readOnly
+                      /></div>
+                      {q.QuestionText}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </label>
+            <label className="add-label">
+              Image:
+              <input type="file" name="ImageBase64" onChange={handleImageUpload} className="add-input" />
+            </label>
+            <button type="submit" className="add-button">Upload Test</button>
+          </form>) : <div>
+            To add a test, add some questions first.
+          </div>}
+          {testErrorMessage && (
+            <div className="error-message-add">{testErrorMessage}</div>
+          )}
+          {testSuccessMessage && (
+            <div className="success-message-add">{testSuccessMessage}</div>
+          )}
+          </div>
+        </div>
+      </div>
     </animated.div>
   );
 }
