@@ -1,12 +1,13 @@
 .page-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .left-container,
+.middle-container,
 .right-container {
-  flex: 1;
-  max-width: calc(50% - 10px);
-  margin: 0 20px;
+  margin: 30px;
+  margin-top: 0px;
 }
 
 .add-form {
@@ -63,12 +64,54 @@
 
 .error-message-add {
   margin-top: 10px;
-  color: red;
+  color: #ff4d4d;
   font-weight: bold;
 }
 
 select.add-input {
   height: 235px;
+}
+
+.manage-test {
+  background: rgb(56, 72, 85, 0.8);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.manage-test img {
+  max-width: 100px;
+  max-height: 100px;
+  margin-right: 15px;
+  border-radius: 10px;
+}
+
+.manage-test-details p {
+  margin: 0;
+  text-align: left;
+}
+
+.restore-delete-button {
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 5px 5px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.delete {
+  background-color: #ff4d4d;
+}
+
+.add-form h2 {
+  margin-top: 0px;
 }
 
 @media (max-width: 768px) {

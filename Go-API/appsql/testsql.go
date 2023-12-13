@@ -33,7 +33,7 @@ func UpdateTestVisibility(db *sql.DB, testID int, isvisible bool) error {
 }
 
 func SelectTestsAll(db *sql.DB) ([]models.Test, error) {
-	rows, err := db.Query("SELECT * FROM \"test\"")
+	rows, err := db.Query("SELECT * FROM \"test\" ORDER BY test.ID;")
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
 		return nil, err
@@ -84,16 +84,17 @@ func SelectTestsAll(db *sql.DB) ([]models.Test, error) {
 func SelectTestsVisible(db *sql.DB) ([]models.Test, error) {
 	rows, err := db.Query(`
 		SELECT
-			t.ID AS TestID,
-			t.Title AS Title,
-			t.Description AS Description,
-			t.Questions AS Questions,
-			t.Category AS Category,
-			t.Duration AS Duration,
-			t.MaxScore AS MaxScore,
-			t.Image AS Image
-		FROM Test AS t
-		WHERE t.IsVisible = TRUE;
+	    t.ID AS TestID,
+	    t.Title AS Title,
+	    t.Description AS Description,
+	    t.Questions AS Questions,
+	    t.Category AS Category,
+	    t.Duration AS Duration,
+	    t.MaxScore AS MaxScore,
+	    t.Image AS Image
+	FROM Test AS t
+	WHERE t.IsVisible = TRUE
+	ORDER BY t.ID;
 	`)
 	if err != nil {
 		log.Printf("Error executing SQL query: %v", err)
