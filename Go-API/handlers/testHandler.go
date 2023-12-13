@@ -31,6 +31,27 @@ func GetTestsHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+func GetTestsVisibleHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		tests, err := appsql.SelectTestsVisible(db)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		response, err := json.Marshal(tests)
+		if err != nil {
+			log.Fatal(err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(response)
+	}
+}
+
 func GetTestByIdHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request struct {
@@ -92,6 +113,7 @@ func PostTestHandler(db *sql.DB) http.HandlerFunc {
 		}
 
 		test.MaxScore = MaxScore
+		test.IsVisible = true
 
 		if err := appsql.InsertTest(db, test); err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -99,5 +121,27 @@ func PostTestHandler(db *sql.DB) http.HandlerFunc {
 		}
 
 		respondJSON(w, test)
+	}
+}
+
+func UpdateTestVisibilityHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request struct {
+			TestID    int  `json:"testid"`
+			IsVisible bool `json:"isvisible"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&request)
+		if err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		if err := appsql.UpdateTestVisibility(db, request.TestID, request.IsVisible); err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		respondJSON(w, http.StatusOK)
 	}
 }
