@@ -30,12 +30,12 @@ function ManagementPage() {
   const [isComponentVisible, setComponentVisible] = useState(false);
   const [questionErrorMessage, setQuestionErrorMessage] = useState('');
   const [questionSuccessMessage, setQuestionSuccessMessage] = useState('');
-  
+
   const [optionErrorMessage, setOptionErrorMessage] = useState('');
   const [optionSuccessMessage, setOptionSuccessMessage] = useState('');
-  
+
   const [testErrorMessage, setTestErrorMessage] = useState('');
-  const [testSuccessMessage, setTestSuccessMessage] = useState('');  
+  const [testSuccessMessage, setTestSuccessMessage] = useState('');
 
   const fetchQuestions = async () => {
     try {
@@ -256,7 +256,7 @@ function ManagementPage() {
     try {
       const response = await fetch('http://localhost:8080/test/updatevisibility', {
         method: 'POST',
-        body: JSON.stringify({TestID : test.ID, IsVisible : false}),
+        body: JSON.stringify({ TestID: test.ID, IsVisible: false }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -273,7 +273,7 @@ function ManagementPage() {
     try {
       const response = await fetch('http://localhost:8080/test/updatevisibility', {
         method: 'POST',
-        body: JSON.stringify({TestID : test.ID, IsVisible : true}),
+        body: JSON.stringify({ TestID: test.ID, IsVisible: true }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -289,150 +289,151 @@ function ManagementPage() {
   return (
     <animated.div style={fadeIn}>
       <div className="page-container">
-      <div className="left-container">
-        <div className="form-container-add">
-          <form className="add-form" onSubmit={handleSubmitQuestion}>
-            <h2 className="add-headline">Add a Question</h2>
-            <label className="add-label">
-              Question Text:
-              <input type="text" name="QuestionText" value={question.QuestionText} onChange={handleInputChangeQuestion} className="add-input" />
-            </label>
-            <label className="add-label">
-              Points:
-              <input type="number" name="Points" value={question.Points} onChange={handleInputChangeQuestion} className="add-input" />
-            </label>
-            <label className="add-label">
-              Multiple Select:
-              <input type="checkbox" name="MultipleSelect" value={question.MultipleSelect} onChange={handleInputChangeQuestion} className="add-input" />
-            </label>
-            <label className="add-label">
-              Image:
-              <input type="file" name="ImageBase64" onChange={handleImageUploadQuestion} className="add-input" />
-            </label>
-            <button type="submit" className="add-button">Upload Question</button>
-          </form>
-          {questionErrorMessage && (
-            <div className="error-message-add">{questionErrorMessage}</div>
-          )}
-          {questionSuccessMessage && (
-            <div className="success-message-add">{questionSuccessMessage}</div>
-          )}
-        </div>
-        <div className="form-container-add">
-          {questions ? <form className="add-form" onSubmit={handleSubmitOption}>
-            <h2 className="add-headline">Add an Option</h2>
-            <label className="add-label">
-              Question:
-              <select name="QuestionID" value={option.QuestionID} onChange={handleInputChangeOption} className="add-select">
-                <option value="">Select a Question</option>
-                {questions.map((q) => (
-                  <option key={q.ID} value={q.ID}>
-                    {q.QuestionText}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="add-label">
-              Option Text:
-              <input type="text" name="OptionText" value={option.OptionText} onChange={handleInputChangeOption} className="add-input" />
-            </label>
-            <label className="add-label">
-              Is Correct:
-              <input type="checkbox" name="IsCorrect" value={option.IsCorrect} onChange={handleInputChangeOption} className="add-input" />
-            </label>
-            <button type="submit" className="add-button">Upload Option</button>
-          </form> : <div>
-            To add options, add a question first.
-          </div>}
-          {optionErrorMessage && (
-            <div className="error-message-add">{optionErrorMessage}</div>
-          )}
-          {optionSuccessMessage && (
-            <div className="success-message-add">{optionSuccessMessage}</div>
-          )}
+        <div className="left-container">
+          <div className="form-container-add">
+            <form className="add-form" onSubmit={handleSubmitQuestion}>
+              <h2 className="add-headline">Add a Question</h2>
+              <label className="add-label">
+                Question Text:
+                <input type="text" name="QuestionText" value={question.QuestionText} onChange={handleInputChangeQuestion} className="add-input" />
+              </label>
+              <label className="add-label">
+                Points:
+                <input type="number" name="Points" value={question.Points} onChange={handleInputChangeQuestion} className="add-input" />
+              </label>
+              <label className="add-label">
+                Multiple Select:
+                <input type="checkbox" name="MultipleSelect" value={question.MultipleSelect} onChange={handleInputChangeQuestion} className="add-input" />
+              </label>
+              <label className="add-label">
+                Image:
+                <input type="file" name="ImageBase64" onChange={handleImageUploadQuestion} className="add-input" />
+              </label>
+              <button type="submit" className="add-button">Upload Question</button>
+            </form>
+            {questionErrorMessage && (
+              <div className="error-message-add">{questionErrorMessage}</div>
+            )}
+            {questionSuccessMessage && (
+              <div className="success-message-add">{questionSuccessMessage}</div>
+            )}
           </div>
-        </div>
-        <div className="right-container">
-        <div className="form-container-add">
-          {questions ? (<form className="add-form" onSubmit={handleSubmit}>
-            <h2 className="add-headline">Add a Test</h2>
-            <label className="add-label">
-              Title:
-              <input type="text" name="Title" value={test.Title} onChange={handleInputChange} className="add-input" />
-            </label>
-            <label className="add-label">
-              Description:
-              <input type="text" name="Description" value={test.Description} onChange={handleInputChange} className="add-input" />
-            </label>
-            <label className="add-label">
-              Category:
-              <input type="text" name="Category" value={test.Category} onChange={handleInputChange} className="add-input" />
-            </label>
-            <label className="add-label">
-              Duration:
-              <input type="number" name="Duration" value={test.Duration} onChange={handleInputChange} className="add-input" />
-            </label>
-            <label className="add-label">
-              Questions:
-              <div className="questions-dropdown-container">
-                <select
-                  multiple
-                  value={test.Questions}
-                  onChange={() => { }}
-                  className="add-input"
-                >
+          <div className="form-container-add">
+            {questions ? <form className="add-form" onSubmit={handleSubmitOption}>
+              <h2 className="add-headline">Add an Option</h2>
+              <label className="add-label">
+                Question:
+                <select name="QuestionID" value={option.QuestionID} onChange={handleInputChangeOption} className="add-select">
+                  <option value="">Select a Question</option>
                   {questions.map((q) => (
-                    <option
-                      key={q.ID}
-                      value={q.ID}
-                      onClick={() => toggleQuestionSelection(q.ID)}
-                    >
-                      <div><input
-                        type="checkbox"
-                        checked={test.Questions.includes(q.ID)}
-                        readOnly
-                      /></div>
+                    <option key={q.ID} value={q.ID}>
                       {q.QuestionText}
                     </option>
                   ))}
                 </select>
-              </div>
-            </label>
-            <label className="add-label">
-              Image:
-              <input type="file" name="ImageBase64" onChange={handleImageUpload} className="add-input" />
-            </label>
-            <button type="submit" className="add-button">Upload Test</button>
-          </form>) : <div>
-            To add a test, add some questions first.
-          </div>}
-          {testErrorMessage && (
-            <div className="error-message-add">{testErrorMessage}</div>
-          )}
-          {testSuccessMessage && (
-            <div className="success-message-add">{testSuccessMessage}</div>
-          )}
+              </label>
+              <label className="add-label">
+                Option Text:
+                <input type="text" name="OptionText" value={option.OptionText} onChange={handleInputChangeOption} className="add-input" />
+              </label>
+              <label className="add-label">
+                Is Correct:
+                <input type="checkbox" name="IsCorrect" value={option.IsCorrect} onChange={handleInputChangeOption} className="add-input" />
+              </label>
+              <button type="submit" className="add-button">Upload Option</button>
+            </form> : <div>
+              To add options, add a question first.
+            </div>}
+            {optionErrorMessage && (
+              <div className="error-message-add">{optionErrorMessage}</div>
+            )}
+            {optionSuccessMessage && (
+              <div className="success-message-add">{optionSuccessMessage}</div>
+            )}
           </div>
         </div>
-        <div className="manage-tests">
-        <h2>Delete/Restore Tests</h2>
-                {tests.map((test, index) => (
-                    <div key={index}
-                        style={{ textDecoration: "none", color: "white" }}
-                    >
-                        <div className="manage-test-container">
-                            <img src={`data:image/png;base64, ${test.ImageBase64}`} alt="No image" />
-                            <div className="manage-test-details">
-                                <p><strong>Test:</strong> {test.Title}</p>
-                                <p><strong>Description:</strong> {test.Category}</p>               
-                                {test.IsVisible ? (<p><strong>Deleted: </strong>No</p>) : (<p><strong>Deleted: </strong>Yes</p>)}
-                                {test.IsVisible ? 
-                                (<button className='restore-delete-button delete' onClick={() => handleTestDelete(test)}>Delete</button>) : 
-                                (<button className='restore-delete-button' onClick={() => handleTestRestore(test)}>Restore</button>)}                        
-                            </div>
-                        </div>
-                    </div>
-                ))}
+        <div className="middle-container">
+          <div className="form-container-add">
+            {questions ? (<form className="add-form" onSubmit={handleSubmit}>
+              <h2 className="add-headline">Add a Test</h2>
+              <label className="add-label">
+                Title:
+                <input type="text" name="Title" value={test.Title} onChange={handleInputChange} className="add-input" />
+              </label>
+              <label className="add-label">
+                Description:
+                <input type="text" name="Description" value={test.Description} onChange={handleInputChange} className="add-input" />
+              </label>
+              <label className="add-label">
+                Category:
+                <input type="text" name="Category" value={test.Category} onChange={handleInputChange} className="add-input" />
+              </label>
+              <label className="add-label">
+                Duration:
+                <input type="number" name="Duration" value={test.Duration} onChange={handleInputChange} className="add-input" />
+              </label>
+              <label className="add-label">
+                Questions:
+                <div className="questions-dropdown-container">
+                  <select
+                    multiple
+                    value={test.Questions}
+                    onChange={() => { }}
+                    className="add-input"
+                  >
+                    {questions.map((q) => (
+                      <option
+                        key={q.ID}
+                        value={q.ID}
+                        onClick={() => toggleQuestionSelection(q.ID)}
+                      >
+                        <div><input
+                          type="checkbox"
+                          checked={test.Questions.includes(q.ID)}
+                          readOnly
+                        /></div>
+                        {q.QuestionText}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </label>
+              <label className="add-label">
+                Image:
+                <input type="file" name="ImageBase64" onChange={handleImageUpload} className="add-input" />
+              </label>
+              <button type="submit" className="add-button">Upload Test</button>
+            </form>) : <div>
+              To add a test, add some questions first.
+            </div>}
+            {testErrorMessage && (
+              <div className="error-message-add">{testErrorMessage}</div>
+            )}
+            {testSuccessMessage && (
+              <div className="success-message-add">{testSuccessMessage}</div>
+            )}
+          </div>
+        </div>
+        <div className="right-container">
+        <div className="add-form">
+          <h2>Delete/Restore Tests</h2>
+          {tests.map((test, index) => (
+            <div key={index}
+              style={{ textDecoration: "none", color: "white" }}>
+              <div className="manage-test">
+                <img src={`data:image/png;base64, ${test.ImageBase64}`} alt="No image" />
+                <div className="manage-test-details">
+                  <p><strong>Test:</strong> {test.Title}</p>
+                  <p><strong>Description:</strong> {test.Category}</p>
+                  {test.IsVisible ? (<p><strong>Deleted: </strong>No</p>) : (<p><strong>Deleted: </strong>Yes</p>)}
+                  {test.IsVisible ?
+                    (<button className='restore-delete-button delete' onClick={() => handleTestDelete(test)}>Delete</button>) :
+                    (<button className='restore-delete-button' onClick={() => handleTestRestore(test)}>Restore</button>)}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
         </div>
       </div>
     </animated.div>

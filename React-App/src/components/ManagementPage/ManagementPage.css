@@ -1,15 +1,13 @@
 .page-container {
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
-.left-container {
-  flex: 1;
-  margin-right: -515px;
-}
-
+.left-container,
+.middle-container,
 .right-container {
-  flex: 1;
+  margin: 30px;
+  margin-top: 0px;
 }
 
 .add-form {
@@ -74,17 +72,7 @@ select.add-input {
   height: 235px;
 }
 
-.manage-tests {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  padding-top: 0px;
-  border-radius: 10px;
-  border: 2px solid #61dafb;
-  background: rgb(43, 57, 68, 0.8);
-}
-
-.manage-test-container {
+.manage-test {
   background: rgb(56, 72, 85, 0.8);
   border-radius: 10px;
   margin-bottom: 20px;
@@ -95,7 +83,7 @@ select.add-input {
   transition: background 0.3s, transform 0.2s;
 }
 
-.manage-test-container img {
+.manage-test img {
   max-width: 100px;
   max-height: 100px;
   margin-right: 15px;
@@ -120,4 +108,18 @@ select.add-input {
 
 .delete {
   background-color: #ff4d4d;
+}
+
+.add-form h2 {
+  margin-top: 0px;
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    display: block;
+  }
+  .add-form {
+    width: calc(100% + 32vw);
+    max-width: 400px;
+  }
 }
