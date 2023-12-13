@@ -1,15 +1,12 @@
 .page-container {
   display: flex;
-  justify-content: space-around;
 }
 
-.left-container {
-  flex: 1;
-  margin-right: -515px;
-}
-
+.left-container,
 .right-container {
   flex: 1;
+  max-width: calc(50% - 10px);
+  margin: 0 20px;
 }
 
 .add-form {
@@ -72,4 +69,14 @@
 
 select.add-input {
   height: 235px;
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    display: block;
+  }
+  .add-form {
+    width: calc(100% + 32vw);
+    max-width: 400px;
+  }
 }
