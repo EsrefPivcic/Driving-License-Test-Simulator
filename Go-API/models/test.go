@@ -8,6 +8,7 @@ type Test struct {
 	Category    string
 	Duration    int
 	MaxScore    int
+	IsVisible   bool
 	Image       []byte
 	ImageBase64 string
 }

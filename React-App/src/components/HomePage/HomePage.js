@@ -15,7 +15,7 @@ function HomePage() {
 
   const fetchTestsData = async () => {
     try {
-      const response = await fetch("http://localhost:8080/tests/get");
+      const response = await fetch("http://localhost:8080/tests/getvisible");
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
