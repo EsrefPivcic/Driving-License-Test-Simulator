@@ -3,14 +3,12 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import HomePage from "./HomePage/HomePage";
 import TestPage from "./TestPage/TestPage";
 import AddTestPage from "./AddTestPage/AddTestPage";
-import AddQuestionPage from "./AddQuestionPage/AddQuestionPage";
 import LoginPage from "./LoginPage/LoginPage";
 import RegistrationPage from "./RegistrationPage/RegistrationPage";
 import TestResultsPage from "./TestResultsPage/TestResultsPage";
 import UserProfilePage from "./UserProfilePage/UserProfilePage";
 import { useAuth } from "./AuthContext/AuthContext";
 import ExamHistoryPage from "./ExamHistoryPage/ExamHistoryPage";
-import AddOptionPage from "./AddOptionPage/AddOptionPage";
 import "./App.css";
 
 function App() {
@@ -79,13 +77,7 @@ function App() {
                   </Link>
                   {admin && (<div><Link to={`/addtest`} style={{ textDecoration: "none" }}>
                     <p>Add Test</p>
-                  </Link>
-                    <Link to={`/addquestion`} style={{ textDecoration: "none" }}>
-                      <p>Add Question</p>
-                    </Link>
-                    <Link to={`/addoption`} style={{ textDecoration: "none" }}>
-                      <p>Add Option</p>
-                    </Link></div>)}
+                  </Link></div>)}
                   <p onClick={handleLogout}>Logout</p>
                 </div>
               </div>
@@ -97,8 +89,6 @@ function App() {
               {admin && (
                 <>
                   <Route path="addtest" element={<AddTestPage />} />
-                  <Route path="addquestion" element={<AddQuestionPage />} />
-                  <Route path="addoption" element={<AddOptionPage />} />
                 </>
               )}
               <Route path="/" element={<HomePage />} />
