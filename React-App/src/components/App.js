@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import HomePage from "./HomePage/HomePage";
 import TestPage from "./TestPage/TestPage";
-import AddTestPage from "./AddTestPage/AddTestPage";
+import ManagementPage from "./ManagementPage/ManagementPage";
 import LoginPage from "./LoginPage/LoginPage";
 import RegistrationPage from "./RegistrationPage/RegistrationPage";
 import TestResultsPage from "./TestResultsPage/TestResultsPage";
@@ -75,8 +75,8 @@ function App() {
                   <Link to={`/examhistory`} style={{ textDecoration: "none" }}>
                     <p>Exam History</p>
                   </Link>
-                  {admin && (<div><Link to={`/addtest`} style={{ textDecoration: "none" }}>
-                    <p>Add Test</p>
+                  {admin && (<div><Link to={`/management`} style={{ textDecoration: "none" }}>
+                    <p>Management</p>
                   </Link></div>)}
                   <p onClick={handleLogout}>Logout</p>
                 </div>
@@ -88,7 +88,7 @@ function App() {
             <Routes>
               {admin && (
                 <>
-                  <Route path="addtest" element={<AddTestPage />} />
+                  <Route path="management" element={<ManagementPage />} />
                 </>
               )}
               <Route path="/" element={<HomePage />} />

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSpring, animated } from "react-spring";
-import './AddTestPage.css';
+import './ManagementPage.css';
 
-function AddTestPage() {
+function ManagementPage() {
   const [question, setQuestion] = useState({
     QuestionText: '',
     Points: '',
@@ -26,6 +26,7 @@ function AddTestPage() {
   });
 
   const [questions, setQuestions] = useState([]);
+  const [tests, setTests] = useState([]);
   const [isComponentVisible, setComponentVisible] = useState(false);
   const [questionErrorMessage, setQuestionErrorMessage] = useState('');
   const [questionSuccessMessage, setQuestionSuccessMessage] = useState('');
@@ -50,9 +51,22 @@ function AddTestPage() {
     }
   };
 
+  const fetchTests = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/tests/get");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setTests(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
     fetchQuestions();
-
+    fetchTests();
     setTimeout(() => {
       setComponentVisible(true);
     }, 100);
@@ -238,6 +252,39 @@ function AddTestPage() {
     }
   };
 
+  const handleTestDelete = async (test) => {
+    try {
+      const response = await fetch('http://localhost:8080/test/updatevisibility', {
+        method: 'POST',
+        body: JSON.stringify({TestID : test.ID, IsVisible : false}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        fetchTests();
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleTestRestore = async (test) => {
+    try {
+      const response = await fetch('http://localhost:8080/test/updatevisibility', {
+        method: 'POST',
+        body: JSON.stringify({TestID : test.ID, IsVisible : true}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        fetchTests();
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <animated.div style={fadeIn}>
@@ -367,9 +414,29 @@ function AddTestPage() {
           )}
           </div>
         </div>
+        <div className="manage-tests">
+        <h2>Delete/Restore Tests</h2>
+                {tests.map((test, index) => (
+                    <div key={index}
+                        style={{ textDecoration: "none", color: "white" }}
+                    >
+                        <div className="manage-test-container">
+                            <img src={`data:image/png;base64, ${test.ImageBase64}`} alt="No image" />
+                            <div className="manage-test-details">
+                                <p><strong>Test:</strong> {test.Title}</p>
+                                <p><strong>Description:</strong> {test.Category}</p>               
+                                {test.IsVisible ? (<p><strong>Deleted: </strong>No</p>) : (<p><strong>Deleted: </strong>Yes</p>)}
+                                {test.IsVisible ? 
+                                (<button className='restore-delete-button delete' onClick={() => handleTestDelete(test)}>Delete</button>) : 
+                                (<button className='restore-delete-button' onClick={() => handleTestRestore(test)}>Restore</button>)}                        
+                            </div>
+                        </div>
+                    </div>
+                ))}
+        </div>
       </div>
     </animated.div>
   );
 }
 
-export default AddTestPage;
+export default ManagementPage;

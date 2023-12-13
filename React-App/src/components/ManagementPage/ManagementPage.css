@@ -66,10 +66,58 @@
 
 .error-message-add {
   margin-top: 10px;
-  color: red;
+  color: #ff4d4d;
   font-weight: bold;
 }
 
 select.add-input {
   height: 235px;
+}
+
+.manage-tests {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-top: 0px;
+  border-radius: 10px;
+  border: 2px solid #61dafb;
+  background: rgb(43, 57, 68, 0.8);
+}
+
+.manage-test-container {
+  background: rgb(56, 72, 85, 0.8);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.manage-test-container img {
+  max-width: 100px;
+  max-height: 100px;
+  margin-right: 15px;
+  border-radius: 10px;
+}
+
+.manage-test-details p {
+  margin: 0;
+  text-align: left;
+}
+
+.restore-delete-button {
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 5px 5px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.delete {
+  background-color: #ff4d4d;
 }
