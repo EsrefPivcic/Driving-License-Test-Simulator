@@ -53,7 +53,7 @@ function LoginPage() {
       navigate(`/`, { state: { login: true } });
     } catch (error) {
       console.error('Login failed:', error);
-      setError('Invalid username or password');
+      setError('Invalid username or password.');
     }
   };
 
@@ -65,7 +65,7 @@ function LoginPage() {
     <animated.div style={fadeIn}>
     <div className="login-container">
       <h2 className="login-headline">Login</h2>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} className='login-form'>
         <label className="add-login-label">
           Username:
           <input
@@ -89,9 +89,13 @@ function LoginPage() {
         <button type="submit" className="add-login-button">
           {'Login'} {}
         </button>
-        {error && <p className="error-message">{error}</p>}
       </form>
-      <p>
+      {error && <div className="login-warning-container">
+                <div className="login-warning">
+                  <h5>{error}</h5>
+                </div>
+              </div>}
+      <p className='dont-have-text'>
         Don't have an account?{' '}
         <span className="register-button" onClick={handleRegisterClick}>
           Register

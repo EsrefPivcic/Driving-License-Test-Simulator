@@ -162,12 +162,12 @@ func ChangePasswordHandler(db *sql.DB) http.HandlerFunc {
 
 		user, err := appsql.SelectUserPasswordById(db, userID)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		if !authUtils.ComparePasswords(user.Password, request.OldPassword) {
-			http.Error(w, "Incorrect old password", http.StatusUnauthorized)
+			http.Error(w, "Incorrect old password.", http.StatusUnauthorized)
 			return
 		}
 

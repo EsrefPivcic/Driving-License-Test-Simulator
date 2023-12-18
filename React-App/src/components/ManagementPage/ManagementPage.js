@@ -159,8 +159,11 @@ function ManagementPage() {
     e.preventDefault();
 
     if (!question.QuestionText || !(question.Points > 0)) {
-      setQuestionErrorMessage('Please fill in all the required fields.');
       setQuestionSuccessMessage('');
+      setQuestionErrorMessage('Please fill in all the required fields.');
+      setTimeout(() => {
+        setQuestionErrorMessage('');
+      }, 3500);
       return;
     }
 
@@ -176,17 +179,26 @@ function ManagementPage() {
       });
 
       if (response.ok) {
-        setQuestionSuccessMessage('Question added successfully!');
-        setQuestionErrorMessage('');
         fetchQuestions();
+        setQuestionErrorMessage('');
+        setQuestionSuccessMessage('Question added successfully!');
+        setTimeout(() => {
+          setQuestionSuccessMessage('');
+        }, 3500);
       } else {
         setQuestionSuccessMessage('');
         setQuestionErrorMessage('Failed to add question. Please try again.');
+        setTimeout(() => {
+          setQuestionErrorMessage('');
+        }, 3500);
       }
     } catch (error) {
       console.error('Error:', error);
       setQuestionSuccessMessage('');
       setQuestionErrorMessage('An error occurred. Please try again.');
+      setTimeout(() => {
+        setQuestionErrorMessage('');
+      }, 3500);
     }
   };
 
@@ -195,7 +207,9 @@ function ManagementPage() {
 
     if (!option.QuestionID || !option.OptionText) {
       setOptionErrorMessage('Please fill in all the required fields.');
-      setOptionSuccessMessage('');
+      setTimeout(() => {
+        setOptionErrorMessage('');
+      }, 3500);
       return;
     }
 
@@ -209,16 +223,25 @@ function ManagementPage() {
       });
 
       if (response.ok) {
-        setOptionSuccessMessage('Option added successfully!');
         setOptionErrorMessage('');
+        setOptionSuccessMessage('Option added successfully!');
+        setTimeout(() => {
+          setOptionSuccessMessage('');
+        }, 3500);
       } else {
         setOptionSuccessMessage('');
         setOptionErrorMessage('Failed to add option. Please try again.');
+        setTimeout(() => {
+          setOptionErrorMessage('');
+        }, 3500);
       }
     } catch (error) {
       console.error('Error:', error);
       setOptionSuccessMessage('');
       setOptionErrorMessage('An error occurred. Please try again.');
+      setTimeout(() => {
+        setOptionErrorMessage('');
+      }, 3500);
     }
   };
 
@@ -227,7 +250,9 @@ function ManagementPage() {
 
     if (!test.Title || !test.Description || !test.Category || !(test.Duration > 0) || test.Questions.length === 0) {
       setTestErrorMessage('Please fill in all the required fields.');
-      setTestSuccessMessage('');
+      setTimeout(() => {
+        setTestErrorMessage('');
+      }, 3500);
       return;
     }
 
@@ -241,23 +266,33 @@ function ManagementPage() {
       });
 
       if (response.ok) {
-        setTestSuccessMessage('Test added successfully!');
+        fetchTests();
         setTestErrorMessage('');
+        setTestSuccessMessage('Test added successfully!');
+        setTimeout(() => {
+          setTestSuccessMessage('');
+        }, 3500);
       } else {
         setTestSuccessMessage('');
         setTestErrorMessage('Failed to add test. Please try again.');
+        setTimeout(() => {
+          setTestErrorMessage('');
+        }, 3500);
       }
     } catch (error) {
       console.error('Error:', error);
       setTestSuccessMessage('');
       setTestErrorMessage('An error occurred. Please try again.');
+      setTimeout(() => {
+        setTestErrorMessage('');
+      }, 3500);
     }
   };
 
   const handleDeleteConfirmation = (test) => {
     setDeleteConfirmation(test);
   };
-  
+
   const handleDeleteTest = async () => {
     try {
       const response = await fetch('http://localhost:8080/test/updatevisibility', {
@@ -267,7 +302,7 @@ function ManagementPage() {
           'Content-Type': 'application/json',
         },
       });
-  
+
       if (response.ok) {
         setDeleteConfirmation(null);
         fetchTests();
@@ -276,7 +311,7 @@ function ManagementPage() {
       console.error('Error:', error);
     }
   };
-  
+
   const handleCancelDelete = () => {
     setDeleteConfirmation(null);
   };
@@ -303,7 +338,7 @@ function ManagementPage() {
       <div className="page-container">
         <div className="left-container">
           <div className="form-container-add">
-            <form className="add-form" onSubmit={handleSubmitQuestion}>
+            <form className="add-form">
               <h2 className="add-headline">Add a Question</h2>
               <label className="add-label">
                 Question Text:
@@ -321,17 +356,25 @@ function ManagementPage() {
                 Image:
                 <input type="file" name="ImageBase64" onChange={handleImageUploadQuestion} className="add-input" />
               </label>
-              <button type="submit" className="add-button">Upload Question</button>
+              <button onClick={handleSubmitQuestion} className="add-button">Upload Question</button>
             </form>
             {questionErrorMessage && (
-              <div className="error-message-add">{questionErrorMessage}</div>
+              <div className="option-warning-container">
+                <div className="option-warning">
+                  <h5>{questionErrorMessage}</h5>
+                </div>
+              </div>
             )}
             {questionSuccessMessage && (
-              <div className="success-message-add">{questionSuccessMessage}</div>
+              <div className="option-success-container">
+                <div className="option-success">
+                  <h5>{questionSuccessMessage}</h5>
+                </div>
+              </div>
             )}
           </div>
           <div className="form-container-add">
-            {questions ? <form className="add-form" onSubmit={handleSubmitOption}>
+            {questions ? <form className="add-form">
               <h2 className="add-headline">Add an Option</h2>
               <label className="add-label">
                 Question:
@@ -352,15 +395,23 @@ function ManagementPage() {
                 Is Correct:
                 <input type="checkbox" name="IsCorrect" value={option.IsCorrect} onChange={handleInputChangeOption} className="add-input" />
               </label>
-              <button type="submit" className="add-button">Upload Option</button>
+              <button onClick={handleSubmitOption} className="add-button">Upload Option</button>
             </form> : <div>
               To add options, add a question first.
             </div>}
             {optionErrorMessage && (
-              <div className="error-message-add">{optionErrorMessage}</div>
+              <div className="option-warning-container">
+                <div className="option-warning">
+                  <h5>{optionErrorMessage}</h5>
+                </div>
+              </div>
             )}
             {optionSuccessMessage && (
-              <div className="success-message-add">{optionSuccessMessage}</div>
+              <div className="option-success-container">
+                <div className="option-success">
+                  <h5>{optionSuccessMessage}</h5>
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -419,57 +470,71 @@ function ManagementPage() {
               To add a test, add some questions first.
             </div>}
             {testErrorMessage && (
-              <div className="error-message-add">{testErrorMessage}</div>
+              <div className="option-warning-container">
+                <div className="option-warning">
+                  <h5>{testErrorMessage}</h5>
+                </div>
+              </div>
             )}
             {testSuccessMessage && (
-              <div className="success-message-add">{testSuccessMessage}</div>
+              <div className="option-success-container">
+                <div className="option-success">
+                  <h5>{testSuccessMessage}</h5>
+                </div>
+              </div>
             )}
           </div>
         </div>
         <div className="right-container">
-        <div className="add-form">
-          <div className="scrollbar">
-            <h2>Delete/Restore Tests</h2>
-            {tests.map((test, index) => (
-              <div key={index}
-                style={{ textDecoration: "none", color: "white" }}>
-                <div className="manage-test">
-                  <img src={`data:image/png;base64, ${test.ImageBase64}`} alt="No image" />
-                  <div className="manage-test-details">
-                    {(deleteConfirmation && deleteConfirmation.ID === test.ID) || !test.IsVisible ? null : (
-                      <>
-                        <p><strong>Test:</strong> {test.Title}</p>
-                        <p><strong>Description:</strong> {test.Category}</p>
-                        {test.IsVisible ? (<p><strong>Deleted: </strong>No</p>) : (<p><strong>Deleted: </strong>Yes</p>)}
-                      </>
-                    )}
-                    {test.IsVisible && !deleteConfirmation && !test.RestoreConfirmation && (
-                      <button className='restore-delete-button delete' onClick={() => handleDeleteConfirmation(test)}>Delete</button>
-                    )}
-                    {test.IsVisible && deleteConfirmation && deleteConfirmation.ID === test.ID && (
-                      <div className="delete-confirmation">
-                        <p>Are you sure you want to delete this test?</p>
-                        <button className='yes-button' onClick={handleDeleteTest}>Yes</button>
-                        <button className='no-button' onClick={handleCancelDelete}>No</button>
-                      </div>
-                    )}
-                    {!test.IsVisible && !test.RestoreConfirmation && (
-                      <>
-                        <p><strong>Test:</strong> {test.Title}</p>
-                        <p><strong>Description:</strong> {test.Category}</p>
-                        <p><strong>Deleted: </strong>Yes</p>
-                        <button className='restore-delete-button' onClick={() => handleTestRestore(test)}>Restore</button>
-                      </>
-                    )}
+          <div className="add-form">
+            <div className="scrollbar">
+              <h2>Delete/Restore Tests</h2>
+              {tests.map((test, index) => (
+                <div key={index}
+                  style={{ textDecoration: "none", color: "white" }}>
+                  <div className="manage-test">
+                    <img src={`data:image/png;base64, ${test.ImageBase64}`} alt="No image" />
+                    <div className="manage-test-details">
+                      <p><strong>Test:</strong> {test.Title}</p>
+                      <p><strong>Description:</strong> {test.Category}</p>
+                      {test.IsVisible ? (<p><strong>Deleted: </strong>No</p>) : (<p><strong>Deleted: </strong>Yes</p>)}
+                      {test.IsVisible ?
+                        (<button className='restore-delete-button delete' onClick={() => handleTestDelete(test)}>Delete</button>) :
+                        (<button className='restore-delete-button' onClick={() => handleTestRestore(test)}>Restore</button>)}
+                      {(deleteConfirmation && deleteConfirmation.ID === test.ID) || !test.IsVisible ? null : (
+                        <>
+                          <p><strong>Test:</strong> {test.Title}</p>
+                          <p><strong>Description:</strong> {test.Category}</p>
+                          {test.IsVisible ? (<p><strong>Deleted: </strong>No</p>) : (<p><strong>Deleted: </strong>Yes</p>)}
+                        </>
+                      )}
+                      {test.IsVisible && !deleteConfirmation && !test.RestoreConfirmation && (
+                        <button className='restore-delete-button delete' onClick={() => handleDeleteConfirmation(test)}>Delete</button>
+                      )}
+                      {test.IsVisible && deleteConfirmation && deleteConfirmation.ID === test.ID && (
+                        <div className="delete-confirmation">
+                          <p>Are you sure you want to delete this test?</p>
+                          <button className='yes-button' onClick={handleDeleteTest}>Yes</button>
+                          <button className='no-button' onClick={handleCancelDelete}>No</button>
+                        </div>
+                      )}
+                      {!test.IsVisible && !test.RestoreConfirmation && (
+                        <>
+                          <p><strong>Test:</strong> {test.Title}</p>
+                          <p><strong>Description:</strong> {test.Category}</p>
+                          <p><strong>Deleted: </strong>Yes</p>
+                          <button className='restore-delete-button' onClick={() => handleTestRestore(test)}>Restore</button>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </animated.div>
+    </animated.div>
   );
 }
 

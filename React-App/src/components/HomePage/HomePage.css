@@ -25,14 +25,19 @@
 }
 
 .message {
-  background: #4CAF50;
-  color: #fff;
   padding: 15px;
   margin-bottom: 15px;
   border-radius: 10px;
   font-size: 16px;
-  opacity: 0;
   animation: fadeInOut 2s ease-in-out;
+  background: #384855; /* Adjust the background color */
+  color: #fff;
+  border: 2px solid #61dafb;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 @keyframes fadeInOut {

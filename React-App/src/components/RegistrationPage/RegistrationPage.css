@@ -33,6 +33,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .add-registration-button:hover {
@@ -49,3 +50,28 @@
   text-decoration: underline;
   display: inline-block;
 }
+
+.register-warning-container {
+  width: 100%;
+  margin: 0 auto;
+  margin: 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-warning {
+  background: rgb(43, 57, 68, 0.8);
+  font-size: 16px;
+  border: 2px solid #61dafb;
+  color: #ff4d4d;
+  padding: 5px 20px;
+  border-radius: 10px;
+  margin: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 400px;
+}  

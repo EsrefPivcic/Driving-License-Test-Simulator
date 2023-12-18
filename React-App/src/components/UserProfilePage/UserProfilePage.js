@@ -104,8 +104,7 @@ function UserProfilePage() {
         throw new Error(errorMessage);
       }
 
-      console.log('Password changed successfully');
-      setSuccessMessage('Password changed successfully');
+      console.log('Password changed successfully.');
       setErrorMessage('');
 
       setOldPassword('');
@@ -113,12 +112,13 @@ function UserProfilePage() {
       setRepeatNewPassword('');
 
       stopEditing('password');
+      setSuccessMessage('Password changed successfully.');
       setTimeout(() => {
         setSuccessMessage('');
       }, 2000);
     } catch (error) {
       console.error('Error changing password:', error);
-      setErrorMessage(error.message || 'An error occurred while changing the password');
+      setErrorMessage(error.message || 'An error occurred while changing the password.');
       setSuccessMessage('');
     }
   };
@@ -151,8 +151,8 @@ function UserProfilePage() {
         throw new Error(errorMessage);
       }
 
-      console.log('Name changed successfully');
-      setSuccessMessage('Name changed successfully');
+      console.log('Name changed successfully.');
+      setSuccessMessage('Name changed successfully.');
       setErrorMessage('');
       setUserData((prevData) => ({ ...prevData, Name: newName }));
 
@@ -162,7 +162,7 @@ function UserProfilePage() {
       }, 2000);
     } catch (error) {
       console.error('Error changing name:', error);
-      setErrorMessage(error.message || 'An error occurred while changing the name');
+      setErrorMessage(error.message || 'An error occurred while changing the name.');
       setSuccessMessage('');
     }
   };
@@ -195,8 +195,8 @@ function UserProfilePage() {
         throw new Error(errorMessage);
       }
 
-      console.log('Surname changed successfully');
-      setSuccessMessage('Surname changed successfully');
+      console.log('Surname changed successfully.');
+      setSuccessMessage('Surname changed successfully.');
       setErrorMessage('');
       setUserData((prevData) => ({ ...prevData, Surname: newSurname }));
 
@@ -206,7 +206,7 @@ function UserProfilePage() {
       }, 2000);
     } catch (error) {
       console.error('Error changing surname:', error);
-      setErrorMessage(error.message || 'An error occurred while changing the surname');
+      setErrorMessage(error.message || 'An error occurred while changing the surname.');
       setSuccessMessage('');
     }
   };
@@ -239,8 +239,8 @@ function UserProfilePage() {
         throw new Error(errorMessage);
       }
 
-      console.log('Username changed successfully');
-      setSuccessMessage('Username changed successfully');
+      console.log('Username changed successfully.');
+      setSuccessMessage('Username changed successfully.');
       setErrorMessage('');
       setUserData((prevData) => ({ ...prevData, Username: newUsername }));
 
@@ -250,7 +250,7 @@ function UserProfilePage() {
       }, 2000);
     } catch (error) {
       console.error('Error changing username:', error);
-      setErrorMessage(error.message || 'An error occurred while changing the username');
+      setErrorMessage(error.message || 'An error occurred while changing the username.');
       setSuccessMessage('');
     }
   };
@@ -283,8 +283,8 @@ function UserProfilePage() {
         throw new Error(errorMessage);
       }
 
-      console.log('Email changed successfully');
-      setSuccessMessage('Email changed successfully');
+      console.log('Email changed successfully.');
+      setSuccessMessage('Email changed successfully.');
       setErrorMessage('');
       setUserData((prevData) => ({ ...prevData, Email: newEmail }));
 
@@ -294,7 +294,7 @@ function UserProfilePage() {
       }, 2000);
     } catch (error) {
       console.error('Error changing email:', error);
-      setErrorMessage(error.message || 'An error occurred while changing the email');
+      setErrorMessage(error.message || 'An error occurred while changing the email.');
       setSuccessMessage('');
     }
   };
@@ -321,8 +321,8 @@ function UserProfilePage() {
         const errorMessage = await response.text();
         throw new Error(errorMessage);
       }
-      console.log('Image added successfully');
-      setSuccessMessageImage('Image added successfully');
+      console.log('Image added successfully.');
+      setSuccessMessageImage('Image added successfully.');
       setUserData((prevData) => ({ ...prevData, ImageBase64: newImage }));
       setTimeout(() => {
         setSuccessMessageImage('');
@@ -405,8 +405,16 @@ function UserProfilePage() {
             </div>
           </div>
         </div>
-        {imageEmpty && (<p className="error-message-profile-pic">Please select a new image!</p>)}
-        {successMessageImage && <p className="success-message-profile-pic">{successMessageImage}</p>}
+        {imageEmpty && (<div className="profile-picture-warning-container">
+                <div className="profile-picture-warning">
+                  <h5>Please select a new image!</h5>
+                </div>
+              </div>)}
+        {successMessageImage && <div className="profile-picture-success-container">
+                <div className="profile-picture-success">
+                  <h5>{successMessageImage}</h5>
+                </div>
+              </div>}
         <div className="user-info-container">
           <div className="user-info-row">
             <span>Name:</span>
@@ -659,8 +667,16 @@ function UserProfilePage() {
             )}
           </div>
         </div>
-        {errorMessage && <p className="error-message-profile">{errorMessage}</p>}
-        {successMessage && <p className="success-message-profile">{successMessage}</p>}
+        {errorMessage && <div className="profile-warning-container">
+                <div className="profile-warning">
+                  <h5>{errorMessage}</h5>
+                </div>
+              </div>}
+        {successMessage && <div className="profile-success-container">
+                <div className="profile-success">
+                  <h5>{successMessage}</h5>
+                </div>
+              </div>}
       </div>
     </animated.div>
   );

@@ -10,6 +10,7 @@ function TestPage() {
   const test = location.state?.test;
   const { authToken } = useAuth();
   const [showWarning, setShowWarning] = useState(false);
+  const [showWarningAll, setShowWarningAll] = useState(false);
   const [isComponentVisible, setComponentVisible] = useState(false);
   const [testStarted, setTestStarted] = useState(false);
   const buttonStyle = "button";
@@ -193,6 +194,7 @@ function TestPage() {
   };
 
   const handleStartTest = () => {
+    setTimeUp(false);
     setTestStarted(true);
     setQuestionCount(1);
     timerCountdown();
@@ -203,6 +205,7 @@ function TestPage() {
   };
 
   const handleBackToPreviousContent = () => {
+    window.location.reload();
     setTestStarted(false);
   };
 
@@ -237,8 +240,14 @@ function TestPage() {
     if (Object.keys(selectedOptions).length > 0) {
       handleSubmissionAutomatically();
     }
-    if (Object.keys(selectedOptions).length === 0) {
+    else if (Object.keys(selectedOptions).length === 0) {
       handleSubmissionEmpty();
+    }
+    else {
+      const userresponses = Object.entries(selectedOptions).map(
+        ([questionId, selectedOptionIds]) => [+questionId, selectedOptionIds]
+      );
+      handleAttemptSubmission(userresponses);
     }
   };
 
@@ -375,8 +384,14 @@ function TestPage() {
           <div className="submit-warning">
             <h5>Are you sure? You haven't selected an answer for each question.</h5>
           </div>
+        </div>     
+      )}
+      {showWarningAll && (
+        <div className="submit-warning-container">
+        <div className="submit-warning">
+          <h5>Are you sure?</h5>
         </div>
-
+      </div>      
       )}
     </animated.div>
   );
