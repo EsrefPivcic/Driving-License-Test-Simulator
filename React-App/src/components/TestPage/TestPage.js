@@ -25,6 +25,7 @@ function TestPage() {
   const [optionData, setOptionData] = useState([]);
   const [timer, setTimer] = useState(Duration * 60);
   const [timeUp, setTimeUp] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState(1);
 
   const fadeIn = useSpring({
     opacity: isComponentVisible ? 1 : 0,
@@ -180,6 +181,7 @@ function TestPage() {
     if (currentQuestion < Questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setQuestionCount(questionCount + 1);
+      setSelectedQuestion(selectedQuestion + 1);
     }
   };
 
@@ -187,6 +189,7 @@ function TestPage() {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
       setQuestionCount(questionCount - 1);
+      setSelectedQuestion(selectedQuestion - 1);
     }
   };
 
@@ -204,6 +207,13 @@ function TestPage() {
   const handleBackToPreviousContent = () => {
     window.location.reload();
     setTestStarted(false);
+  };
+
+  const handleQuestionChange = (event) => {
+    const selectedNumber = parseInt(event.target.value, 10);
+    setSelectedQuestion(selectedNumber);
+    setCurrentQuestion(selectedNumber - 1);
+    setQuestionCount(selectedNumber);
   };
 
   const handleSubmission = () => {
@@ -246,29 +256,29 @@ function TestPage() {
       ([questionId, selectedOptionIds]) => [+questionId, selectedOptionIds]
     );
     handleAttemptSubmission(userresponses);
-    };
+  };
 
-    const handleSubmissionEmpty = async () => {
-      var testid = ID;
-  
-      try {
-        const response = await fetch("http://localhost:8080/attempt/submitempty", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token: authToken, testid}),
-        });
-  
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        navigate(`/testresults`, { state: { attempt: data } });
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }   
-    };
+  const handleSubmissionEmpty = async () => {
+    var testid = ID;
+
+    try {
+      const response = await fetch("http://localhost:8080/attempt/submitempty", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: authToken, testid }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      navigate(`/testresults`, { state: { attempt: data } });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const getOptionsForCurrentQuestion = () => {
     const currentQuestionID = questionData[currentQuestion].ID;
@@ -292,7 +302,7 @@ function TestPage() {
             <p><strong>{Description}</strong></p>
             <p>The exam for category {Category} consists of {Questions.length}{" "} questions.</p>
             <p>You have {Duration} minutes to finish the exam.</p>
-            <p>The required passing score is {MaxScore*0.9}/{MaxScore} (90%).</p>
+            <p>The required passing score is {MaxScore * 0.9}/{MaxScore} (90%).</p>
           </div>
           <button type="button" className={`button back-to-home-button`} onClick={handleBackToHome}>Quit</button>
           <button type="button" className={`button start-test-button`} onClick={handleStartTest}>Start</button>
@@ -301,11 +311,21 @@ function TestPage() {
         <animated.div style={questionAnimation}>
           <h2>{test.Title} Test</h2>
           <div className="time-left">
-          <div className="question-container">
-          <p>Question {questionCount} of {Questions.length}</p>
-          </div>
+            <div className="question-container">
+              <p>Question {questionCount} of {Questions.length}</p>
+            </div>
             <p>Time Left: {Math.floor(timer / 60)}:{(timer % 60).toLocaleString('en-US', { minimumIntegerDigits: 2 })}</p>
             {timeUp && <div>Time's up! Finish and submit your test.</div>}
+            <div className="select-container">
+                <p>Select Question:</p>
+                <select value={selectedQuestion} onChange={handleQuestionChange}>
+                  {Array.from({ length: Questions.length }, (_, i) => i + 1).map((number) => (
+                    <option key={number} value={number}>
+                      {number}
+                    </option>
+                  ))}
+                </select>
+              </div>
           </div>
           <div className="form-container">
             <form>
@@ -361,10 +381,10 @@ function TestPage() {
       )}
       {showWarning && (
         <div className="submit-warning-container">
-        <div className="submit-warning">
-          <h5>Are you sure? You haven't selected an answer for each question.</h5>
-        </div>
-      </div>      
+          <div className="submit-warning">
+            <h5>Are you sure? You haven't selected an answer for each question.</h5>
+          </div>
+        </div>     
       )}
       {showWarningAll && (
         <div className="submit-warning-container">

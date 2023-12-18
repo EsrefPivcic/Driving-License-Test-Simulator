@@ -5,6 +5,20 @@ body {
   padding: 0;
   position: relative;
   overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #51728b;
+}
+
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #5786aa;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #51728b;
 }
 
 .background-image {
