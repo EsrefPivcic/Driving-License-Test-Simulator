@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"encoding/base64"
 	"log"
+	"project/authUtils"
 	"project/models"
-	"project/utils"
 
 	"github.com/lib/pq"
 )
@@ -21,7 +21,7 @@ func CountUser(db *sql.DB, username, email string) (bool, error) {
 }
 
 func InsertUser(db *sql.DB, s models.User) error {
-	hashedPassword, err := utils.HashPassword(s.Password)
+	hashedPassword, err := authUtils.HashPassword(s.Password)
 	if err != nil {
 		log.Printf("Error hashing password: %v", err)
 		return err

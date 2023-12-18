@@ -14,6 +14,11 @@ function TestResultsPage() {
     const [userResponsesData, setUserResponsesData] = useState([]);
     const [optionData, setOptionData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [filterOption, setFilterOption] = useState("all");
+
+    const handleFilterOption = (option) => {
+        setFilterOption(option);
+    };
 
     const fadeIn = useSpring({
         opacity: isComponentVisible ? 1 : 0,
@@ -137,7 +142,7 @@ function TestResultsPage() {
             fetchOptionsData();
             setTimeout(() => {
                 setComponentVisible(true);
-              }, 100);
+            }, 100);
         }
     }, [testData]);
 
@@ -147,13 +152,33 @@ function TestResultsPage() {
     const percentage = attempt.Percentage;
 
     const renderQuestions = () => {
-        return questionData.map((question) => {
+        const filteredQuestionsData = questionData.filter((question) => {
             const response = userResponsesData
                 ? userResponsesData.find((r) => r.QuestionID === question.ID)
                 : null;
-    
+
+            if (filterOption === "correct" && response && response.IsCorrect) {
+                return true;
+            }
+
+            if (filterOption === "incorrect" && (!response || !response.IsCorrect)) {
+                return true;
+            }
+
+            if (filterOption === "all") {
+                return true;
+            }
+
+            return false;
+        });
+
+        return filteredQuestionsData.map((question) => {
+            const response = userResponsesData
+                ? userResponsesData.find((r) => r.QuestionID === question.ID)
+                : null;
+
             const selectedOptions = response ? response.SelectedOptions : [];
-    
+
             return (
                 <div key={question.ID} className="result-question-container">
                     <div className="result-question-text">{question.QuestionText}</div>
@@ -163,15 +188,14 @@ function TestResultsPage() {
                             .map((option) => (
                                 <div
                                     key={option.ID}
-                                    className={`result-option ${
-                                        selectedOptions.includes(option.ID)
-                                            ? option.IsCorrect
-                                                ? "result-selected-correct"
-                                                : "result-selected-incorrect"
-                                            : option.IsCorrect
-                                                ? "result-not-selected-correct"
-                                                : "result-not-selected-incorrect"
-                                    }`}
+                                    className={`result-option ${selectedOptions.includes(option.ID)
+                                        ? option.IsCorrect
+                                            ? "result-selected-correct"
+                                            : "result-selected-incorrect"
+                                        : option.IsCorrect
+                                            ? "result-not-selected-correct"
+                                            : "result-not-selected-incorrect"
+                                        }`}
                                 >
                                     {option.OptionText}
                                 </div>
@@ -184,7 +208,7 @@ function TestResultsPage() {
             );
         });
     };
-    
+
 
     if (isLoading) {
         return <animated.div className="loading-results" style={fadeIn}>Loading...</animated.div>
@@ -221,6 +245,26 @@ function TestResultsPage() {
                         <div>
                             <strong>Percentage:</strong> {percentage}%
                         </div>
+                        <div className="toggle-container">
+                            <button
+                                className={`filter-button ${filterOption === "all" && "active"}`}
+                                onClick={() => handleFilterOption("all")}
+                            >
+                                All
+                            </button>
+                            <button
+                                className={`filter-button ${filterOption === "correct" && "active"}`}
+                                onClick={() => handleFilterOption("correct")}
+                            >
+                                Correct
+                            </button>
+                            <button
+                                className={`filter-button ${filterOption === "incorrect" && "active"}`}
+                                onClick={() => handleFilterOption("incorrect")}
+                            >
+                                Incorrect
+                            </button>
+                        </div>
                     </div>
                     {renderQuestions()}
                     <div className="button-container-results"><button
@@ -230,13 +274,13 @@ function TestResultsPage() {
                     >
                         Exam History
                     </button>
-                    <button
-                        type="button"
-                        className={`home-history-button home-button`}
-                        onClick={handleBackToHome}
-                    >
-                        Home
-                    </button>
+                        <button
+                            type="button"
+                            className={`home-history-button home-button`}
+                            onClick={handleBackToHome}
+                        >
+                            Home
+                        </button>
                     </div>
                 </div>
             </animated.div>

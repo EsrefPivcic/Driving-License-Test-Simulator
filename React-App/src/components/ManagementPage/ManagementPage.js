@@ -37,6 +37,8 @@ function ManagementPage() {
   const [testErrorMessage, setTestErrorMessage] = useState('');
   const [testSuccessMessage, setTestSuccessMessage] = useState('');
 
+  const [deleteConfirmation, setDeleteConfirmation] = useState(null);
+
   const fetchQuestions = async () => {
     try {
       const response = await fetch('http://localhost:8080/questions/get');
@@ -252,21 +254,31 @@ function ManagementPage() {
     }
   };
 
-  const handleTestDelete = async (test) => {
+  const handleDeleteConfirmation = (test) => {
+    setDeleteConfirmation(test);
+  };
+  
+  const handleDeleteTest = async () => {
     try {
       const response = await fetch('http://localhost:8080/test/updatevisibility', {
         method: 'POST',
-        body: JSON.stringify({ TestID: test.ID, IsVisible: false }),
+        body: JSON.stringify({ TestID: deleteConfirmation.ID, IsVisible: false }),
         headers: {
           'Content-Type': 'application/json',
         },
       });
+  
       if (response.ok) {
+        setDeleteConfirmation(null);
         fetchTests();
       }
     } catch (error) {
       console.error('Error:', error);
     }
+  };
+  
+  const handleCancelDelete = () => {
+    setDeleteConfirmation(null);
   };
 
   const handleTestRestore = async (test) => {
@@ -416,27 +428,48 @@ function ManagementPage() {
         </div>
         <div className="right-container">
         <div className="add-form">
-          <h2>Delete/Restore Tests</h2>
-          {tests.map((test, index) => (
-            <div key={index}
-              style={{ textDecoration: "none", color: "white" }}>
-              <div className="manage-test">
-                <img src={`data:image/png;base64, ${test.ImageBase64}`} alt="No image" />
-                <div className="manage-test-details">
-                  <p><strong>Test:</strong> {test.Title}</p>
-                  <p><strong>Description:</strong> {test.Category}</p>
-                  {test.IsVisible ? (<p><strong>Deleted: </strong>No</p>) : (<p><strong>Deleted: </strong>Yes</p>)}
-                  {test.IsVisible ?
-                    (<button className='restore-delete-button delete' onClick={() => handleTestDelete(test)}>Delete</button>) :
-                    (<button className='restore-delete-button' onClick={() => handleTestRestore(test)}>Restore</button>)}
+          <div className="scrollbar">
+            <h2>Delete/Restore Tests</h2>
+            {tests.map((test, index) => (
+              <div key={index}
+                style={{ textDecoration: "none", color: "white" }}>
+                <div className="manage-test">
+                  <img src={`data:image/png;base64, ${test.ImageBase64}`} alt="No image" />
+                  <div className="manage-test-details">
+                    {(deleteConfirmation && deleteConfirmation.ID === test.ID) || !test.IsVisible ? null : (
+                      <>
+                        <p><strong>Test:</strong> {test.Title}</p>
+                        <p><strong>Description:</strong> {test.Category}</p>
+                        {test.IsVisible ? (<p><strong>Deleted: </strong>No</p>) : (<p><strong>Deleted: </strong>Yes</p>)}
+                      </>
+                    )}
+                    {test.IsVisible && !deleteConfirmation && !test.RestoreConfirmation && (
+                      <button className='restore-delete-button delete' onClick={() => handleDeleteConfirmation(test)}>Delete</button>
+                    )}
+                    {test.IsVisible && deleteConfirmation && deleteConfirmation.ID === test.ID && (
+                      <div className="delete-confirmation">
+                        <p>Are you sure you want to delete this test?</p>
+                        <button className='yes-button' onClick={handleDeleteTest}>Yes</button>
+                        <button className='no-button' onClick={handleCancelDelete}>No</button>
+                      </div>
+                    )}
+                    {!test.IsVisible && !test.RestoreConfirmation && (
+                      <>
+                        <p><strong>Test:</strong> {test.Title}</p>
+                        <p><strong>Description:</strong> {test.Category}</p>
+                        <p><strong>Deleted: </strong>Yes</p>
+                        <button className='restore-delete-button' onClick={() => handleTestRestore(test)}>Restore</button>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
         </div>
       </div>
-    </animated.div>
+    </div>
+  </animated.div>
   );
 }
 

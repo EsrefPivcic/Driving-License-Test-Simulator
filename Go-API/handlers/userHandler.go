@@ -7,8 +7,8 @@ import (
 	"log"
 	"net/http"
 	"project/appsql"
+	"project/authUtils"
 	"project/models"
-	"project/utils"
 )
 
 func GetUsersHandler(db *sql.DB) http.HandlerFunc {
@@ -166,7 +166,7 @@ func ChangePasswordHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		if !utils.ComparePasswords(user.Password, request.OldPassword) {
+		if !authUtils.ComparePasswords(user.Password, request.OldPassword) {
 			http.Error(w, "Incorrect old password", http.StatusUnauthorized)
 			return
 		}
@@ -176,7 +176,7 @@ func ChangePasswordHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		hashedPassword, err := utils.HashPassword(request.NewPassword)
+		hashedPassword, err := authUtils.HashPassword(request.NewPassword)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return

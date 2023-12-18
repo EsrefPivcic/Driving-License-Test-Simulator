@@ -10,6 +10,44 @@
   margin-top: 0px;
 }
 
+.scrollbar {
+  overflow-y: auto;
+  max-height: 106.5vh;
+  scrollbar-width: thin;
+  scrollbar-color: #51728b;
+  padding-right: 10px;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #5786aa;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background-color: #51728b;
+}
+
+.add-input {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #51728b;
+}
+
+.add-input::-webkit-scrollbar {
+  width: 12px;
+}
+
+.add-input::-webkit-scrollbar-thumb {
+  background-color: #5786aa;
+}
+
+.add-input::-webkit-scrollbar-track {
+  background-color: #51728b;
+}
+
 .add-form {
   max-width: 100%;
   margin: 0 auto;
@@ -104,14 +142,52 @@ select.add-input {
   padding: 5px 5px;
   font-size: 13px;
   cursor: pointer;
+  width: 120px;
+  height: 30px;
 }
 
 .delete {
   background-color: #ff4d4d;
 }
 
+.restore-delete-button:hover {
+  background-color: #0d75ca;
+}
+
+.delete:hover {
+  background-color: #ee3939;
+}
+
 .add-form h2 {
   margin-top: 0px;
+}
+
+.yes-button, .no-button {
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 5px;
+  font-size: 13px;
+  cursor: pointer;
+  width: 70px;
+  height: 30px;
+  margin: 10px 5px 0px 5px;
+}
+
+.yes-button {
+  background-color: #4caf50;
+}
+
+.yes-button:hover {
+  background-color: #45a049;
+}
+
+.no-button {
+  background-color: #ff4d4d;
+}
+
+.no-button:hover {
+  background-color: #ee3939;
 }
 
 @media (max-width: 768px) {

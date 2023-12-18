@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"project/appsql"
+	"project/authUtils"
 	"project/models"
-	"project/utils"
 )
 
 func LoginHandler(db *sql.DB) http.HandlerFunc {
@@ -25,14 +25,14 @@ func LoginHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		valid := utils.ComparePasswords(password, loginRequest.Password)
+		valid := authUtils.ComparePasswords(password, loginRequest.Password)
 
 		if !valid {
 			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
 			return
 		}
 
-		token, err := utils.GenerateToken(loginRequest.Username)
+		token, err := authUtils.GenerateToken(loginRequest.Username)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
