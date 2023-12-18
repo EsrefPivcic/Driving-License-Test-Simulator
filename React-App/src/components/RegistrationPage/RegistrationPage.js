@@ -133,8 +133,12 @@ function RegistrationPage() {
           <input type="password" name="Password" value={user.Password} onChange={handleInputChange} className="add-registration-input" required />
         </label>
         <button type="submit" className="add-registration-button">Register</button>
-        {error && <p className="error-message">{error}</p>}
-        <p>
+        {error && <div className="register-warning-container">
+                <div className="register-warning">
+                  <h5>{error}</h5>
+                </div>
+              </div>}
+              <p className='dont-have-text'>
         Already have an account?{' '}
         <span className="login-btn" onClick={handleLoginClick}>
           Login
