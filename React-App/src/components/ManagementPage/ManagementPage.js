@@ -495,12 +495,6 @@ function ManagementPage() {
                   <div className="manage-test">
                     <img src={`data:image/png;base64, ${test.ImageBase64}`} alt="No image" />
                     <div className="manage-test-details">
-                      <p><strong>Test:</strong> {test.Title}</p>
-                      <p><strong>Description:</strong> {test.Category}</p>
-                      {test.IsVisible ? (<p><strong>Deleted: </strong>No</p>) : (<p><strong>Deleted: </strong>Yes</p>)}
-                      {test.IsVisible ?
-                        (<button className='restore-delete-button delete' onClick={() => handleTestDelete(test)}>Delete</button>) :
-                        (<button className='restore-delete-button' onClick={() => handleTestRestore(test)}>Restore</button>)}
                       {(deleteConfirmation && deleteConfirmation.ID === test.ID) || !test.IsVisible ? null : (
                         <>
                           <p><strong>Test:</strong> {test.Title}</p>
