@@ -373,7 +373,7 @@ function ManagementPage() {
               </div>
             )}
           </div>
-          <div className="form-container-add">
+          <div className="form-container-add add-option-margin">
             {questions ? <form className="add-form">
               <h2 className="add-headline">Add an Option</h2>
               <label className="add-label">
