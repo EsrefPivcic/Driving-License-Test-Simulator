@@ -231,7 +231,7 @@ function TestPage() {
       }
       else {
         setShowWarning(false);
-        handleAttemptSubmission(userresponses);
+        setShowWarningAll(true);
       }
     }
   };
@@ -369,9 +369,9 @@ function TestPage() {
                 )}
                 {currentQuestion < Questions.length - 1 ? (
                   <button type="button" className={nextButtonStyle} onClick={handleNextQuestion}>Next</button>
-                ) : !showWarning && (
+                ) : !(showWarning || showWarningAll) && (
                   <button type="button" className={submitButtonStyle} onClick={handleSubmission}>Submit</button>
-                ) || showWarning && (
+                ) || (showWarning || showWarningAll) && (
                   <button type="button" className={submitButtonStyle} onClick={handleSubmissionConfirm}>Confirm</button>
                 )}
               </div>

@@ -13,7 +13,7 @@ func CalculateTestPass(db *sql.DB, responses []models.UserResponse, testID int, 
 	var attempt models.Attempt
 	test, err := appsql.SelectTestById(db, testID)
 	if err != nil {
-		log.Printf("Error retrieving Test: %v", err)
+		log.Printf("Error retrieving test: %v", err)
 	}
 	var responsesquestionids []int
 	for i := 0; i < len(responses); i++ {
