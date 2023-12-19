@@ -1,6 +1,7 @@
 .page-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
 }
 
 .left-container,
@@ -8,6 +9,7 @@
 .right-container {
   margin: 30px;
   margin-top: 0px;
+  height: 88%;
 }
 
 .scrollbar {
@@ -58,6 +60,7 @@
   max-width: 400px;
   margin-top: 30px;
   background: rgba(43, 57, 68, 0.8);
+  height: 100%;
 }
 
 .add-label {
@@ -239,11 +242,18 @@ select.add-input {
 
 @media (max-width: 768px) {
   .page-container {
-    display: block;
     margin: auto;
+    display: flex;
+    flex-direction: column;
   }
-  .add-form {
 
+  .left-container,
+  .middle-container,
+  .right-container {
+    margin: 15px;
+  }
+
+  .add-form {
     max-width: 400px;
   }
 }
