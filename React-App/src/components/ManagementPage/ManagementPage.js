@@ -129,7 +129,7 @@ function ManagementPage() {
     }
   };
 
-  const handleImageUploadQuestion = (e) => {
+  const handleFileInputChangeQuestion = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
 
@@ -142,7 +142,7 @@ function ManagementPage() {
     setQuestion({ ...question, ImageName: file.name });
   };
 
-  const handleImageUpload = (e) => {
+  const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
 
@@ -354,7 +354,7 @@ function ManagementPage() {
               </label>
               <label className="add-label">
                 Image:
-                <input type="file" name="ImageBase64" onChange={handleImageUploadQuestion} className="add-input" />
+                <input type="file" name="ImageBase64" onChange={handleFileInputChangeQuestion} className="add-input" />
               </label>
               <button onClick={handleSubmitQuestion} className="add-button">Upload Question</button>
             </form>
@@ -463,7 +463,7 @@ function ManagementPage() {
               </label>
               <label className="add-label">
                 Image:
-                <input type="file" name="ImageBase64" onChange={handleImageUpload} className="add-input" />
+                <input type="file" name="ImageBase64" onChange={handleFileInputChange} className="add-input" />
               </label>
               <button type="submit" className="add-button">Upload Test</button>
             </form>) : <div>
