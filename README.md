@@ -91,3 +91,17 @@ The project is organized into two main components:
 - Admins can add new tests with new questions and options, enhancing the variety of simulated driving scenarios.
 
 Thank you for your interest in our eDrivingSchool project! Happy coding!
+
+## Screenshots
+### User Functionalities
+![Screenshot 1](Screenshots/1.png)
+![Screenshot 2](Screenshots/2.png)
+![Screenshot 3](Screenshots/3.png)
+![Screenshot 4](Screenshots/4.png)
+![Screenshot 5](Screenshots/5.png)
+![Screenshot 6](Screenshots/6.png)
+![Screenshot 7](Screenshots/7.png)
+![Screenshot 8](Screenshots/8.png)
+
+### Administrator Functionalities
+![Screenshot 9](Screenshots/9.png)
