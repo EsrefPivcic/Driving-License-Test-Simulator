@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
+  margin-top: 25px;
 }
 
 .left-container,
@@ -18,6 +19,10 @@
   scrollbar-width: thin;
   scrollbar-color: #51728b;
   padding-right: 10px;
+}
+
+.add-option-margin {
+  margin-top: 30px;
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -58,7 +63,6 @@
   display: flex;
   flex-direction: column;
   max-width: 400px;
-  margin-top: 30px;
   background: rgba(43, 57, 68, 0.8);
   height: 100%;
 }
@@ -189,7 +193,7 @@ select.add-input {
 }  
 
 .option-success-container {
-  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -209,7 +213,7 @@ select.add-input {
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 400px;
+  width: 100%;
 }  
 
 .yes-button, .no-button {
@@ -247,13 +251,24 @@ select.add-input {
     flex-direction: column;
   }
 
+  .page-container {
+    grid-gap: 0px;
+  }
+
   .left-container,
   .middle-container,
   .right-container {
     margin: 15px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  h5 {
+    margin: 0px;
   }
 
   .add-form {
+    margin-top: 10px;
     max-width: 400px;
   }
 }
