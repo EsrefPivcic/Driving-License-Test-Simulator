@@ -33,7 +33,7 @@ func SelectOptionsAll(db *sql.DB) ([]models.Option, error) {
         INNER JOIN Question AS q ON o.QuestionID = q.ID
     `)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting all options: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -78,7 +78,7 @@ func SelectOptionsByQuestionIds(db *sql.DB, questionIDs []int) ([]models.Option,
 	query := "SELECT * FROM Option WHERE questionid IN (" + ids + ")"
 	rows, err := db.Query(query)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting options by question ids: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -116,7 +116,7 @@ func SelectOptionsByIds(db *sql.DB, IDs []int) ([]models.Option, error) {
 	query := "SELECT * FROM Option WHERE id IN (" + ids + ")"
 	rows, err := db.Query(query)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting options by ids: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -149,7 +149,7 @@ func SelectCorrectOptionsByQuestionId(db *sql.DB, questionID int) ([]models.Opti
 	rows, err := db.Query(query, id)
 
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting correct options by question id: %v", err)
 		return nil, err
 	}
 	defer rows.Close()

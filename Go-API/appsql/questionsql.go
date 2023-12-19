@@ -16,7 +16,7 @@ func InsertQuestion(db *sql.DB, q models.Question) error {
 	_, err := db.Exec("INSERT INTO Question (QuestionText, Points, MultipleSelect, Image) VALUES ($1, $2, $3, $4)",
 		q.QuestionText, q.Points, q.MultipleSelect, imageArray)
 	if err != nil {
-		log.Printf("Error inserting option into the database: %v", err)
+		log.Printf("Error inserting question into the database: %v", err)
 		return err
 	}
 	return nil
@@ -25,7 +25,7 @@ func InsertQuestion(db *sql.DB, q models.Question) error {
 func SelectQuestionsAll(db *sql.DB) ([]models.Question, error) {
 	rows, err := db.Query("SELECT * FROM Question")
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting all questions: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -73,7 +73,7 @@ func SelectQuestionsByIds(db *sql.DB, questionIDs []int) ([]models.Question, err
 	query := "SELECT * FROM Question WHERE ID IN (" + ids + ")"
 	rows, err := db.Query(query)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting questions by ids: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -115,7 +115,7 @@ func SelectQuestionById(db *sql.DB, questionID int) (models.Question, error) {
 	query := "SELECT * FROM \"question\" WHERE id = $1"
 	rows, err := db.Query(query, id)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting question by id: %v", err)
 		return models.Question{}, err
 	}
 	defer rows.Close()

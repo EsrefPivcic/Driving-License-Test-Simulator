@@ -14,14 +14,14 @@ func GetAttemptsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		attempts, err := appsql.SelectAttemptsAll(db)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error:", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(attempts)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error:", http.StatusInternalServerError)
 			return
 		}
 
@@ -39,7 +39,7 @@ func GetAttemptsByUserIdHandler(db *sql.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 
@@ -50,14 +50,14 @@ func GetAttemptsByUserIdHandler(db *sql.DB) http.HandlerFunc {
 
 		attempts, err := appsql.SelectAttemptsByUserId(db, userID)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(attempts)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -79,7 +79,7 @@ func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 
@@ -87,12 +87,12 @@ func SubmitAttemptHandler(db *sql.DB) http.HandlerFunc {
 
 		attemptID, err := appsql.InsertAttemptReturnId(db, attempt)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		if err := appsql.InsertUserResponses(db, responses, attemptID); err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -111,16 +111,16 @@ func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
 		}
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 		userID, err := appsql.SelectUserIdByToken(db, request.Token)
 		if err != nil {
-			log.Printf("Error retrieving a UserID: %v", err)
+			log.Printf("Error retrieving a userid by token: %v", err)
 		}
 		test, err := appsql.SelectTestById(db, request.TestID)
 		if err != nil {
-			log.Printf("Error retrieving Test: %v", err)
+			log.Printf("Error retrieving a test by id: %v", err)
 		}
 		attempt.UserID = userID
 		attempt.TestID = request.TestID
@@ -131,7 +131,7 @@ func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
 
 		attemptID, err := appsql.InsertAttemptReturnId(db, attempt)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -152,7 +152,7 @@ func PostAttemptHandler(db *sql.DB) http.HandlerFunc {
 		defer r.Body.Close()
 
 		if err := appsql.InsertAttempt(db, attempt); err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 

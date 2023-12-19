@@ -28,7 +28,7 @@ func LogoutHandler(db *sql.DB) http.HandlerFunc {
 
 		err := appsql.DeleteToken(db, logoutRequest.Token)
 		if err != nil {
-			http.Error(w, "Error deleting token", http.StatusInternalServerError)
+			http.Error(w, "Error deleting token.", http.StatusInternalServerError)
 			return
 		}
 

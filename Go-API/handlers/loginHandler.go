@@ -21,25 +21,25 @@ func LoginHandler(db *sql.DB) http.HandlerFunc {
 
 		password, userid, err := appsql.SelectUserPasswordByUsername(db, loginRequest.Username)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		valid := authUtils.ComparePasswords(password, loginRequest.Password)
 
 		if !valid {
-			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+			http.Error(w, "Invalid credentials.", http.StatusUnauthorized)
 			return
 		}
 
 		token, err := authUtils.GenerateToken(loginRequest.Username)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		if err := appsql.InsertToken(db, userid, token); err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -55,13 +55,13 @@ func CheckTokenHandler(db *sql.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 
 		exists, err := appsql.CountToken(db, request.Token)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 

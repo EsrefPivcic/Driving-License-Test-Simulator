@@ -381,7 +381,7 @@ function ManagementPage() {
                 <select name="QuestionID" value={option.QuestionID} onChange={handleInputChangeOption} className="add-select">
                   <option value="">Select a Question</option>
                   {questions.map((q) => (
-                    <option key={q.ID} value={q.ID}>
+                    <option key={q.ID} value={q.ID} className='option-from-list'>
                       {q.QuestionText}
                     </option>
                   ))}

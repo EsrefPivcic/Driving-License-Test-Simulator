@@ -35,7 +35,7 @@ func UpdateTestVisibility(db *sql.DB, testID int, isvisible bool) error {
 func SelectTestsAll(db *sql.DB) ([]models.Test, error) {
 	rows, err := db.Query("SELECT * FROM \"test\" ORDER BY test.ID;")
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting all tests: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -97,7 +97,7 @@ func SelectTestsVisible(db *sql.DB) ([]models.Test, error) {
 	ORDER BY t.ID;
 	`)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting visible tests: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -148,7 +148,7 @@ func SelectTestById(db *sql.DB, testID int) (models.Test, error) {
 	query := "SELECT * FROM \"test\" WHERE id = $1"
 	rows, err := db.Query(query, id)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting test by id: %v", err)
 		return models.Test{}, err
 	}
 	defer rows.Close()

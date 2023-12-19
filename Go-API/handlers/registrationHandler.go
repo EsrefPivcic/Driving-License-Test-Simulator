@@ -20,11 +20,11 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 
 		exists, err := appsql.CountUser(db, registrationRequest.Username, registrationRequest.Email)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 		if exists {
-			http.Error(w, "Username or email already exists", http.StatusConflict)
+			http.Error(w, "Username or email already exists.", http.StatusConflict)
 			return
 		}
 
@@ -40,7 +40,7 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 		}
 
 		if err := appsql.InsertUser(db, user); err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 

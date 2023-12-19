@@ -1,5 +1,5 @@
 .button-style {
-  background: #384855;
+  background: #3f515f;
   opacity: 0.8;
   color: #fff;
   padding: 20px;
@@ -20,7 +20,7 @@
 }
 
 .button-style:hover {
-  background: #445765;
+  background: rgb(72, 93, 107);
   transform: scale(1.05);
 }
 

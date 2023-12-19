@@ -14,14 +14,14 @@ func GetTestsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tests, err := appsql.SelectTestsAll(db)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(tests)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -35,14 +35,14 @@ func GetTestsVisibleHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tests, err := appsql.SelectTestsVisible(db)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(tests)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -60,20 +60,20 @@ func GetTestByIdHandler(db *sql.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 
 		test, err := appsql.SelectTestById(db, request.TestID)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(test)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -96,14 +96,14 @@ func PostTestHandler(db *sql.DB) http.HandlerFunc {
 		imageBase64 := test.ImageBase64
 		imageBytes, err := base64.StdEncoding.DecodeString(imageBase64)
 		if err != nil {
-			http.Error(w, "Invalid image data", http.StatusBadRequest)
+			http.Error(w, "Invalid image data.", http.StatusBadRequest)
 			return
 		}
 		test.Image = imageBytes
 
 		questions, err := appsql.SelectQuestionsByIds(db, test.Questions)
 		if err != nil {
-			http.Error(w, "Error retrieving questions from database", http.StatusBadRequest)
+			http.Error(w, "Error retrieving questions from database.", http.StatusBadRequest)
 			return
 		}
 
@@ -116,7 +116,7 @@ func PostTestHandler(db *sql.DB) http.HandlerFunc {
 		test.IsVisible = true
 
 		if err := appsql.InsertTest(db, test); err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -133,12 +133,12 @@ func UpdateTestVisibilityHandler(db *sql.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 
 		if err := appsql.UpdateTestVisibility(db, request.TestID, request.IsVisible); err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 

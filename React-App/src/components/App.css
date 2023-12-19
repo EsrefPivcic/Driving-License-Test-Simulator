@@ -137,6 +137,8 @@ body::-webkit-scrollbar-track {
 @media (max-width: 600px) {
   body {
     background: #2b3944;
+    padding: 20px;
+    padding-top: 0px;
   }
   .app-title {
     font-size: 30px;
@@ -151,5 +153,8 @@ body::-webkit-scrollbar-track {
   }
   .background-image {
     display: none;
+  }
+  .navbar {
+    margin-bottom: 30px;
   }
 }
