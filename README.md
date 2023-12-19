@@ -30,26 +30,32 @@ To get started with the project, follow these steps in your terminal:
     cd eDrivingSchool/Go-API
     ```
 
-5. Perform migrations to populate the database with data:
+5. Install database migration tool for Go:
+   
+    ```bash
+    go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+    ```
+
+6. Perform migrations to populate the database with data:
 
    ```bash
     migrate -database "postgres://admin:admin@localhost:5432/eDrivingSchoolDB?sslmode=disable" -path migrations up
     ```
 
-6. Install dependencies and run the backend:
+7. Install dependencies and run the backend:
 
     ```bash
     go get
     go run main.go
     ```
 
-7. Open the React App directory in a new terminal window:
+8. Open the React App directory in a new terminal window:
 
     ```bash
     cd eDrivingSchool/React-App
     ```
 
-8. Install dependencies and start the frontend:
+9. Install dependencies and start the frontend:
 
     ```bash
     npm install
