@@ -122,18 +122,10 @@ func SubmitEmptyAttemptHandler(db *sql.DB) http.HandlerFunc {
 		if err != nil {
 			log.Printf("Error retrieving Test: %v", err)
 		}
-		questions, errq := appsql.SelectQuestionsByIds(db, test.Questions)
-		if errq != nil {
-			log.Printf("Error retrieving Questions: %v", errq)
-		}
-		var MaxScore int = 0
-		for i := 0; i < len(questions); i++ {
-			MaxScore += questions[i].Points
-		}
 		attempt.UserID = userID
 		attempt.TestID = request.TestID
 		attempt.Score = 0
-		attempt.MaxScore = MaxScore
+		attempt.MaxScore = test.MaxScore
 		attempt.Percentage = 0
 		attempt.Passed = false
 

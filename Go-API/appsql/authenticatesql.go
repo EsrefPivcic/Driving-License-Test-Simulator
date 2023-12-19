@@ -9,7 +9,7 @@ func CountToken(db *sql.DB, token string) (bool, error) {
 	var count int
 	err := db.QueryRow("SELECT COUNT(*) FROM AuthenticationToken WHERE Value = $1", token).Scan(&count)
 	if err != nil {
-		log.Printf("Error checking user existence: %v", err)
+		log.Printf("Error checking token existence: %v", err)
 		return false, err
 	}
 	return count > 0, nil
@@ -42,7 +42,7 @@ func SelectUserIdByToken(db *sql.DB, token string) (int, error) {
 
 	err := row.Scan(&userID)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting userid by token: %v", err)
 		return 0, err
 	}
 

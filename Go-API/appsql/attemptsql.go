@@ -58,7 +58,7 @@ INNER JOIN User AS s ON a.UserID = s.ID
 INNER JOIN Test AS t ON a.TestID = t.ID
     `)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting all attempts: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -134,7 +134,7 @@ INNER JOIN Test AS t ON a.TestID = t.ID
 WHERE a.UserID = $1`
 	rows, err := db.Query(query, userId)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting attempts by user id: %v", err)
 		return []models.Attempt{}, err
 	}
 	defer rows.Close()
