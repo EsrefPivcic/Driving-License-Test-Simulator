@@ -30,7 +30,7 @@ func InsertUser(db *sql.DB, s models.User) error {
 	_, err = db.Exec("INSERT INTO \"user\" (Name, Surname, Username, Email, Password, Image, IsStudent, IsAdmin) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
 		s.Name, s.Surname, s.Username, s.Email, hashedPassword, imageArray, s.IsStudent, s.IsAdmin)
 	if err != nil {
-		log.Printf("Error inserting option into the database: %v", err)
+		log.Printf("Error inserting user into the database: %v", err)
 		return err
 	}
 	return nil
@@ -50,7 +50,7 @@ func UpdateUser(db *sql.DB, user models.User) error {
 func SelectUsersAll(db *sql.DB) ([]models.User, error) {
 	rows, err := db.Query("SELECT * FROM \"user\" AS s")
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting all users: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -108,7 +108,7 @@ func SelectUserById(db *sql.DB, userID int) (models.User, error) {
 		&user.IsAdmin,
 	)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting user by id: %v", err)
 		return models.User{}, err
 	}
 	var imageBytes []byte
@@ -144,7 +144,7 @@ func SelectUserPasswordById(db *sql.DB, userID int) (models.User, error) {
 		&user.Password,
 	)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting user password by id: %v", err)
 		return models.User{}, err
 	}
 

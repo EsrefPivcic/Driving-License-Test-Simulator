@@ -13,7 +13,7 @@ func CalculateTestPass(db *sql.DB, responses []models.UserResponse, testID int, 
 	var attempt models.Attempt
 	test, err := appsql.SelectTestById(db, testID)
 	if err != nil {
-		log.Printf("Error retrieving test: %v", err)
+		log.Printf("Error retrieving test by id: %v", err)
 	}
 	var responsesquestionids []int
 	for i := 0; i < len(responses); i++ {
@@ -22,7 +22,7 @@ func CalculateTestPass(db *sql.DB, responses []models.UserResponse, testID int, 
 	var responsesquestions []models.Question
 	responsesquestions, err = appsql.SelectQuestionsByIds(db, responsesquestionids)
 	if err != nil {
-		log.Printf("Error retrieving questions for responses: %v", err)
+		log.Printf("Error retrieving questions by ids: %v", err)
 	}
 	for i := 0; i < len(responses); i++ {
 		var question = responsesquestions[i]
@@ -46,7 +46,7 @@ func CalculateTestPass(db *sql.DB, responses []models.UserResponse, testID int, 
 	percentageFloat := float64(percentage)
 	userID, err := appsql.SelectUserIdByToken(db, token)
 	if err != nil {
-		log.Printf("Error retrieving a UserID: %v", err)
+		log.Printf("Error retrieving a userid by token: %v", err)
 	}
 	attempt.UserID = userID
 	attempt.TestID = testID

@@ -131,7 +131,8 @@ func SelectAttemptsByUserId(db *sql.DB, userId int) ([]models.Attempt, error) {
 	t.Duration AS Duration
 FROM Attempt AS a
 INNER JOIN Test AS t ON a.TestID = t.ID
-WHERE a.UserID = $1`
+WHERE a.UserID = $1
+ORDER BY a.ID;`
 	rows, err := db.Query(query, userId)
 	if err != nil {
 		log.Printf("Error selecting attempts by user id: %v", err)

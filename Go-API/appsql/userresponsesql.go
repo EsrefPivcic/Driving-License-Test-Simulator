@@ -13,7 +13,7 @@ func InsertUserResponse(db *sql.DB, s models.UserResponse) error {
 	_, err := db.Exec("INSERT INTO UserResponse (AttemptID, QuestionID, SelectedOptions, IsCorrect) VALUES ($1, $2, $3, $4)",
 		s.AttemptID, s.QuestionID, optionsArray, s.IsCorrect)
 	if err != nil {
-		log.Printf("Error inserting test into the database: %v", err)
+		log.Printf("Error inserting userresponse into the database: %v", err)
 		return err
 	}
 	return nil
@@ -26,7 +26,7 @@ func InsertUserResponses(db *sql.DB, responses []models.UserResponse, attemptid 
 		_, err := db.Exec("INSERT INTO UserResponse (AttemptID, QuestionID, SelectedOptions, IsCorrect) VALUES ($1, $2, $3, $4)",
 			attemptid, s.QuestionID, optionsArray, s.IsCorrect)
 		if err != nil {
-			log.Printf("Error inserting test into the database: %v", err)
+			log.Printf("Error inserting userresponses into the database: %v", err)
 			return err
 		}
 	}
@@ -39,7 +39,7 @@ func SelectUserResponsesByAttemptId(db *sql.DB, attemptID int) ([]models.UserRes
 	query := "SELECT * FROM \"userresponse\" WHERE attemptid = $1"
 	rows, err := db.Query(query, id)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting userresponses by attempt id: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -96,7 +96,7 @@ INNER JOIN Attempt AS a ON sr.AttemptID = a.ID
 INNER JOIN Question AS q ON sr.QuestionID = q.ID
     `)
 	if err != nil {
-		log.Printf("Error executing SQL query: %v", err)
+		log.Printf("Error selecting all user responses: %v", err)
 		return nil, err
 	}
 	defer rows.Close()

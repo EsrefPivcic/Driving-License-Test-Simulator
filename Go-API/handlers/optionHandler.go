@@ -13,14 +13,14 @@ func GetOptionsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		options, err := appsql.SelectOptionsAll(db)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(options)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -38,20 +38,20 @@ func GetOptionsByQuestionIdsHandler(db *sql.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 
 		options, err := appsql.SelectOptionsByQuestionIds(db, request.QuestionIDs)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(options)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -69,20 +69,20 @@ func GetCorrectOptionsByQuestionIdHandler(db *sql.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 
 		options, err := appsql.SelectCorrectOptionsByQuestionId(db, request.QuestionID)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(options)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -100,20 +100,20 @@ func GetOptionsByIdsHandler(db *sql.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 
 		options, err := appsql.SelectOptionsByIds(db, request.IDs)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(options)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -134,7 +134,7 @@ func PostOptionHandler(db *sql.DB) http.HandlerFunc {
 		defer r.Body.Close()
 
 		if err := appsql.InsertOption(db, option); err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 

@@ -181,7 +181,15 @@ function TestResultsPage() {
 
             return (
                 <div key={question.ID} className="result-question-container">
-                    <div className="result-question-text">{question.QuestionText}</div>
+                    <div className="result-question-text">
+                        {question.QuestionText}
+                        {question.ImageBase64 && (<div>
+                            <img
+                                src={`data:image/png;base64,${question.ImageBase64}`}
+                                alt={`Test: ${question.QuestionText}`}
+                                className="response-image" />
+                        </div>)}
+                    </div>
                     <div className="result-options-container">
                         {optionData
                             .filter((option) => option.QuestionID === question.ID)

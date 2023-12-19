@@ -14,14 +14,14 @@ func GetQuestionsHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		questions, err := appsql.SelectQuestionsAll(db)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(questions)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -39,20 +39,20 @@ func GetQuestionsByIdsHandler(db *sql.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 
 		questions, err := appsql.SelectQuestionsByIds(db, request.QuestionIDs)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(questions)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -75,13 +75,13 @@ func PostQuestionHandler(db *sql.DB) http.HandlerFunc {
 		imageBase64 := question.ImageBase64
 		imageBytes, err := base64.StdEncoding.DecodeString(imageBase64)
 		if err != nil {
-			http.Error(w, "Invalid image data", http.StatusBadRequest)
+			http.Error(w, "Invalid image data.", http.StatusBadRequest)
 			return
 		}
 		question.Image = imageBytes
 
 		if err := appsql.InsertQuestion(db, question); err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 

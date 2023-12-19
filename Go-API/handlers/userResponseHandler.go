@@ -13,14 +13,14 @@ func GetUserResponsesHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userresponses, err := appsql.SelectUserResponsesAll(db)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(userresponses)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -38,20 +38,20 @@ func GetUserResponsesByAttemptIdHandler(db *sql.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			http.Error(w, "Invalid request body.", http.StatusBadRequest)
 			return
 		}
 
 		userresponses, err := appsql.SelectUserResponsesByAttemptId(db, request.AttemptID)
 		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
 		response, err := json.Marshal(userresponses)
 		if err != nil {
 			log.Fatal(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 
@@ -72,7 +72,7 @@ func PostUserResponseHandler(db *sql.DB) http.HandlerFunc {
 		defer r.Body.Close()
 
 		if err := appsql.InsertUserResponse(db, userresponse); err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
 			return
 		}
 

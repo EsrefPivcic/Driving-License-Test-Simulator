@@ -305,3 +305,10 @@
 .save-button-password:hover, .cancel-button-password:hover {
   background-color: #007bb5;
 }
+
+@media (max-width: 600px) { 
+ .user-profile-container {
+  margin: auto;
+  margin-bottom: 20px;
+ }
+}

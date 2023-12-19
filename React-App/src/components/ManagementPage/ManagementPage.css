@@ -49,7 +49,6 @@
 }
 
 .add-form {
-  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   border: 2px solid #61dafb;
@@ -163,7 +162,7 @@ select.add-input {
 }
 
 .option-warning-container {
-  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -183,7 +182,7 @@ select.add-input {
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 400px;
+  width: 100%;
 }  
 
 .option-success-container {
@@ -241,9 +240,10 @@ select.add-input {
 @media (max-width: 768px) {
   .page-container {
     display: block;
+    margin: auto;
   }
   .add-form {
-    width: calc(100% + 32vw);
+
     max-width: 400px;
   }
 }

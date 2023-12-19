@@ -54,10 +54,11 @@ function App() {
           className="background-image"
         />
         <div className="app-content">
+          
+          <div className="navbar">
           <h1 className="app-title">
             <Link to="/">eDrivingSchool</Link>
           </h1>
-          <div className="navbar">
             {isAuthenticated && (
               <div className="profile-dropdown">
                 {userData.ImageBase64 && (
