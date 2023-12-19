@@ -85,7 +85,7 @@ The project is organized into two main components:
 
 ## Features
 
-- **Homepage:** The app currently features a homepage with different tests categorized by vehicle types.
+- **Homepage:** The app features a homepage with different tests categorized by vehicle types.
 
 - **Test Categories:** Each category, such as cars or motorbikes, contains a set of questions for simulation.
 
