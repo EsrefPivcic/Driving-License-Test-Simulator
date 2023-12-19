@@ -381,8 +381,8 @@ function ManagementPage() {
                 <select name="QuestionID" value={option.QuestionID} onChange={handleInputChangeOption} className="add-select">
                   <option value="">Select a Question</option>
                   {questions.map((q) => (
-                    <option key={q.ID} value={q.ID} className='option-from-list'>
-                      {q.QuestionText}
+                    <option key={q.ID} value={q.ID} className='option-from-list' title={q.QuestionText}>
+                      {q.QuestionText.length > 50 ? `${q.QuestionText.substring(0, 50)}...` : q.QuestionText}
                     </option>
                   ))}
                 </select>
@@ -445,16 +445,7 @@ function ManagementPage() {
                     className="add-input"
                   >
                     {questions.map((q) => (
-                      <option
-                        key={q.ID}
-                        value={q.ID}
-                        onClick={() => toggleQuestionSelection(q.ID)}
-                      >
-                        <div><input
-                          type="checkbox"
-                          checked={test.Questions.includes(q.ID)}
-                          readOnly
-                        /></div>
+                      <option key={q.ID} value={q.ID} onClick={() => toggleQuestionSelection(q.ID)}>
                         {q.QuestionText}
                       </option>
                     ))}
