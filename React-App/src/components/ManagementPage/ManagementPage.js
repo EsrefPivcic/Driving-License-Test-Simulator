@@ -338,43 +338,43 @@ function ManagementPage() {
       <div className="page-container">
         <div className="left-container">
           <div className="form-container-add">
-            <form className="add-form">
-              <h2 className="add-headline">Add a Question</h2>
-              <label className="add-label">
-                Question Text:
-                <input type="text" name="QuestionText" value={question.QuestionText} onChange={handleInputChangeQuestion} className="add-input" />
-              </label>
-              <label className="add-label">
-                Points:
-                <input type="number" name="Points" value={question.Points} onChange={handleInputChangeQuestion} className="add-input" />
-              </label>
-              <label className="add-label">
-                Multiple Select:
-                <input type="checkbox" name="MultipleSelect" value={question.MultipleSelect} onChange={handleInputChangeQuestion} className="add-input" />
-              </label>
-              <label className="add-label">
-                Image:
-                <input type="file" name="ImageBase64" onChange={handleFileInputChangeQuestion} className="add-input" />
-              </label>
-              <button onClick={handleSubmitQuestion} className="add-button">Upload Question</button>
-            </form>
-            {questionErrorMessage && (
-              <div className="option-warning-container">
-                <div className="option-warning">
-                  <h5>{questionErrorMessage}</h5>
+              <form className="add-form-question">
+                <h2 className="add-headline">Add a Question</h2>
+                <label className="add-label">
+                  Question Text:
+                  <input type="text" name="QuestionText" value={question.QuestionText} onChange={handleInputChangeQuestion} className="add-input" />
+                </label>
+                <label className="add-label">
+                  Points:
+                  <input type="number" name="Points" value={question.Points} onChange={handleInputChangeQuestion} className="add-input" />
+                </label>
+                <label className="add-label">
+                  Multiple Select:
+                  <input type="checkbox" name="MultipleSelect" value={question.MultipleSelect} onChange={handleInputChangeQuestion} className="add-input" />
+                </label>
+                <label className="add-label">
+                  Image:
+                  <input type="file" name="ImageBase64" onChange={handleFileInputChangeQuestion} className="add-input" />
+                </label>
+                <button onClick={handleSubmitQuestion} className="add-button">Upload Question</button>
+              </form>
+              {questionErrorMessage && (
+                <div className="option-warning-container">
+                  <div className="option-warning">
+                    <h5>{questionErrorMessage}</h5>
+                  </div>
                 </div>
-              </div>
-            )}
-            {questionSuccessMessage && (
-              <div className="option-success-container">
-                <div className="option-success">
-                  <h5>{questionSuccessMessage}</h5>
+              )}
+              {questionSuccessMessage && (
+                <div className="option-success-container">
+                  <div className="option-success">
+                    <h5>{questionSuccessMessage}</h5>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
           <div className="form-container-add add-option-margin">
-            {questions ? <form className="add-form">
+            {questions ? <form className="add-form-option add-form-responsive">
               <h2 className="add-headline">Add an Option</h2>
               <label className="add-label">
                 Question:
@@ -417,7 +417,7 @@ function ManagementPage() {
         </div>
         <div className="middle-container">
           <div className="form-container-add">
-            {questions ? (<form className="add-form" onSubmit={handleSubmit}>
+            {questions ? (<form className="add-form-test add-form-responsive" onSubmit={handleSubmit}>
               <h2 className="add-headline">Add a Test</h2>
               <label className="add-label">
                 Title:
@@ -477,9 +477,9 @@ function ManagementPage() {
           </div>
         </div>
         <div className="right-container">
-          <div className="add-form">
+          <div className="add-form add-form-responsive">
+          <h2>Delete/Restore Tests</h2>
             <div className="scrollbar">
-              <h2>Delete/Restore Tests</h2>
               {tests.map((test, index) => (
                 <div key={index}
                   style={{ textDecoration: "none", color: "white" }}>
@@ -493,7 +493,7 @@ function ManagementPage() {
                           {test.IsVisible ? (<p><strong>Deleted: </strong>No</p>) : (<p><strong>Deleted: </strong>Yes</p>)}
                         </>
                       )}
-                      {test.IsVisible && !deleteConfirmation && !test.RestoreConfirmation && (
+                      {test.IsVisible && (!deleteConfirmation || deleteConfirmation.ID !== test.ID) && (
                         <button className='restore-delete-button delete' onClick={() => handleDeleteConfirmation(test)}>Delete</button>
                       )}
                       {test.IsVisible && deleteConfirmation && deleteConfirmation.ID === test.ID && (

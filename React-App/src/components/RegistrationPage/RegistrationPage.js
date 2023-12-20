@@ -92,13 +92,14 @@ function RegistrationPage() {
       });
 
       if (response.ok) {
+        setError('');
         setMessage('Registration successful! You can now log in.');
         setTimeout(() => {
           setMessage('');
           navigate('/login');
         }, 2000);
       } else if (response.status === 409) {
-        setError('Username already exists. Please choose a different username.');
+        setError('Username or email already exists. Please choose a different username.');
       } else {
         setError('Registration failed. Please try again.');
       }
