@@ -10,6 +10,7 @@
     border-radius: 10px;
     max-width: 400px;
     margin-top: 25px;
+    margin-bottom: 20px;
 }
   
 .profile-image-container {
@@ -306,9 +307,21 @@
   background-color: #007bb5;
 }
 
-@media (max-width: 600px) { 
+@media (max-width: 700px) { 
  .user-profile-container {
   margin: auto;
   margin-bottom: 20px;
+ }
+
+ .user-info-container {
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  width: 100%;
+ }
+
+ .user-info-row {
+  max-width: 99%;
+  margin-left: 1%;
  }
 }

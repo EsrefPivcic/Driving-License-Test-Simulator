@@ -43,13 +43,11 @@ function LoginPage() {
       if (!response.ok) {
         throw new Error('Login failed');
       }
-
+      setError('');
       const data = await response.json();
-
       const token = data.token;
       setAuthStatus(token);
       openLogin();
-      
       navigate(`/`, { state: { login: true } });
     } catch (error) {
       console.error('Login failed:', error);

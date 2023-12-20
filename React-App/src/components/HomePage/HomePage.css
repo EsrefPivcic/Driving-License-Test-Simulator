@@ -30,7 +30,7 @@
   border-radius: 10px;
   font-size: 16px;
   animation: fadeInOut 2s ease-in-out;
-  background: #384855; /* Adjust the background color */
+  background: #384855;
   color: #fff;
   border: 2px solid #61dafb;
   height: 20px;
@@ -38,6 +38,8 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 @keyframes fadeInOut {
